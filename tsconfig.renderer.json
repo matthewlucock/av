@@ -1,6 +1,5 @@
 {
   "extends": "./tsconfig",
-  "exclude": ["src/main"],
 
   "compilerOptions": {
     "jsx": "react"
