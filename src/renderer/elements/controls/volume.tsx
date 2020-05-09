@@ -1,0 +1,70 @@
+import * as React from 'react'
+import styled from '@emotion/styled'
+import { connect as connectToRedux } from 'react-redux'
+import { createStructuredSelector } from 'reselect'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faVolumeMute as fasVolumeMute,
+  faVolumeDown as fasVolumeDown,
+  faVolumeUp as fasVolumeUp
+} from '@fortawesome/free-solid-svg-icons'
+
+import { State } from '../../store/state'
+import { getMediaVolume } from '../../store/selectors'
+import { Dispatch } from '../../store'
+import { setMediaVolume } from '../../store/actions'
+
+import { Slider } from '../../components/slider'
+import { RoundControlButton } from '../../components/control-button'
+
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+  width: 8em;
+`
+
+const MutedIcon = styled(FontAwesomeIcon)`
+  position: relative;
+  left: .165em;
+`
+
+interface StateProps {
+  readonly volume: number
+}
+
+interface DispatchProps {
+  readonly setVolume: (volume: number) => void
+}
+
+type Props = StateProps & DispatchProps
+
+const BaseVolume: React.FC<Props> = props => (
+  <Wrapper>
+    <RoundControlButton onClick={() => props.setVolume(0)} disabled={props.volume === 0}>
+      {(props.volume
+        ? <FontAwesomeIcon icon={fasVolumeDown} />
+        : <MutedIcon icon={fasVolumeMute} />
+      )}
+    </RoundControlButton>
+
+    <Slider value={props.volume} maximum={1} changeValue={props.setVolume} />
+
+    <RoundControlButton onClick={() => props.setVolume(1)}>
+      <FontAwesomeIcon icon={fasVolumeUp} />
+    </RoundControlButton>
+  </Wrapper>
+)
+
+const mapStateToProps = createStructuredSelector<State, StateProps>({
+  volume: getMediaVolume
+})
+
+const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => (
+  {
+    setVolume: (volume: number): void => {
+      dispatch(setMediaVolume(volume))
+    }
+  }
+)
+
+export const Volume = connectToRedux(mapStateToProps, mapDispatchToProps)(BaseVolume)

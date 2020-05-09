@@ -1,0 +1,79 @@
+import electron from 'electron'
+import * as React from 'react'
+import styled from '@emotion/styled'
+import { connect as connectToRedux } from 'react-redux'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMusic as fasMusic, faVideo as fasVideo } from '@fortawesome/free-solid-svg-icons'
+
+import { browseForFile } from '../util/browse-for-file'
+
+import { Dispatch } from '../store'
+import { openFile } from '../store/thunks'
+
+import { Pane } from '../components/pane'
+import { TranslucentButton } from '../components/translucent-button'
+
+const Wrapper = styled(Pane)`
+  font-size: 1.5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+`
+
+const Body = styled.div``
+
+const MediaIcons = styled.div`
+  font-size: 6em;
+  margin-bottom: 0.25em;
+
+  & > :not(:last-child) {
+    margin-right: 0.5em;
+  }
+`
+
+interface DispatchProps {
+  readonly openFile: (fileList: FileList) => void
+}
+
+type Props = DispatchProps
+
+const BaseFile: React.FC<Props> = props => {
+  React.useEffect(() => {
+    electron.ipcRenderer.invoke('resize-window')
+    electron.ipcRenderer.invoke('set-window-resizable', false)
+
+    return () => {
+      electron.ipcRenderer.invoke('set-window-resizable', true)
+    }
+  }, [])
+
+  return (
+    <Wrapper>
+      <Body>
+        <MediaIcons>
+          <FontAwesomeIcon icon={fasMusic} />
+          <FontAwesomeIcon icon={fasVideo} />
+        </MediaIcons>
+
+        <p>
+          Drag a file here or{' '}
+          <TranslucentButton onClick={() => browseForFile(props.openFile)}>
+            browse
+          </TranslucentButton>{' '}
+          for one
+        </p>
+      </Body>
+    </Wrapper>
+  )
+}
+
+const mapDisaptchToProps = (dispatch: Dispatch): DispatchProps => (
+  {
+    openFile: (fileList: FileList): void => {
+      dispatch(openFile(fileList))
+    }
+  }
+)
+
+export const File = connectToRedux(null, mapDisaptchToProps)(BaseFile)
