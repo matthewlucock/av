@@ -10,11 +10,14 @@ import { Pane } from '../components/pane'
 import { Media } from '../media'
 import { Controls } from './controls'
 
-const Wrapper = styled.div`
+const Wrapper = styled(Pane)`
+  display: flex;
   background: black;
 `
 
-const NativeVideo = Pane.withComponent('video')
+const NativeVideo = styled.video`
+  width: 100%;
+`
 
 interface DispatchProps {
   readonly randomizeBackgroundColor: () => void

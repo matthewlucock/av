@@ -28,6 +28,7 @@ const Wrapper = styled(Pane)`
   font-size: 15px;
   font-family: 'Muli', sans-serif;;
   color: white;
+  overflow: hidden;
   user-select: none;
   transition: background-color ${BACKGROUND_COLOR_TRANSITION_DURATION_MS}ms;
 `
