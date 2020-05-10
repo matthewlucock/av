@@ -1,11 +1,13 @@
 {
   "scripts": {
-    "lint:renderer": "eslint . --ext .js,.jsx,.ts,.tsx --ignore-pattern src/main",
-    "lint:main": "eslint src/main --ext .js,.jsx,.ts,.tsx --parser-options=project:\"./tsconfig.main.json\"",
-    "lint": "npm run lint:renderer && npm run lint:main",
-    "build:renderer": "webpack",
-    "build:main": "rm -rf lib && tsc -p tsconfig.main.json",
-    "build": "npm run build:renderer && npm run build:main",
+    "lint:base": "eslint --ext .js,.jsx,.ts,.tsx",
+    "lint:general": "npm run lint:base -- . --ignore-pattern src/av --ignore-pattern src/electron",
+    "lint:av": "npm run lint:base -- src/av -c .eslintrc.av.json",
+    "lint:electron": "npm run lint:base -- src/electron -c .eslintrc.electron.json",
+    "lint": "npm run lint:general && npm run lint:av && npm run lint:electron",
+    "build:av": "webpack",
+    "build:electron": "rm -rf lib && tsc -p tsconfig.electron.json",
+    "build": "npm run build:av && npm run build:electron",
     "start": "npm run build && electron lib"
   },
   "devDependencies": {

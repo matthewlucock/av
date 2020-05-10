@@ -1,4 +1,4 @@
-/// <reference path="../.d.ts" />
+/// <reference path="./.d.ts" />
 
 import * as React from 'react'
 import ReactDOM from 'react-dom'
@@ -12,7 +12,7 @@ import { store } from './store'
 import { App } from './app'
 
 import 'ress/dist/ress.min.css'
-import './index.css'
+import './static/index.css'
 
 // TODO: Clear store upon unmount?
 

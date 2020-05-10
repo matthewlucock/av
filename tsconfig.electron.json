@@ -1,6 +1,6 @@
 {
   "extends": "./tsconfig",
-  "include": ["src/.d.ts", "src/main"],
+  "include": ["src/electron"],
 
   "compilerOptions": {
     "module": "commonjs",

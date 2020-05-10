@@ -5,8 +5,6 @@
     "moduleResolution": "node",
     "strict": true,
     "target": "esnext",
-
-    "baseUrl": ".",
-    "paths": { "av/*": ["src/renderer/*"] }
+    "baseUrl": "."
   }
 }
