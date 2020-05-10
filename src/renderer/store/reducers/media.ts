@@ -13,7 +13,12 @@ export const reducer = (state: MediaState | void, action: Action): MediaState =>
 
   switch (action.type) {
     case 'media/setMedia':
-      return { ...state, path: action.data.path, type: action.data.type }
+      return {
+        ...state,
+        url: action.data.url,
+        type: action.data.type,
+        electronPath: action.data.electronPath
+      }
 
     case 'media/setAudioMetadata':
       return { ...state, audioMetadata: action.data }

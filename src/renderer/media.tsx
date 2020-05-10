@@ -8,7 +8,7 @@ import { EmitterContext } from './contexts'
 
 import { State } from './store/state'
 import {
-  getMediaPath,
+  getMediaUrl,
   getMediaPlaying,
   getMediaPlaybackRate,
   getMediaVolume,
@@ -19,7 +19,7 @@ import { Dispatch } from './store'
 import { mediaLoaded, setMediaPlaying, storeMediaPlaybackTime } from './store/actions'
 
 interface StateProps {
-  readonly path: string
+  readonly url: string
   readonly playing: boolean
   readonly playbackRate: number
   readonly volume: number
@@ -179,7 +179,7 @@ const BaseMedia: React.FC<Props> = props => {
   return (
     <props.nativeMedia
       ref={nativeMedia}
-      src={props.path}
+      src={props.url}
       onLoadedData={() => {
         if (!nativeMedia.current) return
         props.mediaLoaded(nativeMedia.current.duration)
@@ -199,7 +199,7 @@ const BaseMedia: React.FC<Props> = props => {
 }
 
 const mapStateToProps = createStructuredSelector<State, StateProps>({
-  path: getMediaPath,
+  url: getMediaUrl,
   playing: getMediaPlaying,
   playbackRate: getMediaPlaybackRate,
   volume: getMediaVolume,

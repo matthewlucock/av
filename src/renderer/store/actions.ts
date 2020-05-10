@@ -66,12 +66,13 @@ type SettingsAction = SetShowSettingsAction | SetSkipBackTimeAction | SetSkipFor
 
 interface SetMediaAction extends BaseAction<'media/setMedia'> {
   readonly data: {
-    readonly path: string
+    readonly url: string
     readonly type: string
+    readonly electronPath: string
   }
 }
-export const setMedia = (path: string, type: string): SetMediaAction => (
-  { type: 'media/setMedia', data: { path, type } }
+export const setMedia = (url: string, type: string, electronPath: string): SetMediaAction => (
+  { type: 'media/setMedia', data: { url, type, electronPath } }
 )
 
 interface SetAudioMetadataAction extends BaseAction<'media/setAudioMetadata'> {

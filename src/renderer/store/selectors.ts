@@ -36,7 +36,7 @@ export const getDraggingEnabled = createSelector<State, boolean, boolean>(
  * media
  */
 
-export const getMediaPath = (state: State): string => state.media.path
+export const getMediaUrl = (state: State): string => state.media.url
 
 export const getMediaType = (state: State): string => state.media.type
 export const getMediaIsAudio = createSelector<State, string, boolean>(
@@ -48,6 +48,7 @@ export const getMediaIsVideo = createSelector<State, string, boolean>(
   mediaType => mediaType === 'video'
 )
 
+export const getMediaElectronPath = (state: State): string => state.media.electronPath
 export const getAudioMetadata = (state: State): ProcessedAudioMetadata => state.media.audioMetadata
 export const getAudioHasMetadata = createSelector<State, ProcessedAudioMetadata, boolean>(
   getAudioMetadata,

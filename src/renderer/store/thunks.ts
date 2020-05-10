@@ -1,15 +1,16 @@
 import { ThunkAction as BaseThunkAction } from 'redux-thunk'
 
-import { ElectronFile } from 'av/globals'
 import { getBaseFileType } from 'av/util/get-base-file-type'
+import { isFileFromElectron } from 'av/util/is-file-from-electron'
 import { confirm, error } from 'av/dialog'
 import { retrieveAudioMetadata } from 'av/audio-metadata'
 
 import { State } from './state'
 import {
   getBackgroundHue,
-  getMediaPath,
+  getMediaUrl,
   getMediaType,
+  getMediaElectronPath,
   getMediaPlaying,
   getMediaPlaybackTime,
   getMediaFinished,
@@ -38,8 +39,8 @@ export const randomizeBackgroundColor = (): ThunkAction => (dispatch, getState) 
 
 export const openFile = (fileList: FileList): ThunkAction => async (dispatch, getState) => {
   const state = getState()
-  const currentPath = getMediaPath(state)
   const currentType = getMediaType(state)
+  const currentElectronPath = getMediaElectronPath(state)
 
   if (!fileList.length) return
 
@@ -48,30 +49,34 @@ export const openFile = (fileList: FileList): ThunkAction => async (dispatch, ge
     return
   }
 
-  const file = fileList[0] as ElectronFile
+  const file = fileList[0]
   const type = getBaseFileType(file)
+  let electronPath = ''
 
   if (type !== 'video' && type !== 'audio') {
     error('av can only open audio or videos.')
     return
   }
 
-  // Check if media is already open
-  if (file.path === currentPath && currentType === type) return
+  if (isFileFromElectron(file)) {
+    electronPath = file.path
+    // Check if media is already open
+    if (electronPath === currentElectronPath && currentType === type) return
+  }
 
   // TODO: Check the file format somehow
 
   await dispatch(stopMedia())
 
   // Only play new media if old media (if there was any) was stopped.
-  if (getMediaPath(getState())) return
+  if (getMediaUrl(getState())) return
 
   if (type === 'audio') {
     const metadata = await retrieveAudioMetadata(file)
     if (metadata) dispatch(setAudioMetadata(metadata))
   }
 
-  dispatch(setMedia(file.path, type))
+  dispatch(setMedia(URL.createObjectURL(file), type, electronPath))
 }
 
 export const playPauseMedia = (): ThunkAction => async (dispatch, getState) => {
@@ -82,6 +87,7 @@ export const playPauseMedia = (): ThunkAction => async (dispatch, getState) => {
 
 export const stopMedia = (): ThunkAction => async (dispatch, getState) => {
   const state = getState()
+  const url = getMediaUrl(state)
   const wasPlaying = getMediaPlaying(state)
   const playbackTime = getMediaPlaybackTime(state)
   const finished = getMediaFinished(state)
@@ -96,6 +102,7 @@ export const stopMedia = (): ThunkAction => async (dispatch, getState) => {
 
   if (await confirm(confirmText)) {
     dispatch(clearMedia())
+    URL.revokeObjectURL(url)
   } else {
     dispatch(setMediaPlaying(wasPlaying))
   }

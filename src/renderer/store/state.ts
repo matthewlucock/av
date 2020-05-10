@@ -26,8 +26,9 @@ export const DEFAULT_SETTINGS_STATE: SettingsState = {
 
 export type MediaMoveThrough = 'rewind' | 'fastForward' | ''
 export interface MediaState {
-  readonly path: string
+  readonly url: string
   readonly type: string
+  readonly electronPath: string
   readonly audioMetadata: ProcessedAudioMetadata
   readonly loaded: boolean
   readonly duration: number
@@ -39,8 +40,9 @@ export interface MediaState {
 }
 
 export const DEFAULT_MEDIA_STATE: MediaState = {
-  path: '',
+  url: '',
   type: '',
+  electronPath: '',
   audioMetadata: { artist: '', title: '', coverArtUrl: '', backgroundColor: '' },
   loaded: false,
   duration: 0,
