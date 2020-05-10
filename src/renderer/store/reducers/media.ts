@@ -5,8 +5,8 @@ import {
   MINIMUM_PLAYBACK_RATE,
   MAXIMUM_PLAYBACK_RATE,
   PLAYBACK_RATE_INCREMENT_VALUE
-} from '../../globals'
-import { boundValue } from '../../util/bound-value'
+} from 'av/globals'
+import { boundValue } from 'av/util/bound-value'
 
 export const reducer = (state: MediaState | void, action: Action): MediaState => {
   if (!state) state = DEFAULT_MEDIA_STATE

@@ -9,22 +9,22 @@ import {
   BACKGROUND_COLOR_TRANSITION_DURATION_MS,
   BACKGROUND_COLOR_TRANSITION_HUE_INCREMENT
 } from '../globals'
-import { ProcessedAudioMetadata } from '../audio-metadata'
+import { ProcessedAudioMetadata } from 'av/audio-metadata'
 
-import { State } from '../store/state'
+import { State } from 'av/store/state'
 import {
   getBackgroundHue,
   getAudioMetadata,
   getAudioHasMetadata,
   getAnimateAudioBackgroundColor
-} from '../store/selectors'
-import { Dispatch } from '../store'
-import { setBackgroundHue } from '../store/actions'
-import { randomizeBackgroundColor } from '../store/thunks'
+} from 'av/store/selectors'
+import { Dispatch } from 'av/store'
+import { setBackgroundHue } from 'av/store/actions'
+import { randomizeBackgroundColor } from 'av/store/thunks'
 
-import { Pane } from '../components/pane'
+import { Pane } from 'av/components/pane'
 
-import { Media } from '../media'
+import { Media } from 'av/media'
 import { Controls } from './controls'
 
 const Wrapper = styled(Pane)`

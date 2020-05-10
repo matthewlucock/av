@@ -4,6 +4,9 @@
     "esModuleInterop": true,
     "moduleResolution": "node",
     "strict": true,
-    "target": "esnext"
+    "target": "esnext",
+
+    "baseUrl": ".",
+    "paths": { "av/*": ["src/renderer/*"] }
   }
 }

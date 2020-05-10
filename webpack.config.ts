@@ -8,7 +8,10 @@ import HtmlWebpackPlugin from 'html-webpack-plugin'
 const config: webpack.Configuration = {
   entry: './src/renderer/index.tsx',
   output: { path: path.resolve(__dirname, 'dist') },
-  resolve: { extensions: ['.js', '.ts', '.tsx'] },
+  resolve: {
+    extensions: ['.js', '.ts', '.tsx'],
+    alias: { av: path.resolve(__dirname, 'src/renderer') }
+  },
   module: {
     rules: [
       {

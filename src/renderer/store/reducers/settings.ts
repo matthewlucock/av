@@ -1,8 +1,8 @@
 import { SettingsState, DEFAULT_SETTINGS_STATE } from '../state'
 import { Action } from '../actions'
 
-import { MINIMUM_SKIP_TIME, MAXIMUM_SKIP_TIME } from '../../globals'
-import { boundValue } from '../../util/bound-value'
+import { MINIMUM_SKIP_TIME, MAXIMUM_SKIP_TIME } from 'av/globals'
+import { boundValue } from 'av/util/bound-value'
 
 export const reducer = (state: SettingsState | void, action: Action): SettingsState => {
   if (!state) state = DEFAULT_SETTINGS_STATE

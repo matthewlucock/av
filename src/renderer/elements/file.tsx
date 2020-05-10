@@ -5,13 +5,13 @@ import { connect as connectToRedux } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMusic as fasMusic, faVideo as fasVideo } from '@fortawesome/free-solid-svg-icons'
 
-import { browseForFile } from '../util/browse-for-file'
+import { browseForFile } from 'av/util/browse-for-file'
 
-import { Dispatch } from '../store'
-import { openFile } from '../store/thunks'
+import { Dispatch } from 'av/store'
+import { openFile } from 'av/store/thunks'
 
-import { Pane } from '../components/pane'
-import { TranslucentButton } from '../components/translucent-button'
+import { Pane } from 'av/components/pane'
+import { TranslucentButton } from 'av/components/translucent-button'
 
 const Wrapper = styled(Pane)`
   font-size: 1.5em;

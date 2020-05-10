@@ -3,10 +3,10 @@ import { connect as connectToRedux } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStop as fasStop } from '@fortawesome/free-solid-svg-icons'
 
-import { Dispatch } from '../../store'
-import { stopMedia } from '../../store/thunks'
+import { Dispatch } from 'av/store'
+import { stopMedia } from 'av/store/thunks'
 
-import { RoundControlButton } from '../../components/control-button'
+import { RoundControlButton } from 'av/components/control-button'
 
 interface DispatchProps {
   readonly stop: () => void

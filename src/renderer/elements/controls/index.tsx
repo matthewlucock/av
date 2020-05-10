@@ -18,9 +18,9 @@ import {
   CONTROLS_BACKGROUND_COLOR,
   CONTROL_HEIGHT,
   CONTROL_ICON_OFFSET
-} from '../../globals'
+} from 'av/globals'
 
-import { State } from '../../store/state'
+import { State } from 'av/store/state'
 import {
   getSkipBackTime,
   getSkipForwardTime,
@@ -28,9 +28,9 @@ import {
   getMediaPlaybackTime,
   getMediaFinished,
   getAutoHideMediaControls
-} from '../../store/selectors'
-import { Dispatch } from '../../store'
-import { rewindMedia, fastForwardMedia } from '../../store/actions'
+} from 'av/store/selectors'
+import { Dispatch } from 'av/store'
+import { rewindMedia, fastForwardMedia } from 'av/store/actions'
 
 import { PlayPause } from './play-pause'
 import { SkipThrough } from './skip-through'

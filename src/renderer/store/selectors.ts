@@ -1,8 +1,8 @@
 import { createSelector } from 'reselect'
 import Color from 'color'
 
-import { BACKGROUND_COLOR_SATURATION, BACKGROUND_COLOR_LIGHTNESS } from '../globals'
-import { ProcessedAudioMetadata } from '../audio-metadata'
+import { BACKGROUND_COLOR_SATURATION, BACKGROUND_COLOR_LIGHTNESS } from 'av/globals'
+import { ProcessedAudioMetadata } from 'av/audio-metadata'
 
 import { State, MediaMoveThrough } from './state'
 

@@ -1,10 +1,10 @@
 import * as React from 'react'
 import { connect as connectToRedux } from 'react-redux'
 
-import { Dispatch } from '../../store'
-import { clearMediaMoveThrough } from '../../store/actions'
+import { Dispatch } from 'av/store'
+import { clearMediaMoveThrough } from 'av/store/actions'
 
-import { RoundControlButton } from '../../components/control-button'
+import { RoundControlButton } from 'av/components/control-button'
 
 interface DispatchProps {
   readonly clearMoveThrough: () => void

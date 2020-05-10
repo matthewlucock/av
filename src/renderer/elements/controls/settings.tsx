@@ -4,12 +4,12 @@ import { createStructuredSelector } from 'reselect'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCog as fasCog } from '@fortawesome/free-solid-svg-icons'
 
-import { State } from '../../store/state'
-import { getShowSettings } from '../../store/selectors'
-import { Dispatch } from '../../store'
-import { setShowSettings } from '../../store/actions'
+import { State } from 'av/store/state'
+import { getShowSettings } from 'av/store/selectors'
+import { Dispatch } from 'av/store'
+import { setShowSettings } from 'av/store/actions'
 
-import { RoundControlButton } from '../../components/control-button'
+import { RoundControlButton } from 'av/components/control-button'
 
 interface StateProps {
   readonly showSettings: boolean

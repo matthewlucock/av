@@ -1,9 +1,9 @@
 import { ThunkAction as BaseThunkAction } from 'redux-thunk'
 
-import { ElectronFile } from '../globals'
-import { getBaseFileType } from '../util/get-base-file-type'
-import { confirm, error } from '../dialog'
-import { retrieveAudioMetadata } from '../audio-metadata'
+import { ElectronFile } from 'av/globals'
+import { getBaseFileType } from 'av/util/get-base-file-type'
+import { confirm, error } from 'av/dialog'
+import { retrieveAudioMetadata } from 'av/audio-metadata'
 
 import { State } from './state'
 import {

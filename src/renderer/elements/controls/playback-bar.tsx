@@ -3,21 +3,21 @@ import styled from '@emotion/styled'
 import { connect as connectToRedux } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 
-import { CONTROL_HEIGHT, CONTROLS_FOREGROUND_COLOR, CONTROLS_BACKGROUND_COLOR } from '../../globals'
-import { EmitterContext } from '../../contexts'
+import { CONTROL_HEIGHT, CONTROLS_FOREGROUND_COLOR, CONTROLS_BACKGROUND_COLOR } from 'av/globals'
+import { EmitterContext } from 'av/contexts'
 
-import { State } from '../../store/state'
+import { State } from 'av/store/state'
 import {
   getMediaDuration,
   getMediaPlaying,
   getMediaPlaybackTime,
   getMediaFinished
-} from '../../store/selectors'
-import { Dispatch } from '../../store'
-import { setMediaPlaying, storeMediaPlaybackTime } from '../../store/actions'
+} from 'av/store/selectors'
+import { Dispatch } from 'av/store'
+import { setMediaPlaying, storeMediaPlaybackTime } from 'av/store/actions'
 
-import { Slider } from '../../components/slider'
-import { Timestamp } from '../../components/timestamp'
+import { Slider } from 'av/components/slider'
+import { Timestamp } from 'av/components/timestamp'
 
 const Wrapper = styled.div`
   display: flex;

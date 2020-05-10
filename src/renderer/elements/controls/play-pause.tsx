@@ -5,14 +5,14 @@ import { createStructuredSelector } from 'reselect'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay as fasPlay, faPause as fasPause } from '@fortawesome/free-solid-svg-icons'
 
-import { CONTROL_ICON_OFFSET } from '../../globals'
+import { CONTROL_ICON_OFFSET } from 'av/globals'
 
-import { State } from '../../store/state'
-import { getMediaPlaying } from '../../store/selectors'
-import { Dispatch } from '../../store'
-import { playPauseMedia } from '../../store/thunks'
+import { State } from 'av/store/state'
+import { getMediaPlaying } from 'av/store/selectors'
+import { Dispatch } from 'av/store'
+import { playPauseMedia } from 'av/store/thunks'
 
-import { RoundControlButton } from '../../components/control-button'
+import { RoundControlButton } from 'av/components/control-button'
 
 const PlayIcon = styled(FontAwesomeIcon)`
   position: relative;

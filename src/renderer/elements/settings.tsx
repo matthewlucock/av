@@ -3,27 +3,27 @@ import styled from '@emotion/styled'
 import { connect as connectToRedux } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 
-import { TRANSITION_DURATION, CONTROLS_BACKGROUND_COLOR } from '../globals'
+import { TRANSITION_DURATION, CONTROLS_BACKGROUND_COLOR } from 'av/globals'
 
-import { State } from '../store/state'
+import { State } from 'av/store/state'
 import {
   getShowSettings,
   getSkipBackTime,
   getSkipForwardTime,
   getMediaIsAudio,
   getMediaPlaying
-} from '../store/selectors'
-import { Dispatch } from '../store'
+} from 'av/store/selectors'
+import { Dispatch } from 'av/store'
 import {
   setShowSettings,
   setSkipBackTime,
   setSkipForwardTime,
   setMediaPlaying
-} from '../store/actions'
+} from 'av/store/actions'
 
-import { Pane } from '../components/pane'
-import { ControlButton } from '../components/control-button'
-import { NumericInput } from '../components/numeric-input'
+import { Pane } from 'av/components/pane'
+import { ControlButton } from 'av/components/control-button'
+import { NumericInput } from 'av/components/numeric-input'
 
 interface WrapperProps {
   readonly visible: boolean

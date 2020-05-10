@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 
-import { TRANSITION_DURATION } from '../globals'
+import { TRANSITION_DURATION } from 'av/globals'
 
 export const TranslucentButton = styled.div`
   display: inline-block;

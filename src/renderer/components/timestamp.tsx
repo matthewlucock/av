@@ -1,7 +1,7 @@
 import * as React from 'react'
 import styled from '@emotion/styled'
 
-import { getTimestamp } from '../util/time'
+import { getTimestamp } from 'av/util/time'
 
 const Wrapper = styled.div`
   font-size: .85em;

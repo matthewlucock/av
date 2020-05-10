@@ -2,12 +2,12 @@ import * as React from 'react'
 import styled from '@emotion/styled'
 import { connect as connectToRedux } from 'react-redux'
 
-import { Dispatch } from '../store'
-import { randomizeBackgroundColor } from '../store/thunks'
+import { Dispatch } from 'av/store'
+import { randomizeBackgroundColor } from 'av/store/thunks'
 
-import { Pane } from '../components/pane'
+import { Pane } from 'av/components/pane'
 
-import { Media } from '../media'
+import { Media } from 'av/media'
 import { Controls } from './controls'
 
 const Wrapper = styled(Pane)`

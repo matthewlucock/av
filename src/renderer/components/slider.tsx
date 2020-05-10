@@ -2,7 +2,7 @@ import * as React from 'react'
 import styled from '@emotion/styled'
 import useResizeObserver from 'use-resize-observer'
 
-import { CONTROLS_TINTED_FOREGROUND_COLOR, CONTROLS_SECONDARY_BACKGROUND_COLOR } from '../globals'
+import { CONTROLS_TINTED_FOREGROUND_COLOR, CONTROLS_SECONDARY_BACKGROUND_COLOR } from 'av/globals'
 
 const Wrapper = styled.div`
   width: 100%;

@@ -9,14 +9,14 @@ import {
   faPlus as fasPlus
 } from '@fortawesome/free-solid-svg-icons'
 
-import { PLAYBACK_RATE_INCREMENT_VALUE } from '../../globals'
+import { PLAYBACK_RATE_INCREMENT_VALUE } from 'av/globals'
 
-import { State } from '../../store/state'
-import { getMediaPlaybackRate } from '../../store/selectors'
-import { Dispatch } from '../../store'
-import { setMediaPlaybackRate } from '../../store/actions'
+import { State } from 'av/store/state'
+import { getMediaPlaybackRate } from 'av/store/selectors'
+import { Dispatch } from 'av/store'
+import { setMediaPlaybackRate } from 'av/store/actions'
 
-import { RoundControlButton } from '../../components/control-button'
+import { RoundControlButton } from 'av/components/control-button'
 
 const Wrapper = styled.div`
   display: flex;

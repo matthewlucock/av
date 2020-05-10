@@ -1,6 +1,6 @@
 import { Action as BaseAction } from 'redux'
 
-import { ProcessedAudioMetadata } from '../audio-metadata'
+import { ProcessedAudioMetadata } from 'av/audio-metadata'
 
 /**
  * general

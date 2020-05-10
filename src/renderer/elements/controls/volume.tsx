@@ -9,13 +9,13 @@ import {
   faVolumeUp as fasVolumeUp
 } from '@fortawesome/free-solid-svg-icons'
 
-import { State } from '../../store/state'
-import { getMediaVolume } from '../../store/selectors'
-import { Dispatch } from '../../store'
-import { setMediaVolume } from '../../store/actions'
+import { State } from 'av/store/state'
+import { getMediaVolume } from 'av/store/selectors'
+import { Dispatch } from 'av/store'
+import { setMediaVolume } from 'av/store/actions'
 
-import { Slider } from '../../components/slider'
-import { RoundControlButton } from '../../components/control-button'
+import { Slider } from 'av/components/slider'
+import { RoundControlButton } from 'av/components/control-button'
 
 const Wrapper = styled.div`
   display: flex;

@@ -2,14 +2,14 @@ import * as React from 'react'
 import { connect as connectToRedux } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 
-import { EmitterContext } from '../../contexts'
+import { EmitterContext } from 'av/contexts'
 
-import { State } from '../../store/state'
-import { getMediaPlaybackTime } from '../../store/selectors'
-import { Dispatch } from '../../store'
-import { storeMediaPlaybackTime } from '../../store/actions'
+import { State } from 'av/store/state'
+import { getMediaPlaybackTime } from 'av/store/selectors'
+import { Dispatch } from 'av/store'
+import { storeMediaPlaybackTime } from 'av/store/actions'
 
-import { RoundControlButton } from '../../components/control-button'
+import { RoundControlButton } from 'av/components/control-button'
 
 interface StateProps {
   readonly playbackTime: number

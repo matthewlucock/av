@@ -1,4 +1,4 @@
-import { ProcessedAudioMetadata } from '../audio-metadata'
+import { ProcessedAudioMetadata } from 'av/audio-metadata'
 
 export interface GeneralState {
   readonly appWidth: number
