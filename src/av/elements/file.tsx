@@ -1,4 +1,3 @@
-import electron from 'electron'
 import * as React from 'react'
 import styled from '@emotion/styled'
 import { connect as connectToRedux } from 'react-redux'
@@ -6,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMusic as fasMusic, faVideo as fasVideo } from '@fortawesome/free-solid-svg-icons'
 
 import { browseForFile } from 'av/util/browse-for-file'
+import { electronResizeWindow, electronSetWindowResizable } from 'av_env/electron-window'
 
 import { Dispatch } from 'av/store'
 import { openFile } from 'av/store/thunks'
@@ -40,12 +40,10 @@ type Props = DispatchProps
 
 const BaseFile: React.FC<Props> = props => {
   React.useEffect(() => {
-    electron.ipcRenderer.invoke('resize-window')
-    electron.ipcRenderer.invoke('set-window-resizable', false)
+    electronResizeWindow()
+    electronSetWindowResizable(false)
 
-    return () => {
-      electron.ipcRenderer.invoke('set-window-resizable', true)
-    }
+    return () => electronSetWindowResizable(true)
   }, [])
 
   return (
@@ -56,13 +54,13 @@ const BaseFile: React.FC<Props> = props => {
           <FontAwesomeIcon icon={fasVideo} />
         </MediaIcons>
 
-        <p>
+        <div>
           Drag a file here or{' '}
           <TranslucentButton onClick={() => browseForFile(props.openFile)}>
             browse
           </TranslucentButton>{' '}
           for one
-        </p>
+        </div>
       </Body>
     </Wrapper>
   )

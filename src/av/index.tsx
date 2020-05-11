@@ -12,7 +12,7 @@ import { store } from './store'
 import { App } from './app'
 
 import 'ress/dist/ress.min.css'
-import './static/index.css'
+import 'av_env/static/index.css'
 
 // TODO: Clear store upon unmount?
 

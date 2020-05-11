@@ -23,6 +23,7 @@ import { Audio } from './elements/audio'
 import { Video } from './elements/video'
 import { File } from './elements/file'
 import { Settings } from './elements/settings'
+import { Dialog } from './elements/dialog'
 
 const Wrapper = styled(Pane)`
   font-size: 15px;
@@ -85,6 +86,9 @@ const BaseApp: React.FC<Props> = props => {
     >
       {props.mediaIsAudio ? <Audio /> : (props.mediaIsVideo ? <Video /> : <File />)}
 
+      <Settings />
+      <Dialog />
+
       <DragOverlay
         dragging={dragging}
         onDragOver={event => event.preventDefault()}
@@ -97,8 +101,6 @@ const BaseApp: React.FC<Props> = props => {
           setDragging(false)
         }}
       />
-
-      <Settings />
     </Wrapper>
   )
 }

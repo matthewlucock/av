@@ -21,46 +21,15 @@ import {
   setMediaPlaying
 } from 'av/store/actions'
 
-import { Pane } from 'av/components/pane'
+import { Modal, ModalButtons } from 'av/components/modal'
 import { ControlButton } from 'av/components/control-button'
 import { NumericInput } from 'av/components/numeric-input'
-
-interface WrapperProps {
-  readonly visible: boolean
-}
-
-const Wrapper = styled(Pane)<WrapperProps>`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, .5);
-  visibility: ${props => props.visible ? 'visible' : 'hidden'};
-  opacity: ${props => props.visible ? 1 : 0};
-  backdrop-filter: blur(.2em);
-  transition-property: visibility, opacity;
-  transition-duration: ${TRANSITION_DURATION};
-`
-
-const Body = styled.div`
-  font-size: 1.5em;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 50%;
-  padding: 1em 2em;
-  border-radius: 1em;
-  background-color: ${CONTROLS_BACKGROUND_COLOR.string()};
-`
 
 const Row = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-`
-
-const CloseButton = styled(ControlButton)`
-  margin-top: .5em;
 `
 
 interface StateProps {
@@ -108,29 +77,29 @@ const BaseSettings: React.FC<Props> = props => {
    */
 
   return (
-    <Wrapper visible={props.showSettings}>
-      <Body>
-        <Row>
-          <span>Skip forward</span>
-          <NumericInput
-            value={props.skipForwardTime}
-            setValue={props.setSkipForwardTime}
-            suffix=' seconds'
-          />
-        </Row>
+    <Modal show={props.showSettings}>
+      <Row>
+        <span>Skip forward</span>
+        <NumericInput
+          value={props.skipForwardTime}
+          setValue={props.setSkipForwardTime}
+          suffix=' seconds'
+        />
+      </Row>
 
-        <Row>
-          <span>Skip back</span>
-          <NumericInput
-            value={Math.abs(props.skipBackTime)}
-            setValue={skipBackTime => props.setSkipBackTime(-skipBackTime)}
-            suffix=' seconds'
-          />
-        </Row>
+      <Row>
+        <span>Skip back</span>
+        <NumericInput
+          value={Math.abs(props.skipBackTime)}
+          setValue={skipBackTime => props.setSkipBackTime(-skipBackTime)}
+          suffix=' seconds'
+        />
+      </Row>
 
-        <CloseButton onClick={() => props.setShowSettings(false)}>Close</CloseButton>
-      </Body>
-    </Wrapper>
+      <ModalButtons>
+        <ControlButton onClick={() => props.setShowSettings(false)}>Close</ControlButton>
+      </ModalButtons>
+    </Modal>
   )
 }
 const mapStateToProps = createStructuredSelector<State, StateProps>({

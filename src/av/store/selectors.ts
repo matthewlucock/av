@@ -27,11 +27,6 @@ export const getShowSettings = (state: State): boolean => state.settings.show
 export const getSkipBackTime = (state: State): number => state.settings.skipBackTime
 export const getSkipForwardTime = (state: State): number => state.settings.skipForwardTime
 
-export const getDraggingEnabled = createSelector<State, boolean, boolean>(
-  getShowSettings,
-  showSettings => !showSettings
-)
-
 /**
  * media
  */
@@ -92,3 +87,21 @@ export const getMediaStopConfirmText = createSelector<State, string, string>(
   getMediaType,
   (mediaType) => `Are you sure you want to stop this ${mediaType}?`
 )
+
+/**
+ * Dialog
+ */
+
+export const getShowDialog = (state: State): boolean => state.dialog.show
+export const getDialogMessage = (state: State): string => state.dialog.message
+export const getDialogIsConfirm = (state: State): boolean => state.dialog.confirm
+export const getDialogResult = (state: State): void | boolean => state.dialog.result
+
+/**
+ * Other
+ */
+
+ export const getDraggingEnabled = createSelector<State, boolean, boolean>(
+   [getShowSettings, getShowDialog],
+   (showSettings, showDialog) => !(showSettings || showDialog)
+ )

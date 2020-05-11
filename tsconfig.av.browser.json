@@ -1,0 +1,7 @@
+{
+  "extends": "./tsconfig.av.base",
+
+  "compilerOptions": {
+    "paths": { "av_env": ["src/av/env/browser"] }
+  }
+}

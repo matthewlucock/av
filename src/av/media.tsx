@@ -1,9 +1,9 @@
-import electron from 'electron'
 import * as React from 'react'
 import { connect as connectToRedux } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 
 import { MOVE_THROUGH_RATE } from './globals'
+import { electronResizeWindow } from 'av_env/electron-window'
 import { EmitterContext } from './contexts'
 
 import { State } from './store/state'
@@ -185,13 +185,9 @@ const BaseMedia: React.FC<Props> = props => {
         props.mediaLoaded(nativeMedia.current.duration)
 
         if (nativeMedia.current instanceof HTMLVideoElement) {
-          electron.ipcRenderer.invoke(
-            'resize-window',
-            nativeMedia.current.videoWidth,
-            nativeMedia.current.videoHeight
-          )
+          electronResizeWindow(nativeMedia.current.videoWidth, nativeMedia.current.videoHeight)
         } else {
-          electron.ipcRenderer.invoke('resize-window')
+          electronResizeWindow()
         }
       }}
     />

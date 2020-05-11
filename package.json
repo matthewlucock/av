@@ -2,13 +2,17 @@
   "scripts": {
     "lint:base": "eslint --ext .js,.jsx,.ts,.tsx",
     "lint:general": "npm run lint:base -- . --ignore-pattern src/av --ignore-pattern src/electron",
-    "lint:av": "npm run lint:base -- src/av -c .eslintrc.av.json",
-    "lint:electron": "npm run lint:base -- src/electron -c .eslintrc.electron.json",
-    "lint": "npm run lint:general && npm run lint:av && npm run lint:electron",
-    "build:av": "webpack",
-    "build:electron": "rm -rf lib && tsc -p tsconfig.electron.json",
-    "build": "npm run build:av && npm run build:electron",
-    "start": "npm run build && electron lib"
+    "lint:av:browser": "npm run lint:base -- src/av -c .eslintrc.av.browser.json",
+    "lint:av:electron": "npm run lint:base -- src/av -c .eslintrc.av.electron.json",
+    "lint:av": "npm run lint:av:browser && npm run lint:av:electron",
+    "lint:node": "npm run lint:base -- src/electron -c .eslintrc.node.json",
+    "lint": "npm run lint:general && npm run lint:av && npm run lint:node",
+    "build:browser": "webpack --config webpack.config.browser.ts",
+    "build:electron:av": "webpack --config webpack.config.electron.ts",
+    "build:electron:node": "rm -rf lib && tsc -p tsconfig.node.json",
+    "build:electron": "npm run build:electron:av && npm run build:electron:node",
+    "start:browser": "webpack-dev-server --config webpack.config.browser.ts --open",
+    "start:electron": "npm run build:electron && electron lib"
   },
   "devDependencies": {
     "@types/color": "^3.0.1",
@@ -17,6 +21,7 @@
     "@types/react-dom": "^16.9.7",
     "@types/react-redux": "^7.1.7",
     "@types/webpack": "^4.41.12",
+    "@types/webpack-merge": "^4.1.5",
     "@typescript-eslint/eslint-plugin": "^2.30.0",
     "@typescript-eslint/parser": "^2.30.0",
     "clean-webpack-plugin": "^3.0.0",
@@ -36,7 +41,9 @@
     "ts-node": "^8.10.1",
     "typescript": "^3.8.3",
     "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.11"
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.11.0",
+    "webpack-merge": "^4.2.2"
   },
   "dependencies": {
     "@emotion/core": "^10.0.28",
