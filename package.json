@@ -12,7 +12,8 @@
     "build:electron:node": "rm -rf lib && tsc -p tsconfig.node.json",
     "build:electron": "npm run build:electron:av && npm run build:electron:node",
     "start:browser": "webpack-dev-server --config webpack.config.browser.ts --open",
-    "start:electron": "npm run build:electron && electron lib"
+    "start:electron": "npm run build:electron && electron lib",
+    "publish": "npm run build:browser && gh-pages -d dist"
   },
   "devDependencies": {
     "@types/color": "^3.0.1",
@@ -35,6 +36,7 @@
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-standard": "^4.0.1",
     "file-loader": "^6.0.0",
+    "gh-pages": "^2.2.0",
     "html-webpack-plugin": "^4.3.0",
     "mini-css-extract-plugin": "^0.9.0",
     "ts-loader": "^7.0.2",
