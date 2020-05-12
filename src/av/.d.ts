@@ -12,6 +12,10 @@ declare module 'parse-audio-metadata' {
 }
 
 declare module 'colorthief' {
-  const x: any
-  export default x
+  class ColorThief {
+    constructor ()
+    getColor (image: HTMLImageElement, quality?: number): number[]
+  }
+
+  export default ColorThief
 }
