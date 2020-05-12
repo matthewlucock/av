@@ -3,11 +3,7 @@ import styled from '@emotion/styled'
 import { connect as connectToRedux } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  faTimes as fasTimes,
-  faMinus as fasMinus,
-  faPlus as fasPlus
-} from '@fortawesome/free-solid-svg-icons'
+import { faTimes, faMinus, faPlus } from '@fortawesome/free-solid-svg-icons'
 
 import { PLAYBACK_RATE_INCREMENT_VALUE } from 'av/globals'
 
@@ -55,16 +51,16 @@ const BasePlaybackRate: React.FC<Props> = props => {
   return (
     <Wrapper>
       <RoundControlButton onClick={decrement}>
-        <FontAwesomeIcon icon={fasMinus} />
+        <FontAwesomeIcon icon={faMinus} />
       </RoundControlButton>
 
       <Rate style={{ width: `${PLAYBACK_RATE_INCREMENT_VALUE.toString().length + 1}ch` }}>
         {props.playbackRate}
-        <TimesIcon icon={fasTimes} />
+        <TimesIcon icon={faTimes} />
       </Rate>
 
       <RoundControlButton onClick={increment}>
-        <FontAwesomeIcon icon={fasPlus} />
+        <FontAwesomeIcon icon={faPlus} />
       </RoundControlButton>
     </Wrapper>
   )

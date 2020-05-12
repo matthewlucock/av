@@ -1,7 +1,7 @@
 import * as React from 'react'
 import styled from '@emotion/styled'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMinus as fasMinus, faPlus as fasPlus } from '@fortawesome/free-solid-svg-icons'
+import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons'
 
 import { RoundControlButton } from './control-button'
 
@@ -29,13 +29,13 @@ export const NumericInput: React.FC<Props> = props => {
   return (
     <Wrapper>
       <RoundControlButton onClick={() => props.setValue(props.value - incrementModifier)}>
-        <FontAwesomeIcon icon={fasMinus} />
+        <FontAwesomeIcon icon={faMinus} />
       </RoundControlButton>
 
       <Value>{props.value}{props.suffix}</Value>
 
       <RoundControlButton onClick={() => props.setValue(props.value + incrementModifier)}>
-        <FontAwesomeIcon icon={fasPlus} />
+        <FontAwesomeIcon icon={faPlus} />
       </RoundControlButton>
     </Wrapper>
   )

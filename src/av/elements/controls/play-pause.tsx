@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 import { connect as connectToRedux } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlay as fasPlay, faPause as fasPause } from '@fortawesome/free-solid-svg-icons'
+import { faPlay, faPause } from '@fortawesome/free-solid-svg-icons'
 
 import { CONTROL_ICON_OFFSET } from 'av/globals'
 
@@ -56,7 +56,7 @@ const BasePlayPause: React.FC<Props> = props => {
 
   return (
     <RoundControlButton primary onClick={props.playPause}>
-      {props.playing ? <FontAwesomeIcon icon={fasPause} /> : <PlayIcon icon={fasPlay} />}
+      {props.playing ? <FontAwesomeIcon icon={faPause} /> : <PlayIcon icon={faPlay} />}
     </RoundControlButton>
   )
 }

@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 import { connect as connectToRedux } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMusic as fasMusic } from '@fortawesome/free-solid-svg-icons'
+import { faMusic } from '@fortawesome/free-solid-svg-icons'
 
 import {
   BACKGROUND_COLOR_TRANSITION_DURATION_MS,
@@ -133,7 +133,7 @@ const BaseAudio: React.FC<Props> = props => {
             {props.metadata.title && <p>{props.metadata.title}</p>}
           </Metadata>
         )
-        : <Icon icon={fasMusic} />
+        : <Icon icon={faMusic} />
       }
 
       <Media nativeMedia={NativeAudio} />

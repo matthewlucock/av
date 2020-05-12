@@ -3,11 +3,7 @@ import styled from '@emotion/styled'
 import { connect as connectToRedux } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  faVolumeMute as fasVolumeMute,
-  faVolumeDown as fasVolumeDown,
-  faVolumeUp as fasVolumeUp
-} from '@fortawesome/free-solid-svg-icons'
+import { faVolumeMute, faVolumeDown, faVolumeUp } from '@fortawesome/free-solid-svg-icons'
 
 import { State } from 'av/store/state'
 import { getMediaVolume } from 'av/store/selectors'
@@ -42,15 +38,15 @@ const BaseVolume: React.FC<Props> = props => (
   <Wrapper>
     <RoundControlButton onClick={() => props.setVolume(0)} disabled={props.volume === 0}>
       {(props.volume
-        ? <FontAwesomeIcon icon={fasVolumeDown} />
-        : <MutedIcon icon={fasVolumeMute} />
+        ? <FontAwesomeIcon icon={faVolumeDown} />
+        : <MutedIcon icon={faVolumeMute} />
       )}
     </RoundControlButton>
 
     <Slider value={props.volume} maximum={1} changeValue={props.setVolume} />
 
     <RoundControlButton onClick={() => props.setVolume(1)}>
-      <FontAwesomeIcon icon={fasVolumeUp} />
+      <FontAwesomeIcon icon={faVolumeUp} />
     </RoundControlButton>
   </Wrapper>
 )

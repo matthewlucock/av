@@ -4,12 +4,12 @@ import { connect as connectToRedux } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-  faUndo as fasUndo,
-  faRedo as fasRedo,
-  faBackward as fasBackward,
-  faForward as fasForward,
-  faCog as fasCog,
-  faStop as fasStop
+  faUndo,
+  faRedo,
+  faBackward,
+  faForward,
+  faCog,
+  faStop
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -199,21 +199,21 @@ const BaseControls: React.FC<Props> = props => {
       >
         <Row>
           <SkipThrough time={props.skipBackTime} disabled={!props.playbackTime}>
-            <FontAwesomeIcon icon={fasUndo} />
+            <FontAwesomeIcon icon={faUndo} />
           </SkipThrough>
 
           <MoveThrough action={props.rewind} disabled={!props.playbackTime}>
-            <RewindIcon icon={fasBackward} />
+            <RewindIcon icon={faBackward} />
           </MoveThrough>
 
           <PlayPause />
 
           <MoveThrough action={props.fastForward} disabled={props.finished}>
-            <FastForwardIcon icon={fasForward} />
+            <FastForwardIcon icon={faForward} />
           </MoveThrough>
 
           <SkipThrough time={props.skipForwardTime} disabled={props.finished}>
-            <FontAwesomeIcon icon={fasRedo} />
+            <FontAwesomeIcon icon={faRedo} />
           </SkipThrough>
         </Row>
 
@@ -224,14 +224,14 @@ const BaseControls: React.FC<Props> = props => {
             active={props.showSettings}
             onClick={() => props.setShowSettings(true)}
           >
-            <FontAwesomeIcon icon={fasCog} />
+            <FontAwesomeIcon icon={faCog} />
           </RoundControlButton>
 
           <Volume />
           <PlaybackRate />
 
           <RoundControlButton onClick={props.stop}>
-            <FontAwesomeIcon icon={fasStop} />
+            <FontAwesomeIcon icon={faStop} />
           </RoundControlButton>
         </SeparatedRow>
       </Body>

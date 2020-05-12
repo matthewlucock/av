@@ -2,7 +2,7 @@ import * as React from 'react'
 import styled from '@emotion/styled'
 import { connect as connectToRedux } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMusic as fasMusic, faVideo as fasVideo } from '@fortawesome/free-solid-svg-icons'
+import { faMusic, faVideo } from '@fortawesome/free-solid-svg-icons'
 
 import { browseForFile } from 'av/util/browse-for-file'
 import { electronResizeWindow, electronSetWindowResizable } from 'av_env/electron-window'
@@ -50,8 +50,8 @@ const BaseFile: React.FC<Props> = props => {
     <Wrapper>
       <Body>
         <MediaIcons>
-          <FontAwesomeIcon icon={fasMusic} />
-          <FontAwesomeIcon icon={fasVideo} />
+          <FontAwesomeIcon icon={faMusic} />
+          <FontAwesomeIcon icon={faVideo} />
         </MediaIcons>
 
         <div>
