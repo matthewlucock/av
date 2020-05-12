@@ -1,11 +1,9 @@
 {
   "scripts": {
     "lint:base": "eslint --ext .js,.jsx,.ts,.tsx",
-    "lint:general": "npm run lint:base -- . --ignore-pattern src/av --ignore-pattern src/electron",
-    "lint:av:browser": "npm run lint:base -- src/av -c .eslintrc.av.browser.json",
-    "lint:av:electron": "npm run lint:base -- src/av -c .eslintrc.av.electron.json",
-    "lint:av": "npm run lint:av:browser && npm run lint:av:electron",
-    "lint:node": "npm run lint:base -- src/electron -c .eslintrc.node.json",
+    "lint:general": "npm run lint:base -- . --ignore-pattern src/av --ignore-pattern src/node",
+    "lint:av": "npm run lint:base -- src/av -c .eslintrc.av.json",
+    "lint:node": "npm run lint:base -- src/node -c .eslintrc.node.json",
     "lint": "npm run lint:general && npm run lint:av && npm run lint:node",
     "build:browser": "webpack --config webpack.config.browser.ts",
     "build:electron:av": "webpack --config webpack.config.electron.ts",
@@ -39,6 +37,7 @@
     "gh-pages": "^2.2.0",
     "html-webpack-plugin": "^4.3.0",
     "mini-css-extract-plugin": "^0.9.0",
+    "null-loader": "^4.0.0",
     "ts-loader": "^7.0.2",
     "ts-node": "^8.10.1",
     "typescript": "^3.8.3",

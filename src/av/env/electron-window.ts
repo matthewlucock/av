@@ -1,9 +1,9 @@
 import electron from 'electron'
 
 export const electronResizeWindow = (width?: number, height?: number): void => {
-  electron.ipcRenderer.invoke('resize-window', width, height)
+  if (__ELECTRON__) electron.ipcRenderer.invoke('resize-window', width, height)
 }
 
 export const electronSetWindowResizable = (resizable: boolean): void => {
-  electron.ipcRenderer.invoke('set-window-resizable', resizable)
+  if (__ELECTRON__) electron.ipcRenderer.invoke('set-window-resizable', resizable)
 }

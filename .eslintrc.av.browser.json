@@ -1,4 +1,0 @@
-{
-  "extends": [".eslintrc.av.base"],
-  "parserOptions": { "project": "./tsconfig.av.browser.json" }
-}

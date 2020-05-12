@@ -1,6 +1,6 @@
 {
   "extends": "./tsconfig",
-  "include": ["src/electron"],
+  "include": ["src/node"],
 
   "compilerOptions": {
     "module": "commonjs",

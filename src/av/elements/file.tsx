@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMusic, faVideo } from '@fortawesome/free-solid-svg-icons'
 
 import { browseForFile } from 'av/util/browse-for-file'
-import { electronResizeWindow, electronSetWindowResizable } from 'av_env/electron-window'
+import { electronResizeWindow, electronSetWindowResizable } from 'av/env/electron-window'
 
 import { Dispatch } from 'av/store'
 import { openFile } from 'av/store/thunks'

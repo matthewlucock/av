@@ -1,20 +1,21 @@
 import path from 'path'
 
+import webpack from 'webpack'
 import merge from 'webpack-merge'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 
 import base from './webpack.config.base'
 
-const AV_ENV = 'src/av/env/electron'
+const AV_STATIC = 'src/av/static/electron'
 
 export default merge.smart(base, {
-  resolve: { alias: { av_env: path.resolve(__dirname, AV_ENV) } },
+  resolve: { alias: { av_static: path.resolve(__dirname, AV_STATIC) } },
 
   module: {
     rules: [
       {
         test: /\.tsx?$/,
-        use: [{ loader: 'ts-loader', options: { configFile: 'tsconfig.av.electron.json' } }]
+        use: [{ loader: 'ts-loader', options: { configFile: 'tsconfig.av.json' } }]
       },
       { test: /\.woff$/, use: 'file-loader' }
     ]
@@ -23,6 +24,7 @@ export default merge.smart(base, {
   externals: { electron: 'commonjs electron' },
 
   plugins: [
-    new HtmlWebpackPlugin({ template: path.join(AV_ENV, 'static/index.html') })
+    new webpack.DefinePlugin({ __ELECTRON__: true }),
+    new HtmlWebpackPlugin({ template: path.join(AV_STATIC, 'index.html') })
   ]
 })

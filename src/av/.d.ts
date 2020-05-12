@@ -1,3 +1,5 @@
+declare const __ELECTRON__: boolean
+
 declare interface RawAudioMetadata {
   readonly artist?: string
   readonly title?: string

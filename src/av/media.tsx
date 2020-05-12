@@ -3,7 +3,7 @@ import { connect as connectToRedux } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 
 import { MOVE_THROUGH_RATE } from './globals'
-import { electronResizeWindow } from 'av_env/electron-window'
+import { electronResizeWindow } from 'av/env/electron-window'
 import { EmitterContext } from './contexts'
 
 import { State } from './store/state'
