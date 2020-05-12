@@ -7,7 +7,9 @@ import {
   faUndo as fasUndo,
   faRedo as fasRedo,
   faBackward as fasBackward,
-  faForward as fasForward
+  faForward as fasForward,
+  faCog as fasCog,
+  faStop as fasStop
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -22,6 +24,7 @@ import {
 
 import { State } from 'av/store/state'
 import {
+  getShowSettings,
   getSkipBackTime,
   getSkipForwardTime,
   getMediaPlaying,
@@ -30,16 +33,16 @@ import {
   getAutoHideMediaControls
 } from 'av/store/selectors'
 import { Dispatch } from 'av/store'
-import { rewindMedia, fastForwardMedia } from 'av/store/actions'
+import { setShowSettings, rewindMedia, fastForwardMedia } from 'av/store/actions'
+import { stopMedia } from 'av/store/thunks'
 
+import { RoundControlButton } from 'av/components/control-button'
 import { PlayPause } from './play-pause'
 import { SkipThrough } from './skip-through'
 import { MoveThrough } from './move-through'
 import { PlaybackBar } from './playback-bar'
-import { SettingsControl } from './settings'
 import { Volume } from './volume'
 import { PlaybackRate } from './playback-rate'
-import { Stop } from './stop'
 
 const BOTTOM_OFFSET = '2vh'
 const COLLAPSED_TRANSLATION_LENGTH = `calc(${CONTROL_HEIGHT} + ${BOTTOM_OFFSET})`
@@ -105,6 +108,7 @@ const FastForwardIcon = styled(FontAwesomeIcon)`
 `
 
 interface StateProps {
+  readonly showSettings: boolean
   readonly skipBackTime: number
   readonly skipForwardTime: number
   readonly playing: boolean
@@ -114,8 +118,10 @@ interface StateProps {
 }
 
 interface DispatchProps {
+  readonly setShowSettings: (showSettings: boolean) => void
   readonly rewind: () => void
   readonly fastForward: () => void
+  readonly stop: () => void
 }
 
 type Props = StateProps & DispatchProps
@@ -214,10 +220,19 @@ const BaseControls: React.FC<Props> = props => {
         <PlaybackBar />
 
         <SeparatedRow>
-          <SettingsControl />
+          <RoundControlButton
+            active={props.showSettings}
+            onClick={() => props.setShowSettings(true)}
+          >
+            <FontAwesomeIcon icon={fasCog} />
+          </RoundControlButton>
+
           <Volume />
           <PlaybackRate />
-          <Stop />
+
+          <RoundControlButton onClick={props.stop}>
+            <FontAwesomeIcon icon={fasStop} />
+          </RoundControlButton>
         </SeparatedRow>
       </Body>
     </Wrapper>
@@ -225,6 +240,7 @@ const BaseControls: React.FC<Props> = props => {
 }
 
 const mapStateToProps = createStructuredSelector<State, StateProps>({
+  showSettings: getShowSettings,
   skipBackTime: getSkipBackTime,
   skipForwardTime: getSkipForwardTime,
   playing: getMediaPlaying,
@@ -235,11 +251,17 @@ const mapStateToProps = createStructuredSelector<State, StateProps>({
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => (
   {
+    setShowSettings: (showSettings: boolean): void => {
+      dispatch(setShowSettings(showSettings))
+    },
     rewind: () => {
       dispatch(rewindMedia())
     },
     fastForward: () => {
       dispatch(fastForwardMedia())
+    },
+    stop: (): void => {
+      dispatch(stopMedia())
     }
   }
 )
