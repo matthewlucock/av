@@ -16,14 +16,9 @@ import {
   getMediaFinished,
   getMediaStopConfirmText
 } from './selectors'
-import {
-  Action,
-  setBackgroundHue,
-  setMedia,
-  setAudioMetadata,
-  setMediaPlaying,
-  clearMedia
-} from './actions'
+import { Action } from './actions'
+import { setBackgroundHue } from './actions/general'
+import { setMedia, setAudioMetadata, setMediaPlaying, clearMedia } from './actions/media'
 
 type ThunkAction = BaseThunkAction<void, State, void, Action>
 

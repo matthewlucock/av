@@ -33,7 +33,8 @@ import {
   getAutoHideMediaControls
 } from 'av/store/selectors'
 import { Dispatch } from 'av/store'
-import { setShowSettings, rewindMedia, fastForwardMedia } from 'av/store/actions'
+import { setShowSettings } from 'av/store/actions/settings'
+import { rewindMedia, fastForwardMedia } from 'av/store/actions/media'
 import { stopMedia } from 'av/store/thunks'
 
 import { RoundControlButton } from 'av/components/control-button'

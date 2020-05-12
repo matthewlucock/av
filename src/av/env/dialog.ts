@@ -2,7 +2,7 @@ import electron from 'electron'
 
 import { store } from 'av/store'
 import { getDialogResult } from 'av/store/selectors'
-import { setDialog } from 'av/store/actions'
+import { setDialog } from 'av/store/actions/dialog'
 
 export const confirm = async (question: string): Promise<boolean> => {
   if (__ELECTRON__) {

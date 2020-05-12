@@ -19,7 +19,7 @@ import {
   getAnimateAudioBackgroundColor
 } from 'av/store/selectors'
 import { Dispatch } from 'av/store'
-import { setBackgroundHue } from 'av/store/actions'
+import { setBackgroundHue } from 'av/store/actions/general'
 import { randomizeBackgroundColor } from 'av/store/thunks'
 
 import { Pane } from 'av/components/pane'

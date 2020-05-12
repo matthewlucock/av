@@ -12,12 +12,8 @@ import {
   getMediaPlaying
 } from 'av/store/selectors'
 import { Dispatch } from 'av/store'
-import {
-  setShowSettings,
-  setSkipBackTime,
-  setSkipForwardTime,
-  setMediaPlaying
-} from 'av/store/actions'
+import { setShowSettings, setSkipBackTime, setSkipForwardTime } from 'av/store/actions/settings'
+import { setMediaPlaying } from 'av/store/actions/media'
 
 import { Modal, ModalButtons } from 'av/components/modal'
 import { ControlButton } from 'av/components/control-button'

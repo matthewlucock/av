@@ -10,7 +10,7 @@ import { PLAYBACK_RATE_INCREMENT_VALUE } from 'av/globals'
 import { State } from 'av/store/state'
 import { getMediaPlaybackRate } from 'av/store/selectors'
 import { Dispatch } from 'av/store'
-import { setMediaPlaybackRate } from 'av/store/actions'
+import { setMediaPlaybackRate } from 'av/store/actions/media'
 
 import { RoundControlButton } from 'av/components/control-button'
 

@@ -14,7 +14,7 @@ import {
   getMediaIsVideo
 } from './store/selectors'
 import { Dispatch } from './store'
-import { setAppSize } from './store/actions'
+import { setAppSize } from './store/actions/general'
 import { randomizeBackgroundColor, openFile } from './store/thunks'
 
 import { Pane } from './components/pane'

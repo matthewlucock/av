@@ -14,7 +14,7 @@ import {
   getMediaFinished
 } from 'av/store/selectors'
 import { Dispatch } from 'av/store'
-import { setMediaPlaying, storeMediaPlaybackTime } from 'av/store/actions'
+import { setMediaPlaying, storeMediaPlaybackTime } from 'av/store/actions/media'
 
 import { Slider } from 'av/components/slider'
 import { Timestamp } from 'av/components/timestamp'

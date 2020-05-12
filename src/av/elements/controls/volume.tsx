@@ -8,7 +8,7 @@ import { faVolumeMute, faVolumeDown, faVolumeUp } from '@fortawesome/free-solid-
 import { State } from 'av/store/state'
 import { getMediaVolume } from 'av/store/selectors'
 import { Dispatch } from 'av/store'
-import { setMediaVolume } from 'av/store/actions'
+import { setMediaVolume } from 'av/store/actions/media'
 
 import { Slider } from 'av/components/slider'
 import { RoundControlButton } from 'av/components/control-button'

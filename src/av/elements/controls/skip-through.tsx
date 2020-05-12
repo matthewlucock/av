@@ -7,7 +7,7 @@ import { EmitterContext } from 'av/contexts'
 import { State } from 'av/store/state'
 import { getMediaPlaybackTime } from 'av/store/selectors'
 import { Dispatch } from 'av/store'
-import { storeMediaPlaybackTime } from 'av/store/actions'
+import { storeMediaPlaybackTime } from 'av/store/actions/media'
 
 import { RoundControlButton } from 'av/components/control-button'
 

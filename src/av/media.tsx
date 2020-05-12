@@ -16,7 +16,7 @@ import {
   getMediaFastForwarding
 } from './store/selectors'
 import { Dispatch } from './store'
-import { mediaLoaded, setMediaPlaying, storeMediaPlaybackTime } from './store/actions'
+import { mediaLoaded, setMediaPlaying, storeMediaPlaybackTime } from './store/actions/media'
 
 interface StateProps {
   readonly url: string

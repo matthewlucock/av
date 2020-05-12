@@ -6,7 +6,7 @@ import { createStructuredSelector } from 'reselect'
 import { State } from 'av/store/state'
 import { getShowDialog, getDialogMessage, getDialogIsConfirm } from 'av/store/selectors'
 import { Dispatch } from 'av/store'
-import { setShowDialog, setDialogResult } from 'av/store/actions'
+import { setShowDialog, setDialogResult } from 'av/store/actions/dialog'
 
 import { Modal, ModalButtons } from 'av/components/modal'
 import { ControlButton } from 'av/components/control-button'

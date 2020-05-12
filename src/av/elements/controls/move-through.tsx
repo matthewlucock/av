@@ -2,7 +2,7 @@ import * as React from 'react'
 import { connect as connectToRedux } from 'react-redux'
 
 import { Dispatch } from 'av/store'
-import { clearMediaMoveThrough } from 'av/store/actions'
+import { clearMediaMoveThrough } from 'av/store/actions/media'
 
 import { RoundControlButton } from 'av/components/control-button'
 
