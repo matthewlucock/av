@@ -83,6 +83,7 @@ const BaseApp: React.FC<Props> = props => {
       ref={wrapper}
       style={{ backgroundColor: props.backgroundColor }}
       onDragEnter={() => setDragging(props.draggingEnabled)}
+      onContextMenu={event => event.preventDefault()}
     >
       {props.mediaIsAudio ? <Audio /> : (props.mediaIsVideo ? <Video /> : <File />)}
 
