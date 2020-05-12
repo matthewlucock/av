@@ -11,7 +11,7 @@
     "build:electron:av": "webpack --config webpack.config.electron.ts",
     "build:electron:node": "rm -rf lib && tsc -p tsconfig.node.json",
     "build:electron": "npm run build:electron:av && npm run build:electron:node",
-    "start:browser": "webpack-dev-server --config webpack.config.browser.ts --open",
+    "start:browser": "webpack-dev-server --config webpack.config.browser.ts",
     "start:electron": "npm run build:electron && electron lib",
     "publish": "npm run build:browser && gh-pages -d dist"
   },
