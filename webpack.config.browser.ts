@@ -14,10 +14,6 @@ export default merge.smart(base, {
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
-        use: [{ loader: 'ts-loader', options: { configFile: path.resolve('tsconfig.av.json') } }]
-      },
-      {
         test: path.resolve('node_modules/electron/index.js'),
         use: 'null-loader'
       }
