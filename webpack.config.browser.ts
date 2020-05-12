@@ -6,23 +6,26 @@ import HtmlWebpackPlugin from 'html-webpack-plugin'
 
 import base from './webpack.config.base'
 
-const AV_STATIC = 'src/av/static/browser'
+const AV_STATIC = path.resolve('src/av/static/browser')
 
 export default merge.smart(base, {
-  resolve: { alias: { av_static: path.resolve(__dirname, AV_STATIC) } },
+  resolve: { alias: { av_static: AV_STATIC } },
 
   module: {
     rules: [
       {
         test: /\.tsx?$/,
-        use: [{ loader: 'ts-loader', options: { configFile: 'tsconfig.av.json' } }]
+        use: [{ loader: 'ts-loader', options: { configFile: path.resolve('tsconfig.av.json') } }]
       },
-      { test: path.resolve(__dirname, 'node_modules/electron/index.js'), use: 'null-loader' }
+      {
+        test: path.resolve('node_modules/electron/index.js'),
+        use: 'null-loader'
+      }
     ]
   },
 
   plugins: [
     new webpack.DefinePlugin({ __ELECTRON__: false }),
-    new HtmlWebpackPlugin({ template: path.join(AV_STATIC, 'index.html') })
+    new HtmlWebpackPlugin({ template: path.resolve(AV_STATIC, 'index.html') })
   ]
 })
