@@ -4,9 +4,13 @@ import { connect as connectToRedux } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 
 import { State } from 'av/store/state'
-import { getShowDialog, getDialogMessage, getDialogIsConfirm } from 'av/store/selectors'
+import {
+  getShowBrowserDialog,
+  getBrowserDialogMessage,
+  getBrowserDialogIsConfirm
+} from 'av/store/selectors'
 import { Dispatch } from 'av/store'
-import { setShowDialog, setDialogResult } from 'av/store/actions/dialog'
+import { setShowBrowserDialog, setBrowserDialogResult } from 'av/store/actions/browser-dialog'
 
 import { Modal, ModalButtons } from 'av/components/modal'
 import { ControlButton } from 'av/components/control-button'
@@ -31,7 +35,7 @@ interface DispatchProps {
 
 type Props = StateProps & DispatchProps
 
-const BaseDialog: React.FC<Props> = props => (
+const BaseBrowserDialog: React.FC<Props> = props => (
   <Modal show={props.show}>
     {props.message}
 
@@ -50,20 +54,20 @@ const BaseDialog: React.FC<Props> = props => (
 )
 
 const mapStateToProps = createStructuredSelector<State, StateProps>({
-  show: getShowDialog,
-  message: getDialogMessage,
-  confirm: getDialogIsConfirm
+  show: getShowBrowserDialog,
+  message: getBrowserDialogMessage,
+  confirm: getBrowserDialogIsConfirm
 })
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => (
   {
     setShow: (show: boolean): void => {
-      dispatch(setShowDialog(show))
+      dispatch(setShowBrowserDialog(show))
     },
     setResult: (result: boolean): void => {
-      dispatch(setDialogResult(result))
+      dispatch(setBrowserDialogResult(result))
     }
   }
 )
 
-export const Dialog = connectToRedux(mapStateToProps, mapDispatchToProps)(BaseDialog)
+export const BrowserDialog = connectToRedux(mapStateToProps, mapDispatchToProps)(BaseBrowserDialog)

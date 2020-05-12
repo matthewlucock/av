@@ -70,14 +70,14 @@ export const DEFAULT_MEDIA_STATE: MediaState = {
  * Dialog
  */
 
-export interface DialogState {
+export interface BrowserDialogState {
   readonly show: boolean
   readonly message: string
   readonly confirm: boolean
   readonly result: void | boolean
 }
 
-export const DEFAULT_DIALOG_STATE: DialogState = {
+export const DEFAULT_BROWSER_DIALOG_STATE: BrowserDialogState = {
   show: false,
   message: '',
   confirm: false,
@@ -92,12 +92,12 @@ export interface State {
   readonly general: GeneralState
   readonly settings: SettingsState
   readonly media: MediaState
-  readonly dialog: DialogState
+  readonly browserDialog: BrowserDialogState
 }
 
 export const DEFAULT_STATE: State = {
   general: DEFAULT_GENERAL_STATE,
   settings: DEFAULT_SETTINGS_STATE,
   media: DEFAULT_MEDIA_STATE,
-  dialog: DEFAULT_DIALOG_STATE
+  browserDialog: DEFAULT_BROWSER_DIALOG_STATE
 }

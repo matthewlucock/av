@@ -1,11 +1,11 @@
-import { DialogState, DEFAULT_DIALOG_STATE } from '../state'
+import { BrowserDialogState, DEFAULT_BROWSER_DIALOG_STATE } from '../state'
 import { Action } from '../actions'
 
-export const reducer = (state: DialogState | void, action: Action): DialogState => {
-  if (!state) return DEFAULT_DIALOG_STATE
+export const reducer = (state: BrowserDialogState | void, action: Action): BrowserDialogState => {
+  if (!state) return DEFAULT_BROWSER_DIALOG_STATE
 
   switch (action.type) {
-    case 'dialog/setDialog':
+    case 'dialog/setBrowserDialog':
       return {
         ...state,
         show: true,
@@ -14,10 +14,10 @@ export const reducer = (state: DialogState | void, action: Action): DialogState 
         result: undefined
       }
 
-    case 'dialog/setShowDialog':
+    case 'dialog/setShowBrowserDialog':
       return { ...state, show: action.data.show }
 
-    case 'dialog/setDialogResult':
+    case 'dialog/setBrowserDialogResult':
       return { ...state, show: false, result: action.data.result }
 
     default: return state

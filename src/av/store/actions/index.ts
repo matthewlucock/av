@@ -1,6 +1,6 @@
 import { GeneralAction } from './general'
 import { SettingsAction } from './settings'
 import { MediaAction } from './media'
-import { DialogAction } from './dialog'
+import { BrowserDialogAction } from './browser-dialog'
 
-export type Action = GeneralAction | SettingsAction | MediaAction | DialogAction
+export type Action = GeneralAction | SettingsAction | MediaAction | BrowserDialogAction

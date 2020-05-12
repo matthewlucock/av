@@ -89,19 +89,19 @@ export const getMediaStopConfirmText = createSelector<State, string, string>(
 )
 
 /**
- * Dialog
+ * browser dialog
  */
 
-export const getShowDialog = (state: State): boolean => state.dialog.show
-export const getDialogMessage = (state: State): string => state.dialog.message
-export const getDialogIsConfirm = (state: State): boolean => state.dialog.confirm
-export const getDialogResult = (state: State): void | boolean => state.dialog.result
+export const getShowBrowserDialog = (state: State): boolean => state.browserDialog.show
+export const getBrowserDialogMessage = (state: State): string => state.browserDialog.message
+export const getBrowserDialogIsConfirm = (state: State): boolean => state.browserDialog.confirm
+export const getBrowserDialogResult = (state: State): void | boolean => state.browserDialog.result
 
 /**
- * Other
+ * other
  */
 
 export const getDraggingEnabled = createSelector<State, boolean, boolean>(
-  [getShowSettings, getShowDialog],
-  (showSettings, showDialog) => !(showSettings || showDialog)
+  [getShowSettings, getShowBrowserDialog],
+  (showSettings, showBrowserDialog) => !(showSettings || showBrowserDialog)
 )
