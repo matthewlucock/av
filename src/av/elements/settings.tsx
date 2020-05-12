@@ -3,8 +3,6 @@ import styled from '@emotion/styled'
 import { connect as connectToRedux } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 
-import { TRANSITION_DURATION, CONTROLS_BACKGROUND_COLOR } from 'av/globals'
-
 import { State } from 'av/store/state'
 import {
   getShowSettings,

@@ -1,7 +1,7 @@
 import electron from 'electron'
 
 export const confirm = async (question: string): Promise<boolean> => {
-  return electron.ipcRenderer.invoke('confirm', question)
+  return await electron.ipcRenderer.invoke('confirm', question)
 }
 
 export const error = (message: string): void => {

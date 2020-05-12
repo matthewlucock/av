@@ -101,7 +101,7 @@ export const getDialogResult = (state: State): void | boolean => state.dialog.re
  * Other
  */
 
- export const getDraggingEnabled = createSelector<State, boolean, boolean>(
-   [getShowSettings, getShowDialog],
-   (showSettings, showDialog) => !(showSettings || showDialog)
- )
+export const getDraggingEnabled = createSelector<State, boolean, boolean>(
+  [getShowSettings, getShowDialog],
+  (showSettings, showDialog) => !(showSettings || showDialog)
+)

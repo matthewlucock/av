@@ -34,7 +34,7 @@ const Body = styled.div`
 
 interface Props {
   readonly show: boolean
-  readonly children: (React.ReactElement | string)[]
+  readonly children: ReadonlyArray<React.ReactElement | string>
 }
 
 export const Modal: React.FC<Props> = props => (

@@ -5,7 +5,7 @@ import { setDialog } from 'av/store/actions'
 export const confirm = async (question: string): Promise<boolean> => {
   store.dispatch(setDialog(question, { confirm: true }))
 
-  return new Promise(resolve => {
+  return await new Promise(resolve => {
     const unsubscribe = store.subscribe(() => {
       const state = store.getState()
       const result = getDialogResult(state)
@@ -16,7 +16,6 @@ export const confirm = async (question: string): Promise<boolean> => {
       }
     })
   })
-
 }
 
 export const error = (message: string): void => {
