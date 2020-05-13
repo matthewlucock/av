@@ -14,7 +14,7 @@ import { Media } from 'av/media'
 import { Controls } from './controls'
 
 interface WrapperProps {
-  readonly scale: boolean
+  readonly scaleVideo: boolean
 }
 
 const Wrapper = styled(Pane)<WrapperProps>`
@@ -23,14 +23,14 @@ const Wrapper = styled(Pane)<WrapperProps>`
   background: black;
 
   & > video {
-    width: ${props => props.scale ? '100%' : 'auto'};
+    width: ${props => props.scaleVideo ? '100%' : 'auto'};
   }
 `
 
 const NativeVideo = styled.video``
 
 interface StateProps {
-  readonly scale: boolean
+  readonly scaleVideo: boolean
 }
 
 interface DispatchProps {
@@ -45,7 +45,7 @@ const BaseVideo: React.FC<Props> = props => {
   }, [])
 
   return (
-    <Wrapper scale={props.scale}>
+    <Wrapper scaleVideo={props.scaleVideo}>
       <Media nativeMedia={NativeVideo} />
       <Controls />
     </Wrapper>
@@ -53,7 +53,7 @@ const BaseVideo: React.FC<Props> = props => {
 }
 
 const mapStateToProps = createStructuredSelector<State, StateProps>({
-  scale: getScaleVideo
+  scaleVideo: getScaleVideo
 })
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => (

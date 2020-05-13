@@ -8,14 +8,16 @@ import {
   CONTROLS_FADED_BACKGROUND_COLOR
 } from 'av/globals'
 
+const THUMB_SIZE_EM = 1.5
+
 interface ElementProps {
-  readonly on: boolean
+  readonly isOn: boolean
 }
 
 const Wrapper = styled.div<ElementProps>`
-  width: 3em;
+  width: ${THUMB_SIZE_EM * 2}em;
   border-radius: 1em;
-  background: ${props => props.on
+  background: ${props => props.isOn
     ? CONTROLS_SECONDARY_BACKGROUND_COLOR.string()
     : CONTROLS_FADED_BACKGROUND_COLOR.string()
   };
@@ -24,21 +26,21 @@ const Wrapper = styled.div<ElementProps>`
 `
 
 const Thumb = styled.div<ElementProps>`
-  height: 1.5em;
-  width: 1.5em;
+  width: ${THUMB_SIZE_EM}em;
+  height: ${THUMB_SIZE_EM}em;
   border-radius: 100%;
   background: ${CONTROLS_FOREGROUND_COLOR.string()};
-  transform: translateX(${props => props.on ? '100%' : '0'});
+  transform: translateX(${props => props.isOn ? '100%' : '0'});
   transition: transform ${TRANSITION_DURATION};
 `
 
 interface Props {
-  readonly on: boolean
-  readonly setOn: (on: boolean) => void
+  readonly isOn: boolean
+  readonly setIsOn: (isOn: boolean) => void
 }
 
 export const Switch: React.FC<Props> = props => (
-  <Wrapper on={props.on} onClick={() => props.setOn(!props.on)}>
-    <Thumb on={props.on} />
+  <Wrapper isOn={props.isOn} onClick={() => props.setIsOn(!props.isOn)}>
+    <Thumb isOn={props.isOn} />
   </Wrapper>
 )

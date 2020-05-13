@@ -101,7 +101,7 @@ const BaseSettings: React.FC<Props> = props => {
 
       <Row>
         <span>Scale video</span>
-        <Switch on={props.scaleVideo} setOn={props.setScaleVideo} />
+        <Switch isOn={props.scaleVideo} setIsOn={props.setScaleVideo} />
       </Row>
 
       <ModalButtons>
