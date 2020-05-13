@@ -26,6 +26,7 @@ export const getBackgroundColor = createSelector<State, number, string>(
 export const getShowSettings = (state: State): boolean => state.settings.show
 export const getSkipBackTime = (state: State): number => state.settings.skipBackTime
 export const getSkipForwardTime = (state: State): number => state.settings.skipForwardTime
+export const getScaleVideo = (state: State): boolean => state.settings.scaleVideo
 
 /**
  * media

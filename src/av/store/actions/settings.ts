@@ -27,8 +27,18 @@ export const setSkipForwardTime = (skipForwardTime: number): SetSkipForwardTimeA
   { type: 'settings/setSkipForwardTime', data: { skipForwardTime } }
 )
 
+interface SetScaleVideoAction extends Action<'settings/setScaleVideo'> {
+  readonly data: {
+    readonly scaleVideo: boolean
+  }
+}
+export const setScaleVideo = (scaleVideo: boolean): SetScaleVideoAction => (
+  { type: 'settings/setScaleVideo', data: { scaleVideo } }
+)
+
 export type SettingsAction = (
   SetShowSettingsAction |
   SetSkipBackTimeAction |
-  SetSkipForwardTimeAction
+  SetSkipForwardTimeAction |
+  SetScaleVideoAction
 )

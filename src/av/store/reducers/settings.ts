@@ -25,6 +25,9 @@ export const reducer = (state: SettingsState | void, action: Action): SettingsSt
         )
       }
 
+    case 'settings/setScaleVideo':
+      return { ...state, scaleVideo: action.data.scaleVideo }
+
     default: return state
   }
 }

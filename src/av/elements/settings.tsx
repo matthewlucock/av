@@ -8,16 +8,23 @@ import {
   getShowSettings,
   getSkipBackTime,
   getSkipForwardTime,
+  getScaleVideo,
   getMediaIsAudio,
   getMediaPlaying
 } from 'av/store/selectors'
 import { Dispatch } from 'av/store'
-import { setShowSettings, setSkipBackTime, setSkipForwardTime } from 'av/store/actions/settings'
+import {
+  setShowSettings,
+  setSkipBackTime,
+  setSkipForwardTime,
+  setScaleVideo
+} from 'av/store/actions/settings'
 import { setMediaPlaying } from 'av/store/actions/media'
 
 import { Modal, ModalButtons } from 'av/components/modal'
 import { ControlButton } from 'av/components/control-button'
 import { NumericInput } from 'av/components/numeric-input'
+import { Switch } from 'av/components/switch'
 
 const Row = styled.div`
   display: flex;
@@ -30,6 +37,7 @@ interface StateProps {
   readonly showSettings: boolean
   readonly skipBackTime: number
   readonly skipForwardTime: number
+  readonly scaleVideo: boolean
   readonly mediaIsAudio: boolean
   readonly mediaPlaying: boolean
 }
@@ -38,6 +46,7 @@ interface DispatchProps {
   readonly setShowSettings: (showSettings: boolean) => void
   readonly setSkipBackTime: (skipBackTime: number) => void
   readonly setSkipForwardTime: (skipForwardTime: number) => void
+  readonly setScaleVideo: (scaleVideo: boolean) => void
   readonly setMediaPlaying: (mediaPlaying: boolean) => void
 }
 
@@ -90,6 +99,11 @@ const BaseSettings: React.FC<Props> = props => {
         />
       </Row>
 
+      <Row>
+        <span>Scale video</span>
+        <Switch on={props.scaleVideo} setOn={props.setScaleVideo} />
+      </Row>
+
       <ModalButtons>
         <ControlButton onClick={() => props.setShowSettings(false)}>Close</ControlButton>
       </ModalButtons>
@@ -100,6 +114,7 @@ const mapStateToProps = createStructuredSelector<State, StateProps>({
   showSettings: getShowSettings,
   skipBackTime: getSkipBackTime,
   skipForwardTime: getSkipForwardTime,
+  scaleVideo: getScaleVideo,
   mediaIsAudio: getMediaIsAudio,
   mediaPlaying: getMediaPlaying
 })
@@ -114,6 +129,9 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => (
     },
     setSkipForwardTime: (skipForwardTime: number): void => {
       dispatch(setSkipForwardTime(skipForwardTime))
+    },
+    setScaleVideo: (scaleVideo: boolean): void => {
+      dispatch(setScaleVideo(scaleVideo))
     },
     setMediaPlaying: (mediaPlaying: boolean): void => {
       dispatch(setMediaPlaying(mediaPlaying))

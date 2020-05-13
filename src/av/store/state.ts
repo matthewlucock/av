@@ -24,12 +24,14 @@ export interface SettingsState {
   readonly show: boolean
   readonly skipBackTime: number
   readonly skipForwardTime: number
+  readonly scaleVideo: boolean
 }
 
 export const DEFAULT_SETTINGS_STATE: SettingsState = {
   show: false,
   skipBackTime: -30,
-  skipForwardTime: 30
+  skipForwardTime: 30,
+  scaleVideo: true
 }
 
 /**
