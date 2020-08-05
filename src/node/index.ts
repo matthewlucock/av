@@ -4,6 +4,13 @@ const DEFAULT_WINDOW_SIZE = 550
 
 let window: BrowserWindow
 
+const handleFatalPromiseRejection = (promise: Promise<any>): void => {
+  promise.catch(error => {
+    console.error(error)
+    process.exit(1)
+  })
+}
+
 const init = async (): Promise<void> => {
   window = new BrowserWindow({
     useContentSize: true,
@@ -16,7 +23,7 @@ const init = async (): Promise<void> => {
 
   await window.loadFile('../dist/index.html')
   window.webContents.openDevTools()
-  window.webContents.executeJavaScript('electron = require(\'electron\')')
+  void window.webContents.executeJavaScript('electron = require(\'electron\')')
 }
 
 app.on('window-all-closed', () => {
@@ -24,7 +31,7 @@ app.on('window-all-closed', () => {
 })
 
 app.on('activate', () => {
-  if (BrowserWindow.getAllWindows().length === 0) init()
+  if (BrowserWindow.getAllWindows().length === 0) handleFatalPromiseRejection(init())
 })
 
 ipcMain.handle('resize-window', (event, width, height) => {
@@ -51,10 +58,7 @@ ipcMain.handle('error', (event, message) => {
   dialog.showMessageBox(window, { type: 'error', message })
 })
 
-;(async () => {
+handleFatalPromiseRejection((async () => {
   await app.whenReady()
   await init()
-})().catch(error => {
-  console.error(error)
-  process.exit(1)
-})
+})())

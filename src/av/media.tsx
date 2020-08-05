@@ -77,18 +77,18 @@ const BaseMedia: React.FC<Props> = props => {
    * Playback time changed
    */
 
-  const playbackTimeChangedListener = React.useRef<(playbackTime: number) => void>()
+  const playbackTimeChangedListener = React.useRef<(playbackTime: number | undefined) => void>()
 
   React.useEffect(() => {
-    playbackTimeChangedListener.current = (playbackTime: number) => {
-      if (nativeMedia.current) nativeMedia.current.currentTime = playbackTime
+    playbackTimeChangedListener.current = (playbackTime: number | undefined) => {
+      if (nativeMedia.current && playbackTime) nativeMedia.current.currentTime = playbackTime
     }
 
-    emitter.on('playback-time-changed', playbackTimeChangedListener.current)
+    emitter.on<number>('playback-time-changed', playbackTimeChangedListener.current)
 
     return () => {
       if (playbackTimeChangedListener.current) {
-        emitter.off('playback-time-changed', playbackTimeChangedListener.current)
+        emitter.off<number>('playback-time-changed', playbackTimeChangedListener.current)
       }
     }
   }, [])

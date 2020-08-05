@@ -8,7 +8,7 @@ import base from './webpack.config.base'
 
 const AV_STATIC = path.resolve('src/av/static/electron')
 
-export default merge.smart(base, {
+export default merge(base, {
   resolve: { alias: { av_static: AV_STATIC } },
 
   module: {
