@@ -1,7 +1,6 @@
 import * as React from 'react'
 import styled from '@emotion/styled'
-import { connect as connectToRedux } from 'react-redux'
-import { createStructuredSelector } from 'reselect'
+import { useDispatch } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMusic } from '@fortawesome/free-solid-svg-icons'
 
@@ -9,17 +8,10 @@ import {
   BACKGROUND_COLOR_TRANSITION_DURATION_MS,
   BACKGROUND_COLOR_TRANSITION_HUE_INCREMENT
 } from '../globals'
-import { ProcessedAudioMetadata } from 'av/audio-metadata'
 
-import { State } from 'av/store/state'
-import {
-  getBackgroundHue,
-  getAudioMetadata,
-  getAudioHasMetadata,
-  getAnimateAudioBackgroundColor
-} from 'av/store/selectors'
-import { Dispatch } from 'av/store'
-import { setBackgroundHue } from 'av/store/actions/general'
+import { useSelector } from 'av/store'
+import { generalSlice } from 'av/store/slices/general'
+import { getAudioHasMetadata, getAnimateAudioBackgroundColor } from 'av/store/slices/media'
 import { randomizeBackgroundColor } from 'av/store/thunks'
 
 import { Pane } from 'av/components/pane'
@@ -50,49 +42,30 @@ const CoverArt = styled.img`
 
 const NativeAudio = styled.audio``
 
-interface StateProps {
-  readonly backgroundHue: number
-  readonly metadata: ProcessedAudioMetadata
-  readonly hasMetadata: boolean
-  readonly animateBackgroundColor: boolean
-}
+export const Audio: React.FC = () => {
+  const backgroundHue = useSelector(state => state.general.backgroundHue)
+  const metadata = useSelector(state => state.media.audioMetadata)
+  const hasMetadata = useSelector(getAudioHasMetadata)
+  const animateBackgroundColor = useSelector(getAnimateAudioBackgroundColor)
+  const dispatch = useDispatch()
 
-interface DispatchProps {
-  readonly setBackgroundHue: (hue: number) => void
-  readonly randomizeBackgroundColor: () => void
-}
-
-type Props = StateProps & DispatchProps
-
-const BaseAudio: React.FC<Props> = props => {
   /**
    * Animate background color
    */
 
-  /**React.useEffect(() => {
-    if (!wrapper.current) return
-    if (props.metadata.backgroundColor) {
-      wrapper.current.animate(
-        [{ backgroundColor: 'transparent' }, { backgroundColor: props.metadata.backgroundColor }],
-        { duration: 250 }
-      )
-    }
-  }, [])*/
-
-  const lastBackgroundHue = React.useRef<number>(props.backgroundHue)
+  const lastBackgroundHue = React.useRef<number>(backgroundHue)
   React.useEffect(() => {
-    lastBackgroundHue.current = props.backgroundHue
-  }, [props.backgroundHue])
+    lastBackgroundHue.current = backgroundHue
+  }, [backgroundHue])
 
   const intervalId = React.useRef<number>(0)
 
   React.useEffect(() => {
-    if (props.animateBackgroundColor) {
+    if (animateBackgroundColor) {
       intervalId.current = window.setInterval(
         () => {
-          props.setBackgroundHue(
-            lastBackgroundHue.current + BACKGROUND_COLOR_TRANSITION_HUE_INCREMENT
-          )
+          const nextHue = lastBackgroundHue.current + BACKGROUND_COLOR_TRANSITION_HUE_INCREMENT
+          dispatch(generalSlice.actions.setBackgroundHue(nextHue))
         },
         BACKGROUND_COLOR_TRANSITION_DURATION_MS
       )
@@ -101,7 +74,7 @@ const BaseAudio: React.FC<Props> = props => {
     }
 
     return () => window.clearInterval(intervalId.current)
-  }, [props.animateBackgroundColor])
+  }, [animateBackgroundColor])
 
   /**
    * Randomize background color if the audio had its own
@@ -109,7 +82,7 @@ const BaseAudio: React.FC<Props> = props => {
 
   React.useEffect(() => {
     return () => {
-      if (props.metadata.backgroundColor) props.randomizeBackgroundColor()
+      if (metadata.backgroundColor) dispatch(randomizeBackgroundColor())
     }
   }, [])
 
@@ -117,47 +90,25 @@ const BaseAudio: React.FC<Props> = props => {
    * Component
    */
 
+  const metadataUi = (
+    <Metadata>
+      {metadata.coverArtUrl && (
+        <CoverArt
+          src={metadata.coverArtUrl}
+          onLoad={() => URL.revokeObjectURL(metadata.coverArtUrl)}
+        />
+      )}
+
+      {metadata.artist && <p>{metadata.artist}</p>}
+      {metadata.title && <p>{metadata.title}</p>}
+    </Metadata>
+  )
+
   return (
-    <Wrapper style={{ backgroundColor: props.metadata.backgroundColor }}>
-      {props.hasMetadata
-        ? (
-          <Metadata>
-            {props.metadata.coverArtUrl && (
-              <CoverArt
-                src={props.metadata.coverArtUrl}
-                onLoad={() => URL.revokeObjectURL(props.metadata.coverArtUrl)}
-              />
-            )}
-
-            {props.metadata.artist && <p>{props.metadata.artist}</p>}
-            {props.metadata.title && <p>{props.metadata.title}</p>}
-          </Metadata>
-        )
-        : <Icon icon={faMusic} />
-      }
-
+    <Wrapper style={{ backgroundColor: metadata.backgroundColor }}>
+      {hasMetadata ? metadataUi : <Icon icon={faMusic} />}
       <Media nativeMedia={NativeAudio} />
       <Controls />
     </Wrapper>
   )
 }
-
-const mapStateToProps = createStructuredSelector<State, StateProps>({
-  backgroundHue: getBackgroundHue,
-  metadata: getAudioMetadata,
-  hasMetadata: getAudioHasMetadata,
-  animateBackgroundColor: getAnimateAudioBackgroundColor
-})
-
-const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => (
-  {
-    setBackgroundHue: (hue: number): void => {
-      dispatch(setBackgroundHue(hue))
-    },
-    randomizeBackgroundColor: () => {
-      dispatch(randomizeBackgroundColor())
-    }
-  }
-)
-
-export const Audio = connectToRedux(mapStateToProps, mapDispatchToProps)(BaseAudio)

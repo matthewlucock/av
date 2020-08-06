@@ -24,7 +24,7 @@ interface Props {
 }
 
 export const NumericInput: React.FC<Props> = props => {
-  const incrementModifier = props.incrementModifier || 1
+  const incrementModifier = props.incrementModifier ?? 1
 
   return (
     <Wrapper>

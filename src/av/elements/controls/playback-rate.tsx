@@ -1,16 +1,13 @@
 import * as React from 'react'
 import styled from '@emotion/styled'
-import { connect as connectToRedux } from 'react-redux'
-import { createStructuredSelector } from 'reselect'
+import { useDispatch } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes, faMinus, faPlus } from '@fortawesome/free-solid-svg-icons'
 
 import { PLAYBACK_RATE_INCREMENT_VALUE } from 'av/globals'
 
-import { State } from 'av/store/state'
-import { getMediaPlaybackRate } from 'av/store/selectors'
-import { Dispatch } from 'av/store'
-import { setMediaPlaybackRate } from 'av/store/actions/media'
+import { useSelector } from 'av/store'
+import { mediaSlice } from 'av/store/slices/media'
 
 import { RoundControlButton } from 'av/components/control-button'
 
@@ -29,23 +26,16 @@ const TimesIcon = styled(FontAwesomeIcon)`
   font-size: .75em;
 `
 
-interface StateProps {
-  readonly playbackRate: number
-}
+export const PlaybackRate: React.FC = () => {
+  const rate = useSelector(state => state.media.playbackRate)
+  const dispatch = useDispatch()
 
-interface DispatchProps {
-  readonly setPlaybackRate: (playbackRate: number) => void
-}
-
-type Props = StateProps & DispatchProps
-
-const BasePlaybackRate: React.FC<Props> = props => {
   const decrement = (): void => {
-    props.setPlaybackRate(props.playbackRate - PLAYBACK_RATE_INCREMENT_VALUE)
+    dispatch(mediaSlice.actions.setPlaybackRate(rate - PLAYBACK_RATE_INCREMENT_VALUE))
   }
 
   const increment = (): void => {
-    props.setPlaybackRate(props.playbackRate + PLAYBACK_RATE_INCREMENT_VALUE)
+    dispatch(mediaSlice.actions.setPlaybackRate(rate + PLAYBACK_RATE_INCREMENT_VALUE))
   }
 
   return (
@@ -55,7 +45,7 @@ const BasePlaybackRate: React.FC<Props> = props => {
       </RoundControlButton>
 
       <Rate style={{ width: `${PLAYBACK_RATE_INCREMENT_VALUE.toString().length + 1}ch` }}>
-        {props.playbackRate}
+        {rate}
         <TimesIcon icon={faTimes} />
       </Rate>
 
@@ -65,17 +55,3 @@ const BasePlaybackRate: React.FC<Props> = props => {
     </Wrapper>
   )
 }
-
-const mapStateToProps = createStructuredSelector<State, StateProps>({
-  playbackRate: getMediaPlaybackRate
-})
-
-const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => (
-  {
-    setPlaybackRate: (playbackRate: number): void => {
-      dispatch(setMediaPlaybackRate(playbackRate))
-    }
-  }
-)
-
-export const PlaybackRate = connectToRedux(mapStateToProps, mapDispatchToProps)(BasePlaybackRate)

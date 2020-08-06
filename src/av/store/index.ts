@@ -1,10 +1,19 @@
-import { createStore, applyMiddleware } from 'redux'
-import thunk, { ThunkDispatch as BaseThunkDispatch } from 'redux-thunk'
+import { configureStore } from '@reduxjs/toolkit'
+import { useSelector as baseUseSelector, TypedUseSelectorHook } from 'react-redux'
 
-import { State } from './state'
-import { Action } from './actions'
-import { reducer } from './reducers'
+import { generalSlice } from './slices/general'
+import { settingsSlice } from './slices/settings'
+import { mediaSlice } from './slices/media'
+import { browserDialogSlice } from './slices/browser-dialog'
 
-export const store = createStore<State, Action, any, any>(reducer, applyMiddleware(thunk))
+export const store = configureStore({
+  reducer: {
+    general: generalSlice.reducer,
+    settings: settingsSlice.reducer,
+    media: mediaSlice.reducer,
+    browserDialog: browserDialogSlice.reducer
+  }
+})
 
-export type Dispatch = BaseThunkDispatch<State, void, Action>
+export type RootState = ReturnType<typeof store.getState>
+export const useSelector: TypedUseSelectorHook<RootState> = baseUseSelector

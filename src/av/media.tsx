@@ -1,31 +1,12 @@
 import * as React from 'react'
-import { connect as connectToRedux } from 'react-redux'
-import { createStructuredSelector } from 'reselect'
+import { useDispatch } from 'react-redux'
 
 import { MOVE_THROUGH_RATE } from './globals'
 import { electronResizeWindow } from 'av/env/electron-window'
 import { EmitterContext } from './contexts'
 
-import { State } from './store/state'
-import {
-  getMediaUrl,
-  getMediaPlaying,
-  getMediaPlaybackRate,
-  getMediaVolume,
-  getMediaRewinding,
-  getMediaFastForwarding
-} from './store/selectors'
-import { Dispatch } from './store'
-import { mediaLoaded, setMediaPlaying, storeMediaPlaybackTime } from './store/actions/media'
-
-interface StateProps {
-  readonly url: string
-  readonly playing: boolean
-  readonly playbackRate: number
-  readonly volume: number
-  readonly rewinding: boolean
-  readonly fastForwarding: boolean
-}
+import { useSelector } from 'av/store'
+import { mediaSlice } from 'av/store/slices/media'
 
 interface DispatchProps {
   readonly mediaLoaded: (duration: number) => void
@@ -33,13 +14,18 @@ interface DispatchProps {
   readonly storePlaybackTime: (playbackTime: number) => void
 }
 
-interface OwnProps {
+interface Props {
   readonly nativeMedia: React.ElementType
 }
 
-type Props = StateProps & DispatchProps & OwnProps
+export const Media: React.FC<Props> = props => {
+  const url = useSelector(state => state.media.url)
+  const playing = useSelector(state => state.media.playing)
+  const playbackRate = useSelector(state => state.media.playbackRate)
+  const volume = useSelector(state => state.media.volume)
+  const moveThrough = useSelector(state => state.media.moveThrough)
+  const dispatch = useDispatch()
 
-const BaseMedia: React.FC<Props> = props => {
   const nativeMedia = React.useRef<HTMLMediaElement | null>(null)
   const wasPlaying = React.useRef<boolean>(false)
 
@@ -53,15 +39,15 @@ const BaseMedia: React.FC<Props> = props => {
 
   const playbackFrame = (): void => {
     if (!nativeMedia.current) return
-    props.storePlaybackTime(nativeMedia.current.currentTime)
+    dispatch(mediaSlice.actions.storePlaybackTime(nativeMedia.current.currentTime))
     playbackFrameRequestId.current = requestAnimationFrame(playbackFrame)
   }
 
   React.useEffect(() => {
     if (!nativeMedia.current) return
 
-    if (props.playing) {
-      nativeMedia.current.play()
+    if (playing) {
+      void nativeMedia.current.play()
       playbackFrameRequestId.current = requestAnimationFrame(playbackFrame)
     } else {
       nativeMedia.current.pause()
@@ -71,7 +57,7 @@ const BaseMedia: React.FC<Props> = props => {
     return () => {
       cancelAnimationFrame(playbackFrameRequestId.current)
     }
-  }, [props.playing])
+  }, [playing])
 
   /**
    * Playback time changed
@@ -99,8 +85,8 @@ const BaseMedia: React.FC<Props> = props => {
 
   React.useEffect(() => {
     if (!nativeMedia.current) return
-    nativeMedia.current.playbackRate = props.playbackRate
-  }, [props.playbackRate])
+    nativeMedia.current.playbackRate = playbackRate
+  }, [playbackRate])
 
   /**
    * Volume changed
@@ -108,8 +94,8 @@ const BaseMedia: React.FC<Props> = props => {
 
   React.useEffect(() => {
     if (!nativeMedia.current) return
-    nativeMedia.current.volume = props.volume
-  }, [props.volume])
+    nativeMedia.current.volume = volume
+  }, [volume])
 
   /**
    * Move through (rewinding and fast-forwarding while paused)
@@ -124,43 +110,43 @@ const BaseMedia: React.FC<Props> = props => {
     const frameTimeDelta = time - lastMoveThroughFrameTime.current
     lastMoveThroughFrameTime.current = time
 
-    let playbackTimeDelta = frameTimeDelta / 1000 * MOVE_THROUGH_RATE * props.playbackRate
-    if (props.rewinding) playbackTimeDelta *= -1
+    let playbackTimeDelta = frameTimeDelta / 1000 * MOVE_THROUGH_RATE * playbackRate
+    if (moveThrough === 'rewind') playbackTimeDelta *= -1
 
     nativeMedia.current.currentTime += playbackTimeDelta
-    props.storePlaybackTime(nativeMedia.current.currentTime)
+    dispatch(mediaSlice.actions.storePlaybackTime(nativeMedia.current.currentTime))
 
     moveThroughFrameRequestId.current = requestAnimationFrame(moveThroughFrame)
   }
 
   React.useEffect(() => {
-    if (props.rewinding || (props.fastForwarding && !props.playing)) {
-      wasPlaying.current = props.playing
-      props.setPlaying(false)
+    if (moveThrough === 'rewind' || (moveThrough === 'fastForward' && !playing)) {
+      wasPlaying.current = playing
+      dispatch(mediaSlice.actions.setPlaying(false))
 
       lastMoveThroughFrameTime.current = performance.now()
       moveThroughFrameRequestId.current = requestAnimationFrame(moveThroughFrame)
     } else {
       cancelAnimationFrame(moveThroughFrameRequestId.current)
-      if (wasPlaying.current) props.setPlaying(true)
+      if (wasPlaying.current) dispatch(mediaSlice.actions.setPlaying(true))
     }
 
     return () => {
       cancelAnimationFrame(moveThroughFrameRequestId.current)
     }
-  }, [props.rewinding, props.fastForwarding])
+  }, [moveThrough])
 
   /**
    * Fast-forwarding while playing
    */
 
-  const lastPlaybackRate = React.useRef<number>(props.playbackRate)
+  const lastPlaybackRate = React.useRef<number>(playbackRate)
 
   React.useEffect(() => {
     if (!nativeMedia.current) return
 
-    if (props.playing) {
-      if (props.fastForwarding) {
+    if (playing) {
+      if (moveThrough === 'fastForward') {
         lastPlaybackRate.current = nativeMedia.current.playbackRate
         nativeMedia.current.playbackRate = MOVE_THROUGH_RATE
       } else {
@@ -168,9 +154,9 @@ const BaseMedia: React.FC<Props> = props => {
       }
     } else {
       // Ensure playback rate is reset when fast-forwarding through the end.
-      nativeMedia.current.playbackRate = props.playbackRate
+      nativeMedia.current.playbackRate = playbackRate
     }
-  }, [props.fastForwarding])
+  }, [moveThrough])
 
   /**
    * Component
@@ -179,10 +165,10 @@ const BaseMedia: React.FC<Props> = props => {
   return (
     <props.nativeMedia
       ref={nativeMedia}
-      src={props.url}
+      src={url}
       onLoadedData={() => {
         if (!nativeMedia.current) return
-        props.mediaLoaded(nativeMedia.current.duration)
+        dispatch(mediaSlice.actions.loaded({ duration: nativeMedia.current.duration }))
 
         if (nativeMedia.current instanceof HTMLVideoElement) {
           electronResizeWindow(nativeMedia.current.videoWidth, nativeMedia.current.videoHeight)
@@ -193,28 +179,3 @@ const BaseMedia: React.FC<Props> = props => {
     />
   )
 }
-
-const mapStateToProps = createStructuredSelector<State, StateProps>({
-  url: getMediaUrl,
-  playing: getMediaPlaying,
-  playbackRate: getMediaPlaybackRate,
-  volume: getMediaVolume,
-  rewinding: getMediaRewinding,
-  fastForwarding: getMediaFastForwarding
-})
-
-const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => (
-  {
-    mediaLoaded: (duration: number): void => {
-      dispatch(mediaLoaded(duration))
-    },
-    setPlaying: (playing: boolean): void => {
-      dispatch(setMediaPlaying(playing))
-    },
-    storePlaybackTime: (playbackTime: number): void => {
-      dispatch(storeMediaPlaybackTime(playbackTime))
-    }
-  }
-)
-
-export const Media = connectToRedux(mapStateToProps, mapDispatchToProps)(BaseMedia)

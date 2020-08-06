@@ -1,13 +1,12 @@
 import * as React from 'react'
 import styled from '@emotion/styled'
-import { connect as connectToRedux } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMusic, faVideo } from '@fortawesome/free-solid-svg-icons'
 
 import { browseForFile } from 'av/util/browse-for-file'
 import { electronResizeWindow, electronSetWindowResizable } from 'av/env/electron-window'
 
-import { Dispatch } from 'av/store'
 import { openFile } from 'av/store/thunks'
 
 import { Pane } from 'av/components/pane'
@@ -32,13 +31,9 @@ const MediaIcons = styled.div`
   }
 `
 
-interface DispatchProps {
-  readonly openFile: (fileList: FileList) => void
-}
+export const File: React.FC = () => {
+  const dispatch = useDispatch()
 
-type Props = DispatchProps
-
-const BaseFile: React.FC<Props> = props => {
   React.useEffect(() => {
     electronResizeWindow()
     electronSetWindowResizable(false)
@@ -56,7 +51,9 @@ const BaseFile: React.FC<Props> = props => {
 
         <div>
           Drag a file here or{' '}
-          <TranslucentButton onClick={() => browseForFile(props.openFile)}>
+          <TranslucentButton
+            onClick={() => browseForFile(fileList => dispatch(openFile(fileList)))}
+          >
             browse
           </TranslucentButton>{' '}
           for one
@@ -65,13 +62,3 @@ const BaseFile: React.FC<Props> = props => {
     </Wrapper>
   )
 }
-
-const mapDisaptchToProps = (dispatch: Dispatch): DispatchProps => (
-  {
-    openFile: (fileList: FileList): void => {
-      dispatch(openFile(fileList))
-    }
-  }
-)
-
-export const File = connectToRedux(null, mapDisaptchToProps)(BaseFile)

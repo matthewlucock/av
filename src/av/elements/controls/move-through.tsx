@@ -1,39 +1,26 @@
 import * as React from 'react'
-import { connect as connectToRedux } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
-import { Dispatch } from 'av/store'
-import { clearMediaMoveThrough } from 'av/store/actions/media'
+import { mediaSlice } from 'av/store/slices/media'
 
 import { RoundControlButton } from 'av/components/control-button'
 
-interface DispatchProps {
-  readonly clearMoveThrough: () => void
-}
-
-interface OwnProps {
+interface Props {
   readonly action: () => void
   readonly disabled?: boolean
   readonly children: React.ReactElement
 }
 
-type Props = DispatchProps & OwnProps
+export const MoveThrough: React.FC<Props> = props => {
+  const dispatch = useDispatch()
 
-const BaseMoveThrough: React.FC<Props> = props => (
-  <RoundControlButton
-    disabled={props.disabled}
-    onMouseDown={props.action}
-    onMouseUp={props.clearMoveThrough}
-  >
-    {props.children}
-  </RoundControlButton>
-)
-
-const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => (
-  {
-    clearMoveThrough: (): void => {
-      dispatch(clearMediaMoveThrough())
-    }
-  }
-)
-
-export const MoveThrough = connectToRedux(null, mapDispatchToProps)(BaseMoveThrough)
+  return (
+    <RoundControlButton
+      disabled={props.disabled}
+      onMouseDown={props.action}
+      onMouseUp={() => dispatch(mediaSlice.actions.clearMoveThrough())}
+    >
+      {props.children}
+    </RoundControlButton>
+  )
+}

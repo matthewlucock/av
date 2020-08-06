@@ -1,7 +1,6 @@
 import * as React from 'react'
 import styled from '@emotion/styled'
-import { connect as connectToRedux } from 'react-redux'
-import { createStructuredSelector } from 'reselect'
+import { useDispatch } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faUndo,
@@ -22,20 +21,11 @@ import {
   CONTROL_ICON_OFFSET
 } from 'av/globals'
 
-import { State } from 'av/store/state'
-import {
-  getShowSettings,
-  getSkipBackTime,
-  getSkipForwardTime,
-  getMediaPlaying,
-  getMediaPlaybackTime,
-  getMediaFinished,
-  getAutoHideMediaControls
-} from 'av/store/selectors'
-import { Dispatch } from 'av/store'
-import { setShowSettings } from 'av/store/actions/settings'
-import { rewindMedia, fastForwardMedia } from 'av/store/actions/media'
+import { useSelector } from 'av/store'
+import { settingsSlice } from 'av/store/slices/settings'
+import { mediaSlice, getMediaFinished } from 'av/store/slices/media'
 import { stopMedia } from 'av/store/thunks'
+import { getAutoHideMediaControls } from 'av/store/cross-selectors'
 
 import { RoundControlButton } from 'av/components/control-button'
 import { PlayPause } from './play-pause'
@@ -108,30 +98,20 @@ const FastForwardIcon = styled(FontAwesomeIcon)`
   left: ${CONTROL_ICON_OFFSET};
 `
 
-interface StateProps {
-  readonly showSettings: boolean
-  readonly skipBackTime: number
-  readonly skipForwardTime: number
-  readonly playing: boolean
-  readonly playbackTime: number
-  readonly finished: boolean
-  readonly autoHide: boolean
-}
+export const Controls: React.FC = () => {
+  const showSettings = useSelector(state => state.settings.show)
+  const skipBackTime = useSelector(state => state.settings.skipBackTime)
+  const skipForwardTime = useSelector(state => state.settings.skipForwardTime)
+  const playing = useSelector(state => state.media.playing)
+  const playbackTime = useSelector(state => state.media.playbackTime)
+  const finished = useSelector(getMediaFinished)
+  const autoHide = useSelector(getAutoHideMediaControls)
+  const dispatch = useDispatch()
 
-interface DispatchProps {
-  readonly setShowSettings: (showSettings: boolean) => void
-  readonly rewind: () => void
-  readonly fastForward: () => void
-  readonly stop: () => void
-}
-
-type Props = StateProps & DispatchProps
-
-const BaseControls: React.FC<Props> = props => {
   const body = React.useRef<HTMLDivElement | null>(null)
 
   const [visible, setVisible] = React.useState<boolean>(true)
-  const [expanded, setExpanded] = React.useState<boolean>(!props.autoHide)
+  const [expanded, setExpanded] = React.useState<boolean>(!autoHide)
 
   const [initialized, setInitialized] = React.useState<boolean>(false)
   React.useEffect(() => setInitialized(true), [])
@@ -154,7 +134,7 @@ const BaseControls: React.FC<Props> = props => {
   }
 
   React.useEffect(() => {
-    if (props.autoHide) {
+    if (autoHide) {
       timeoutId.current = window.setTimeout(() => setVisible(false), CONTROLS_VISIBILITY_TIMEOUT)
 
       document.addEventListener('mousemove', showControls)
@@ -165,12 +145,12 @@ const BaseControls: React.FC<Props> = props => {
     }
 
     return clearActivityListener
-  }, [props.autoHide])
+  }, [autoHide])
 
   // Show controls if media is play/paused by other means.
   React.useEffect(() => {
-    if (initialized && props.autoHide) showControls()
-  }, [props.playing, props.autoHide])
+    if (initialized && autoHide) showControls()
+  }, [playing, autoHide])
 
   /**
    * Component
@@ -183,7 +163,7 @@ const BaseControls: React.FC<Props> = props => {
         visible={visible}
         expanded={expanded}
         onMouseOver={() => {
-          if (!body.current || !props.autoHide) return
+          if (!body.current || !autoHide) return
 
           if (expanded) return
           setExpanded(true)
@@ -199,21 +179,27 @@ const BaseControls: React.FC<Props> = props => {
         }}
       >
         <Row>
-          <SkipThrough time={props.skipBackTime} disabled={!props.playbackTime}>
+          <SkipThrough time={skipBackTime} disabled={!playbackTime}>
             <FontAwesomeIcon icon={faUndo} />
           </SkipThrough>
 
-          <MoveThrough action={props.rewind} disabled={!props.playbackTime}>
+          <MoveThrough
+            action={() => dispatch(mediaSlice.actions.rewind())}
+            disabled={!playbackTime}
+          >
             <RewindIcon icon={faBackward} />
           </MoveThrough>
 
           <PlayPause />
 
-          <MoveThrough action={props.fastForward} disabled={props.finished}>
+          <MoveThrough
+            action={() => dispatch(mediaSlice.actions.fastForward())}
+            disabled={finished}
+          >
             <FastForwardIcon icon={faForward} />
           </MoveThrough>
 
-          <SkipThrough time={props.skipForwardTime} disabled={props.finished}>
+          <SkipThrough time={skipForwardTime} disabled={finished}>
             <FontAwesomeIcon icon={faRedo} />
           </SkipThrough>
         </Row>
@@ -222,8 +208,8 @@ const BaseControls: React.FC<Props> = props => {
 
         <SeparatedRow>
           <RoundControlButton
-            active={props.showSettings}
-            onClick={() => props.setShowSettings(true)}
+            active={showSettings}
+            onClick={() => dispatch(settingsSlice.actions.setShow(true))}
           >
             <FontAwesomeIcon icon={faCog} />
           </RoundControlButton>
@@ -231,7 +217,7 @@ const BaseControls: React.FC<Props> = props => {
           <Volume />
           <PlaybackRate />
 
-          <RoundControlButton onClick={props.stop}>
+          <RoundControlButton onClick={() => dispatch(stopMedia())}>
             <FontAwesomeIcon icon={faStop} />
           </RoundControlButton>
         </SeparatedRow>
@@ -239,32 +225,3 @@ const BaseControls: React.FC<Props> = props => {
     </Wrapper>
   )
 }
-
-const mapStateToProps = createStructuredSelector<State, StateProps>({
-  showSettings: getShowSettings,
-  skipBackTime: getSkipBackTime,
-  skipForwardTime: getSkipForwardTime,
-  playing: getMediaPlaying,
-  playbackTime: getMediaPlaybackTime,
-  finished: getMediaFinished,
-  autoHide: getAutoHideMediaControls
-})
-
-const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => (
-  {
-    setShowSettings: (showSettings: boolean): void => {
-      dispatch(setShowSettings(showSettings))
-    },
-    rewind: () => {
-      dispatch(rewindMedia())
-    },
-    fastForward: () => {
-      dispatch(fastForwardMedia())
-    },
-    stop: (): void => {
-      dispatch(stopMedia())
-    }
-  }
-)
-
-export const Controls = connectToRedux(mapStateToProps, mapDispatchToProps)(BaseControls)

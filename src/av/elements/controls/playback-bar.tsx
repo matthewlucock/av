@@ -1,20 +1,12 @@
 import * as React from 'react'
 import styled from '@emotion/styled'
-import { connect as connectToRedux } from 'react-redux'
-import { createStructuredSelector } from 'reselect'
+import { useDispatch } from 'react-redux'
 
 import { CONTROL_HEIGHT, CONTROLS_FOREGROUND_COLOR, CONTROLS_BACKGROUND_COLOR } from 'av/globals'
 import { EmitterContext } from 'av/contexts'
 
-import { State } from 'av/store/state'
-import {
-  getMediaDuration,
-  getMediaPlaying,
-  getMediaPlaybackTime,
-  getMediaFinished
-} from 'av/store/selectors'
-import { Dispatch } from 'av/store'
-import { setMediaPlaying, storeMediaPlaybackTime } from 'av/store/actions/media'
+import { useSelector } from 'av/store'
+import { mediaSlice, getMediaFinished } from 'av/store/slices/media'
 
 import { Slider } from 'av/components/slider'
 import { Timestamp } from 'av/components/timestamp'
@@ -30,32 +22,22 @@ const Wrapper = styled.div`
   color: ${CONTROLS_FOREGROUND_COLOR.string()};
 `
 
-interface StateProps {
-  readonly duration: number
-  readonly playing: boolean
-  readonly playbackTime: number
-  readonly finished: boolean
-}
+export const PlaybackBar: React.FC = () => {
+  const duration = useSelector(state => state.media.duration)
+  const playing = useSelector(state => state.media.playing)
+  const playbackTime = useSelector(state => state.media.playbackTime)
+  const finished = useSelector(getMediaFinished)
+  const dispatch = useDispatch()
 
-interface DispatchProps {
-  readonly setPlaying: (playing: boolean) => void
-  readonly storePlaybackTime: (playbackTime: number) => void
-}
-
-type Props = StateProps & DispatchProps
-
-const BasePlaybackBar: React.FC<Props> = props => {
   const wasPlaying = React.useRef<boolean>(false)
   const emitter = React.useContext(EmitterContext)
 
-  const roundedDuration = Math.ceil(props.duration)
-  const roundedPlaybackTime = (
-    props.finished ? Math.ceil(props.playbackTime) : Math.floor(props.playbackTime)
-  )
-  const roundedRemainingTime = props.finished ? 0 : Math.ceil(props.duration - roundedPlaybackTime)
+  const roundedDuration = Math.ceil(duration)
+  const roundedPlaybackTime = finished ? Math.ceil(playbackTime) : Math.floor(playbackTime)
+  const roundedRemainingTime = finished ? 0 : Math.ceil(duration - roundedPlaybackTime)
 
   const changePlaybackTime = (playbackTime: number): void => {
-    props.storePlaybackTime(playbackTime)
+    dispatch(mediaSlice.actions.storePlaybackTime(playbackTime))
     emitter.emit('playback-time-changed', playbackTime)
   }
 
@@ -64,15 +46,15 @@ const BasePlaybackBar: React.FC<Props> = props => {
       <Timestamp time={roundedPlaybackTime} maximumTime={roundedDuration} />
 
       <Slider
-        value={props.playbackTime}
-        maximum={props.duration}
+        value={playbackTime}
+        maximum={duration}
         changeValue={changePlaybackTime}
         draggingCallback={(dragging: boolean): void => {
           if (dragging) {
-            wasPlaying.current = props.playing
-            props.setPlaying(false)
-          } else if (!props.finished) {
-            props.setPlaying(wasPlaying.current)
+            wasPlaying.current = playing
+            dispatch(mediaSlice.actions.setPlaying(false))
+          } else if (!finished) {
+            dispatch(mediaSlice.actions.setPlaying(wasPlaying.current))
           }
         }}
       />
@@ -81,23 +63,3 @@ const BasePlaybackBar: React.FC<Props> = props => {
     </Wrapper>
   )
 }
-
-const mapStateToProps = createStructuredSelector<State, StateProps>({
-  duration: getMediaDuration,
-  playing: getMediaPlaying,
-  playbackTime: getMediaPlaybackTime,
-  finished: getMediaFinished
-})
-
-const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => (
-  {
-    setPlaying: (playing: boolean): void => {
-      dispatch(setMediaPlaying(playing))
-    },
-    storePlaybackTime: (playbackTime: number): void => {
-      dispatch(storeMediaPlaybackTime(playbackTime))
-    }
-  }
-)
-
-export const PlaybackBar = connectToRedux(mapStateToProps, mapDispatchToProps)(BasePlaybackBar)

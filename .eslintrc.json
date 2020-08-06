@@ -6,8 +6,6 @@
   "rules": {
     "max-len": [ "error", { "code": 100, "ignoreStrings": true } ],
     "no-void": [ "error", { "allowAsStatement": true } ],
-    "@typescript-eslint/strict-boolean-expressions": "off",
-
-    "@typescript-eslint/prefer-nullish-coalescing": "off"
+    "@typescript-eslint/strict-boolean-expressions": "off"
   }
 }

@@ -1,6 +1,5 @@
 {
   "extends": [".eslintrc", "standard-react"],
-  "parserOptions": { "project": "./tsconfig.av.json" },
 
   "rules": {
     "react/prop-types": "off",

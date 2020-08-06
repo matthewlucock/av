@@ -35,12 +35,7 @@ export const retrieveAudioMetadata = async (file: File): Promise<ProcessedAudioM
   }
 
   const { artist = '', title = '' } = metadata
-  const coverArtUrl = (
-    // I don't know whether the file is defined if there is no cover art, so I'm just being safe.
-    metadata.picture && metadata.picture.size
-      ? URL.createObjectURL(metadata.picture)
-      : ''
-  )
+  const coverArtUrl = metadata.picture?.size ? URL.createObjectURL(metadata.picture) : ''
   const backgroundColor = coverArtUrl ? await getBackgroundColorFromImageUrl(coverArtUrl) : ''
 
   return { artist, title, coverArtUrl, backgroundColor }

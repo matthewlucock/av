@@ -4,8 +4,9 @@
     "esModuleInterop": true,
     "jsx": "react",
     "moduleResolution": "node",
+    "paths": { "av/*": ["src/av/*"] },
     "strict": true,
-    "target": "esnext",
+    "target": "es2019",
     "baseUrl": "."
   }
 }

@@ -14,14 +14,8 @@ const config: webpack.Configuration = {
 
   module: {
     rules: [
-      {
-        test: /\.tsx?$/,
-        use: [{ loader: 'ts-loader', options: { configFile: path.resolve('tsconfig.av.json') } }]
-      },
-      {
-        test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader']
-      }
+      { test: /\.tsx?$/, use: 'ts-loader' },
+      { test: /\.css$/, use: [MiniCssExtractPlugin.loader, 'css-loader'] }
     ]
   },
 

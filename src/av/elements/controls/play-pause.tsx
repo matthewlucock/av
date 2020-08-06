@@ -1,16 +1,13 @@
 import * as React from 'react'
 import styled from '@emotion/styled'
-import { connect as connectToRedux } from 'react-redux'
-import { createStructuredSelector } from 'reselect'
+import { useDispatch } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faPause } from '@fortawesome/free-solid-svg-icons'
 
 import { CONTROL_ICON_OFFSET } from 'av/globals'
 
-import { State } from 'av/store/state'
-import { getMediaPlaying } from 'av/store/selectors'
-import { Dispatch } from 'av/store'
-import { playPauseMedia } from 'av/store/thunks'
+import { useSelector } from 'av/store'
+import { mediaSlice } from 'av/store/slices/media'
 
 import { RoundControlButton } from 'av/components/control-button'
 
@@ -19,17 +16,10 @@ const PlayIcon = styled(FontAwesomeIcon)`
   left: ${CONTROL_ICON_OFFSET};
 `
 
-interface StateProps {
-  readonly playing: boolean
-}
+export const PlayPause: React.FC = () => {
+  const playing = useSelector(state => state.media.playing)
+  const dispatch = useDispatch()
 
-interface DispatchProps {
-  readonly playPause: () => void
-}
-
-type Props = StateProps & DispatchProps
-
-const BasePlayPause: React.FC<Props> = props => {
   /**
    * Keyboard control
    */
@@ -38,7 +28,7 @@ const BasePlayPause: React.FC<Props> = props => {
 
   React.useEffect(() => {
     keyupListener.current = (event: KeyboardEvent): void => {
-      if (event.code === 'Space') props.playPause()
+      if (event.code === 'Space') dispatch(mediaSlice.actions.playPause())
     }
 
     document.addEventListener('keyup', keyupListener.current)
@@ -55,22 +45,8 @@ const BasePlayPause: React.FC<Props> = props => {
    */
 
   return (
-    <RoundControlButton primary onClick={props.playPause}>
-      {props.playing ? <FontAwesomeIcon icon={faPause} /> : <PlayIcon icon={faPlay} />}
+    <RoundControlButton primary onClick={() => dispatch(mediaSlice.actions.playPause())}>
+      {playing ? <FontAwesomeIcon icon={faPause} /> : <PlayIcon icon={faPlay} />}
     </RoundControlButton>
   )
 }
-
-const mapStateToProps = createStructuredSelector<State, StateProps>({
-  playing: getMediaPlaying
-})
-
-const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => (
-  {
-    playPause: (): void => {
-      dispatch(playPauseMedia())
-    }
-  }
-)
-
-export const PlayPause = connectToRedux(mapStateToProps, mapDispatchToProps)(BasePlayPause)

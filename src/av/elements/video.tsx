@@ -1,11 +1,8 @@
 import * as React from 'react'
 import styled from '@emotion/styled'
-import { createStructuredSelector } from 'reselect'
-import { connect as connectToRedux } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
-import { State } from 'av/store/state'
-import { getScaleVideo } from 'av/store/selectors'
-import { Dispatch } from 'av/store'
+import { useSelector } from 'av/store'
 import { randomizeBackgroundColor } from 'av/store/thunks'
 
 import { Pane } from 'av/components/pane'
@@ -29,39 +26,18 @@ const Wrapper = styled(Pane)<WrapperProps>`
 
 const NativeVideo = styled.video``
 
-interface StateProps {
-  readonly scaleVideo: boolean
-}
+export const Video: React.FC = () => {
+  const scaleVideo = useSelector(state => state.settings.scaleVideo)
+  const dispatch = useDispatch()
 
-interface DispatchProps {
-  readonly randomizeBackgroundColor: () => void
-}
-
-type Props = StateProps & DispatchProps
-
-const BaseVideo: React.FC<Props> = props => {
-  React.useEffect(() => {
-    return props.randomizeBackgroundColor
+  React.useEffect(() => () => {
+    dispatch(randomizeBackgroundColor())
   }, [])
 
   return (
-    <Wrapper scaleVideo={props.scaleVideo}>
+    <Wrapper scaleVideo={scaleVideo}>
       <Media nativeMedia={NativeVideo} />
       <Controls />
     </Wrapper>
   )
 }
-
-const mapStateToProps = createStructuredSelector<State, StateProps>({
-  scaleVideo: getScaleVideo
-})
-
-const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => (
-  {
-    randomizeBackgroundColor: () => {
-      dispatch(randomizeBackgroundColor())
-    }
-  }
-)
-
-export const Video = connectToRedux(mapStateToProps, mapDispatchToProps)(BaseVideo)

@@ -1,25 +1,10 @@
 import * as React from 'react'
 import styled from '@emotion/styled'
-import { connect as connectToRedux } from 'react-redux'
-import { createStructuredSelector } from 'reselect'
+import { useDispatch } from 'react-redux'
 
-import { State } from 'av/store/state'
-import {
-  getShowSettings,
-  getSkipBackTime,
-  getSkipForwardTime,
-  getScaleVideo,
-  getMediaIsAudio,
-  getMediaPlaying
-} from 'av/store/selectors'
-import { Dispatch } from 'av/store'
-import {
-  setShowSettings,
-  setSkipBackTime,
-  setSkipForwardTime,
-  setScaleVideo
-} from 'av/store/actions/settings'
-import { setMediaPlaying } from 'av/store/actions/media'
+import { useSelector } from 'av/store'
+import { settingsSlice } from 'av/store/slices/settings'
+import { mediaSlice } from 'av/store/slices/media'
 
 import { Modal, ModalButtons } from 'av/components/modal'
 import { ControlButton } from 'av/components/control-button'
@@ -33,26 +18,15 @@ const Row = styled.div`
   width: 100%;
 `
 
-interface StateProps {
-  readonly showSettings: boolean
-  readonly skipBackTime: number
-  readonly skipForwardTime: number
-  readonly scaleVideo: boolean
-  readonly mediaIsAudio: boolean
-  readonly mediaPlaying: boolean
-}
+export const Settings: React.FC = () => {
+  const show = useSelector(state => state.settings.show)
+  const skipBackTime = useSelector(state => state.settings.skipBackTime)
+  const skipForwardTime = useSelector(state => state.settings.skipForwardTime)
+  const scaleVideo = useSelector(state => state.settings.scaleVideo)
+  const mediaType = useSelector(state => state.media.type)
+  const mediaPlaying = useSelector(state => state.media.playing)
+  const dispatch = useDispatch()
 
-interface DispatchProps {
-  readonly setShowSettings: (showSettings: boolean) => void
-  readonly setSkipBackTime: (skipBackTime: number) => void
-  readonly setSkipForwardTime: (skipForwardTime: number) => void
-  readonly setScaleVideo: (scaleVideo: boolean) => void
-  readonly setMediaPlaying: (mediaPlaying: boolean) => void
-}
-
-type Props = StateProps & DispatchProps
-
-const BaseSettings: React.FC<Props> = props => {
   /**
    * Automatic play-pausing
    */
@@ -61,31 +35,31 @@ const BaseSettings: React.FC<Props> = props => {
 
   React.useEffect(() => {
     // Dont play-pause if the media is audio.
-    if (props.mediaIsAudio) {
+    if (mediaType === 'audio') {
       wasPlaying.current = false
       return
     }
 
-    if (props.showSettings && props.mediaPlaying) {
-      props.setMediaPlaying(false)
+    if (show && mediaPlaying) {
+      dispatch(mediaSlice.actions.setPlaying(false))
       wasPlaying.current = true
-    } else if (!props.showSettings && wasPlaying.current) {
-      props.setMediaPlaying(true)
+    } else if (!show && wasPlaying.current) {
+      dispatch(mediaSlice.actions.setPlaying(false))
       wasPlaying.current = false
     }
-  }, [props.showSettings, props.mediaIsAudio])
+  }, [show, mediaType])
 
   /**
    * Component
    */
 
   return (
-    <Modal show={props.showSettings}>
+    <Modal show={show}>
       <Row>
         <span>Skip forward</span>
         <NumericInput
-          value={props.skipForwardTime}
-          setValue={props.setSkipForwardTime}
+          value={skipForwardTime}
+          setValue={value => dispatch(settingsSlice.actions.setSkipForwardTime(value))}
           suffix=' seconds'
         />
       </Row>
@@ -93,50 +67,25 @@ const BaseSettings: React.FC<Props> = props => {
       <Row>
         <span>Skip back</span>
         <NumericInput
-          value={Math.abs(props.skipBackTime)}
-          setValue={skipBackTime => props.setSkipBackTime(-skipBackTime)}
+          value={Math.abs(skipBackTime)}
+          setValue={value => dispatch(settingsSlice.actions.setSkipForwardTime(value))}
           suffix=' seconds'
         />
       </Row>
 
       <Row>
         <span>Scale video</span>
-        <Switch isOn={props.scaleVideo} setIsOn={props.setScaleVideo} />
+        <Switch
+          isOn={scaleVideo}
+          setIsOn={on => dispatch(settingsSlice.actions.setScaleVideo(on))}
+        />
       </Row>
 
       <ModalButtons>
-        <ControlButton onClick={() => props.setShowSettings(false)}>Close</ControlButton>
+        <ControlButton onClick={() => dispatch(settingsSlice.actions.setShow(false))}>
+          Close
+        </ControlButton>
       </ModalButtons>
     </Modal>
   )
 }
-const mapStateToProps = createStructuredSelector<State, StateProps>({
-  showSettings: getShowSettings,
-  skipBackTime: getSkipBackTime,
-  skipForwardTime: getSkipForwardTime,
-  scaleVideo: getScaleVideo,
-  mediaIsAudio: getMediaIsAudio,
-  mediaPlaying: getMediaPlaying
-})
-
-const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => (
-  {
-    setShowSettings: (showSettings: boolean): void => {
-      dispatch(setShowSettings(showSettings))
-    },
-    setSkipBackTime: (skipBackTime: number): void => {
-      dispatch(setSkipBackTime(skipBackTime))
-    },
-    setSkipForwardTime: (skipForwardTime: number): void => {
-      dispatch(setSkipForwardTime(skipForwardTime))
-    },
-    setScaleVideo: (scaleVideo: boolean): void => {
-      dispatch(setScaleVideo(scaleVideo))
-    },
-    setMediaPlaying: (mediaPlaying: boolean): void => {
-      dispatch(setMediaPlaying(mediaPlaying))
-    }
-  }
-)
-
-export const Settings = connectToRedux(mapStateToProps, mapDispatchToProps)(BaseSettings)

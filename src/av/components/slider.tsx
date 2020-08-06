@@ -47,9 +47,9 @@ interface Props {
 
 export const Slider: React.FC<Props> = props => {
   const bar = React.useRef<HTMLDivElement | null>(null)
-  const barWidth = useResizeObserver({ ref: bar }).width || 0
+  const barWidth = useResizeObserver({ ref: bar }).width ?? 0
   const thumb = React.useRef<HTMLDivElement | null>(null)
-  const thumbWidth = useResizeObserver({ ref: thumb }).width || 0
+  const thumbWidth = useResizeObserver({ ref: thumb }).width ?? 0
 
   const mouseMoveListener = React.useRef<(event: MouseEvent) => void>()
   const mouseUpListener = React.useRef<() => void>()

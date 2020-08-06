@@ -1,21 +1,14 @@
 import * as React from 'react'
 import styled from '@emotion/styled'
-import { connect as connectToRedux } from 'react-redux'
-import { createStructuredSelector } from 'reselect'
+import { useDispatch } from 'react-redux'
 import useResizeObserver from 'use-resize-observer'
 
 import { TRANSITION_DURATION, BACKGROUND_COLOR_TRANSITION_DURATION_MS } from './globals'
 
-import { State } from './store/state'
-import {
-  getBackgroundColor,
-  getDraggingEnabled,
-  getMediaIsAudio,
-  getMediaIsVideo
-} from './store/selectors'
-import { Dispatch } from './store'
-import { setAppSize } from './store/actions/general'
+import { useSelector } from 'av/store'
+import { generalSlice, getBackgroundColor } from 'av/store/slices/general'
 import { randomizeBackgroundColor, openFile } from './store/thunks'
+import { getDraggingEnabled } from './store/cross-selectors'
 
 import { Pane } from './components/pane'
 
@@ -59,9 +52,12 @@ interface DispatchProps {
   readonly openFile: (fileList: FileList) => void
 }
 
-type Props = StateProps & DispatchProps
+export const App: React.FC = () => {
+  const backgroundColor = useSelector(getBackgroundColor)
+  const draggingEnabled = useSelector(getDraggingEnabled)
+  const mediaType = useSelector(state => state.media.type)
+  const dispatch = useDispatch()
 
-const BaseApp: React.FC<Props> = props => {
   const wrapper = React.useRef<HTMLDivElement | null>(null)
   const [dragging, setDragging] = React.useState(false)
 
@@ -72,20 +68,22 @@ const BaseApp: React.FC<Props> = props => {
     ref: wrapper,
     onResize: ({ width, height }) => {
       if (!width || !height) return
-      props.setAppSize(width, height)
+      dispatch(generalSlice.actions.setAppSize({ width, height }))
     }
   })
 
-  React.useEffect(props.randomizeBackgroundColor, [])
+  React.useEffect(() => {
+    dispatch(randomizeBackgroundColor())
+  }, [])
 
   return (
     <Wrapper
       ref={wrapper}
-      style={{ backgroundColor: props.backgroundColor }}
-      onDragEnter={() => setDragging(props.draggingEnabled)}
+      style={{ backgroundColor: backgroundColor }}
+      onDragEnter={() => setDragging(draggingEnabled)}
       onContextMenu={event => event.preventDefault()}
     >
-      {props.mediaIsAudio ? <Audio /> : (props.mediaIsVideo ? <Video /> : <File />)}
+      {mediaType === 'audio' ? <Audio /> : (mediaType === 'video' ? <Video /> : <File />)}
 
       <Settings />
       <BrowserDialog />
@@ -96,35 +94,12 @@ const BaseApp: React.FC<Props> = props => {
         onDragLeave={() => setDragging(false)}
         onDrop={event => {
           event.preventDefault()
-          if (!props.draggingEnabled) return
+          if (!draggingEnabled) return
 
-          props.openFile(event.dataTransfer.files)
+          dispatch(openFile(event.dataTransfer.files))
           setDragging(false)
         }}
       />
     </Wrapper>
   )
 }
-
-const mapStateToProps = createStructuredSelector<State, StateProps>({
-  backgroundColor: getBackgroundColor,
-  draggingEnabled: getDraggingEnabled,
-  mediaIsAudio: getMediaIsAudio,
-  mediaIsVideo: getMediaIsVideo
-})
-
-const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => (
-  {
-    setAppSize: (width: number, height: number): void => {
-      dispatch(setAppSize(width, height))
-    },
-    randomizeBackgroundColor: (): void => {
-      dispatch(randomizeBackgroundColor())
-    },
-    openFile: (fileList: FileList): void => {
-      dispatch(openFile(fileList))
-    }
-  }
-)
-
-export const App = connectToRedux(mapStateToProps, mapDispatchToProps)(BaseApp)
