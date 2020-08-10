@@ -1,4 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
+import type { PayloadAction } from '@reduxjs/toolkit'
 
 import { MINIMUM_SKIP_TIME, MAXIMUM_SKIP_TIME } from 'av/globals'
 import { boundValue } from 'av/util/bound-value'

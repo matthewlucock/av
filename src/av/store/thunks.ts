@@ -1,11 +1,11 @@
-import { Action, ThunkAction } from '@reduxjs/toolkit'
+import type { Action, ThunkAction } from '@reduxjs/toolkit'
 
 import { getBaseFileType } from 'av/util/get-base-file-type'
 import { isFileFromElectron } from 'av/util/is-file-from-electron'
 import { confirm, error } from 'av/env/dialog'
 import { retrieveAudioMetadata } from 'av/audio-metadata'
 
-import { RootState } from '.'
+import type { RootState } from '.'
 import { generalSlice } from './slices/general'
 import { mediaSlice, getMediaFinished, getMediaStopConfirmText } from './slices/media'
 

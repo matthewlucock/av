@@ -1,8 +1,9 @@
-import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit'
+import { createSlice, createSelector } from '@reduxjs/toolkit'
+import type { PayloadAction } from '@reduxjs/toolkit'
 
 import { MINIMUM_PLAYBACK_RATE, MAXIMUM_PLAYBACK_RATE } from 'av/globals'
 import { boundValue } from 'av/util/bound-value'
-import { ProcessedAudioMetadata } from 'av/audio-metadata'
+import type { ProcessedAudioMetadata } from 'av/audio-metadata'
 
 /**
  * State

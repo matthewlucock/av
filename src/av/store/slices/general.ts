@@ -1,4 +1,5 @@
-import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit'
+import { createSlice, createSelector } from '@reduxjs/toolkit'
+import type { PayloadAction } from '@reduxjs/toolkit'
 import Color from 'color'
 
 import { BACKGROUND_COLOR_SATURATION, BACKGROUND_COLOR_LIGHTNESS } from 'av/globals'

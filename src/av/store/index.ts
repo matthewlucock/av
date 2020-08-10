@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { useSelector as baseUseSelector, TypedUseSelectorHook } from 'react-redux'
+import { useSelector as baseUseSelector } from 'react-redux'
+import type { TypedUseSelectorHook } from 'react-redux'
 
 import { generalSlice } from './slices/general'
 import { settingsSlice } from './slices/settings'
