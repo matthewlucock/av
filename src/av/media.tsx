@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import { MOVE_THROUGH_RATE } from './globals'
 import { electronResizeWindow } from 'av/env/electron-window'
 
-import { useSelector } from 'av/store'
+import { store, useSelector } from 'av/store'
 import { mediaSlice } from 'av/store/slices/media'
 
 type Props = Readonly<{ nativeMedia: React.ElementType, onClick?: () => void }>
@@ -14,8 +14,6 @@ export const Media: React.FC<Props> = props => {
   const name = useSelector(({ media }) => media.name)
   const loaded = useSelector(({ media }) => media.loaded)
   const playing = useSelector(({ media }) => media.playing)
-  // TODO: Stop constant re-renders
-  const playbackTimeInStore = useSelector(({ media }) => media.playbackTime)
   const playbackTimeNeedsUpdating = useSelector(({ media }) => media.playbackTimeNeedsUpdating)
   const playbackRate = useSelector(({ media }) => media.playbackRate)
   const volume = useSelector(({ media }) => media.volume)
@@ -25,12 +23,16 @@ export const Media: React.FC<Props> = props => {
   const nativeMedia = React.useRef<HTMLMediaElement | null>(null)
   const wasPlaying = React.useRef<boolean>(false)
 
+  /**
+   * Window/document title
+   */
+
   const originalTitle = React.useRef(document.title)
   React.useEffect(() => {
-    const clear = () => {
+    const clear = (): void => {
       document.title = originalTitle.current
     }
-  
+
     if (name) {
       document.title = `${originalTitle.current} — ${name}`
     } else {
@@ -38,7 +40,7 @@ export const Media: React.FC<Props> = props => {
     }
 
     return clear
-  }, [ name ])
+  }, [name])
 
   /**
    * Playback
@@ -72,7 +74,7 @@ export const Media: React.FC<Props> = props => {
 
   React.useEffect(() => {
     if (nativeMedia.current && playbackTimeNeedsUpdating) {
-      nativeMedia.current.currentTime = playbackTimeInStore
+      nativeMedia.current.currentTime = store.getState().media.playbackTime
       dispatch(mediaSlice.actions.setPlaybackTimeNeedsUpdating(false))
     }
   }, [playbackTimeNeedsUpdating])
