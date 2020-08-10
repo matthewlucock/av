@@ -11,8 +11,10 @@ type Props = Readonly<{ nativeMedia: React.ElementType, onClick?: () => void }>
 
 export const Media: React.FC<Props> = props => {
   const url = useSelector(({ media }) => media.url)
+  const name = useSelector(({ media }) => media.name)
   const loaded = useSelector(({ media }) => media.loaded)
   const playing = useSelector(({ media }) => media.playing)
+  // TODO: Stop constant re-renders
   const playbackTimeInStore = useSelector(({ media }) => media.playbackTime)
   const playbackTimeNeedsUpdating = useSelector(({ media }) => media.playbackTimeNeedsUpdating)
   const playbackRate = useSelector(({ media }) => media.playbackRate)
@@ -22,6 +24,21 @@ export const Media: React.FC<Props> = props => {
 
   const nativeMedia = React.useRef<HTMLMediaElement | null>(null)
   const wasPlaying = React.useRef<boolean>(false)
+
+  const originalTitle = React.useRef(document.title)
+  React.useEffect(() => {
+    const clear = () => {
+      document.title = originalTitle.current
+    }
+  
+    if (name) {
+      document.title = `${originalTitle.current} — ${name}`
+    } else {
+      clear()
+    }
+
+    return clear
+  }, [ name ])
 
   /**
    * Playback

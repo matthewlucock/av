@@ -60,7 +60,14 @@ export const openFile = (fileList: FileList): AppThunk => async (dispatch, getSt
     if (metadata) dispatch(mediaSlice.actions.setAudioMetadata(metadata))
   }
 
-  dispatch(mediaSlice.actions.setMedia({ url: URL.createObjectURL(file), type, electronPath }))
+  dispatch(
+    mediaSlice.actions.setMedia({
+      url: URL.createObjectURL(file),
+      type,
+      name: file.name,
+      electronPath
+    })
+  )
 }
 
 export const stopMedia = (): AppThunk => async (dispatch, getState) => {

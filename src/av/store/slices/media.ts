@@ -11,6 +11,7 @@ import { ProcessedAudioMetadata } from 'av/audio-metadata'
 type MediaDetails = Readonly<{
   url: string
   type: 'audio' | 'video' | ''
+  name: string
   electronPath: string
 }>
 type LoadedData = Readonly<{ duration: number }>
@@ -29,6 +30,7 @@ type SliceState = MediaDetails & LoadedData & Readonly<{
 const initialState: SliceState = {
   url: '',
   type: '',
+  name: '',
   electronPath: '',
   audioMetadata: { artist: '', title: '', coverArtUrl: '', color: '' },
   loaded: false,
@@ -55,6 +57,7 @@ export const mediaSlice = createSlice({
     setMedia: (state, { payload }: PayloadAction<MediaDetails>) => {
       state.url = payload.url
       state.type = payload.type
+      state.name = payload.name
       state.electronPath = payload.electronPath
     },
 
