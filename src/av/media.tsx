@@ -7,7 +7,7 @@ import { electronResizeWindow } from 'av/env/electron-window'
 import { useSelector } from 'av/store'
 import { mediaSlice } from 'av/store/slices/media'
 
-type Props = Readonly<{ nativeMedia: React.ElementType}>
+type Props = Readonly<{ nativeMedia: React.ElementType, onClick?: () => void }>
 
 export const Media: React.FC<Props> = props => {
   const url = useSelector(({ media }) => media.url)
@@ -157,6 +157,7 @@ export const Media: React.FC<Props> = props => {
           electronResizeWindow()
         }
       }}
+      onClick={props.onClick}
     />
   )
 }

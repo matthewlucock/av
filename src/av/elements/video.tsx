@@ -3,6 +3,7 @@ import styled from '@emotion/styled'
 import { useDispatch } from 'react-redux'
 
 import { useSelector } from 'av/store'
+import { mediaSlice } from 'av/store/slices/media'
 import { randomizeBackgroundColor } from 'av/store/thunks'
 
 import { Pane } from 'av/components/pane'
@@ -33,7 +34,7 @@ export const Video: React.FC = () => {
 
   return (
     <Wrapper scaleVideo={scaleVideo}>
-      <Media nativeMedia={NativeVideo} />
+      <Media nativeMedia={NativeVideo} onClick={() => dispatch(mediaSlice.actions.playPause())} />
       <Controls />
     </Wrapper>
   )
