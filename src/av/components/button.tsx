@@ -29,3 +29,7 @@ export const Button = styled.div<Props>`
     }
   `}
 `
+
+export const StandaloneButton = styled(Button)`
+  border-radius: 1em;
+`
