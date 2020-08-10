@@ -83,7 +83,7 @@ export const Audio: React.FC = () => {
 
   return (
     <Wrapper style={{ background: metadataColor }}>
-      <Media nativeMedia={NativeAudio} />
+      <Media />
       {hasMetadata ? <AudioMetadata /> : <Icon icon={faMusic} />}
       <Controls />
     </Wrapper>

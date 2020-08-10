@@ -34,7 +34,7 @@ export const Video: React.FC = () => {
 
   return (
     <Wrapper scaleVideo={scaleVideo}>
-      <Media nativeMedia={NativeVideo} onClick={() => dispatch(mediaSlice.actions.playPause())} />
+      <Media />
       <Controls />
     </Wrapper>
   )

@@ -7,9 +7,8 @@ import { electronResizeWindow } from 'av/env/electron-window'
 import { store, useSelector } from 'av/store'
 import { mediaSlice } from 'av/store/slices/media'
 
-type Props = Readonly<{ nativeMedia: React.ElementType, onClick?: () => void }>
-
-export const Media: React.FC<Props> = props => {
+export const Media: React.FC = () => {
+  const type = useSelector(({ media }) => media.type)
   const url = useSelector(({ media }) => media.url)
   const name = useSelector(({ media }) => media.name)
   const loaded = useSelector(({ media }) => media.loaded)
@@ -162,21 +161,35 @@ export const Media: React.FC<Props> = props => {
    * Component
    */
 
-  return (
-    <props.nativeMedia
-      ref={nativeMedia}
-      src={url}
-      onLoadedData={() => {
-        if (!nativeMedia.current) return
-        dispatch(mediaSlice.actions.loaded({ duration: nativeMedia.current.duration }))
+  const onLoadedData = (): void => {
+    if (!nativeMedia.current) return
+    dispatch(mediaSlice.actions.loaded({ duration: nativeMedia.current.duration }))
 
-        if (nativeMedia.current instanceof HTMLVideoElement) {
-          electronResizeWindow(nativeMedia.current.videoWidth, nativeMedia.current.videoHeight)
-        } else {
-          electronResizeWindow()
-        }
-      }}
-      onClick={props.onClick}
-    />
-  )
+    // Type guard is necessary to reference video-only properties as opposed to simply evaluating
+    // `type === 'video'`.
+    if (nativeMedia.current instanceof HTMLVideoElement) {
+      electronResizeWindow(nativeMedia.current.videoWidth, nativeMedia.current.videoHeight)
+    } else {
+      electronResizeWindow()
+    }
+  }
+
+  // If there is a good, simple way to create a DOM element of a dynamic name with JSX, then I don't
+  // know what it is.
+
+  if (type === 'audio') {
+    return <audio ref={nativeMedia} src={url} onLoadedData={onLoadedData} />
+  } else if (type === 'video') {
+    // Because `HTMLVideoElement` is an extension of `HTMLMediaElement`, `HTMLVideoElement`
+    // satisfies `HTMLMediaElement`. However, the converse is untrue, so a ref with value of type
+    // `HTMLMediaElement` does not satisfy a ref prop with value of type `HTMLVideoElement`.
+    // The same holds for a ref with value of type `HTMLAudioElement | HTMLVideoElement`.
+    // Providing the DOM node to the ref directly, rather than providing the ref to the DOM node,
+    // solves this issue and ensures correct typing.
+    // Interestingly, `HTMLMediaElement` satisfies `HTMLAudioElement`, rendering this only
+    // necessary for `HTMLVideoElement`.
+    return <video ref={node => nativeMedia.current = node} src={url} onLoadedData={onLoadedData} />
+  } else {
+    return null
+  }
 }
