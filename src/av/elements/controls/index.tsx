@@ -1,117 +1,61 @@
 import * as React from 'react'
 import styled from '@emotion/styled'
-import { useDispatch } from 'react-redux'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  faUndo,
-  faRedo,
-  faBackward,
-  faForward,
-  faCog,
-  faStop
-} from '@fortawesome/free-solid-svg-icons'
 
-import {
-  CONTROLS_VISIBILITY_TIMEOUT,
-  TRANSITION_DURATION_MS,
-  TRANSITION_DURATION,
-  CONTROLS_FOREGROUND_COLOR,
-  CONTROLS_BACKGROUND_COLOR,
-  CONTROL_HEIGHT,
-  CONTROL_ICON_OFFSET
-} from 'av/globals'
+import { transitionStyles, CONTROLS_VISIBILITY_TIMEOUT } from 'av/globals'
 
 import { useSelector } from 'av/store'
-import { settingsSlice } from 'av/store/slices/settings'
-import { mediaSlice, getMediaFinished } from 'av/store/slices/media'
-import { stopMedia } from 'av/store/thunks'
-import { getAutoHideMediaControls } from 'av/store/cross-selectors'
 
-import { RoundControlButton } from 'av/components/control-button'
 import { PlayPause } from './play-pause'
-import { SkipThrough } from './skip-through'
-import { MoveThrough } from './move-through'
+import { SkipBack, SkipForward } from './skip-through'
+import { Rewind, FastForward } from './move-through'
 import { PlaybackBar } from './playback-bar'
 import { Volume } from './volume'
-import { PlaybackRate } from './playback-rate'
+import { PlaybackTime } from './playback-time'
+import { Settings } from './settings'
+import { Stop } from './stop'
 
-const BOTTOM_OFFSET = '2vh'
-const COLLAPSED_TRANSLATION_LENGTH = `calc(${CONTROL_HEIGHT} + ${BOTTOM_OFFSET})`
-
-const Wrapper = styled.div`
-  font-size: 1.2em;
-  display: flex;
-  justify-content: center;
-  position: absolute;
-  bottom: ${BOTTOM_OFFSET};
-  width: 100%;
-`
-
-interface BodyProps {
-  readonly visible: boolean
-  readonly expanded: boolean
-}
-
-const Body = styled.div<BodyProps>`
+type WrapperProps = Readonly<{ visible: boolean }>
+const Wrapper = styled.div<WrapperProps>`
+  font-size: 1.5em;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 70%;
-  padding: 2em 5em 0;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, .75);
   opacity: ${props => props.visible ? 1 : 0};
-  transform: ${props => !props.expanded && `translateY(${COLLAPSED_TRANSLATION_LENGTH})`};
-  transition: opacity ${TRANSITION_DURATION};
-
-  & > :not(:last-child) {
-    margin-bottom: .5em;
-  }
+  box-shadow: 0 0 2em black;
+  backdrop-filter: blur(10px);
+  transition-property: opacity;
+  ${transitionStyles}
 `
 
-const EXPAND_KEYFRAMES = [
-  { transform: `translateY(${COLLAPSED_TRANSLATION_LENGTH})` },
-  { transform: 'translateY(0)' }
-]
-
-const Row = styled.div`
+const Body = styled.div`
   display: flex;
   justify-content: center;
-  border-radius: 1em;
-  align-items: center;
-  background: ${CONTROLS_BACKGROUND_COLOR.string()};
-  color: ${CONTROLS_FOREGROUND_COLOR.string()};
 `
 
-const SeparatedRow = styled(Row)`
-  & > :not(:last-child) {
-    margin-right: 1.5em;
-  }
+const Group = styled.div`
+  display: flex;
 `
 
-const RewindIcon = styled(FontAwesomeIcon)`
-  position: relative;
-  right: ${CONTROL_ICON_OFFSET};
+const LeftGroup = styled(Group)`
+  position: absolute;
+  left: .75em;
 `
 
-const FastForwardIcon = styled(FontAwesomeIcon)`
-  position: relative;
-  left: ${CONTROL_ICON_OFFSET};
+const RightGroup = styled(Group)`
+  position: absolute;
+  right: .75em;
 `
 
 export const Controls: React.FC = () => {
-  const showSettings = useSelector(state => state.settings.show)
-  const skipBackTime = useSelector(state => state.settings.skipBackTime)
-  const skipForwardTime = useSelector(state => state.settings.skipForwardTime)
-  const playing = useSelector(state => state.media.playing)
-  const playbackTime = useSelector(state => state.media.playbackTime)
-  const finished = useSelector(getMediaFinished)
-  const autoHide = useSelector(getAutoHideMediaControls)
-  const dispatch = useDispatch()
-
-  const body = React.useRef<HTMLDivElement | null>(null)
+  const playing = useSelector(({ media }) => media.playing)
+  const autoHide = useSelector(state => (
+    state.media.type === 'video' && !state.settings.showSettings
+  ))
 
   const [visible, setVisible] = React.useState<boolean>(true)
-  const [expanded, setExpanded] = React.useState<boolean>(!autoHide)
 
   const [initialized, setInitialized] = React.useState<boolean>(false)
   React.useEffect(() => setInitialized(true), [])
@@ -157,70 +101,27 @@ export const Controls: React.FC = () => {
    */
 
   return (
-    <Wrapper>
-      <Body
-        ref={body}
-        visible={visible}
-        expanded={expanded}
-        onMouseOver={() => {
-          if (!body.current || !autoHide) return
+    <Wrapper visible={visible}>
+      <PlaybackBar />
 
-          if (expanded) return
-          setExpanded(true)
-          if (!visible) return
-
-          body.current.animate(EXPAND_KEYFRAMES, {
-            duration: TRANSITION_DURATION_MS,
-            easing: 'ease-out'
-          })
-        }}
-        onTransitionEnd={() => {
-          if (!visible) setExpanded(false)
-        }}
-      >
-        <Row>
-          <SkipThrough time={skipBackTime} disabled={!playbackTime}>
-            <FontAwesomeIcon icon={faUndo} />
-          </SkipThrough>
-
-          <MoveThrough
-            action={() => dispatch(mediaSlice.actions.rewind())}
-            disabled={!playbackTime}
-          >
-            <RewindIcon icon={faBackward} />
-          </MoveThrough>
-
-          <PlayPause />
-
-          <MoveThrough
-            action={() => dispatch(mediaSlice.actions.fastForward())}
-            disabled={finished}
-          >
-            <FastForwardIcon icon={faForward} />
-          </MoveThrough>
-
-          <SkipThrough time={skipForwardTime} disabled={finished}>
-            <FontAwesomeIcon icon={faRedo} />
-          </SkipThrough>
-        </Row>
-
-        <PlaybackBar />
-
-        <SeparatedRow>
-          <RoundControlButton
-            active={showSettings}
-            onClick={() => dispatch(settingsSlice.actions.setShow(true))}
-          >
-            <FontAwesomeIcon icon={faCog} />
-          </RoundControlButton>
-
+      <Body>
+        <LeftGroup>
           <Volume />
-          <PlaybackRate />
+          <PlaybackTime />
+        </LeftGroup>
 
-          <RoundControlButton onClick={() => dispatch(stopMedia())}>
-            <FontAwesomeIcon icon={faStop} />
-          </RoundControlButton>
-        </SeparatedRow>
+        <Group>
+          <SkipBack />
+          <Rewind />
+          <PlayPause />
+          <FastForward />
+          <SkipForward />
+        </Group>
+
+        <RightGroup>
+          <Settings />
+          <Stop />
+        </RightGroup>
       </Body>
     </Wrapper>
   )

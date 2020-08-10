@@ -4,25 +4,21 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
  * State
  */
 
-interface DialogDetails {
-  readonly message: string
-  readonly confirm?: boolean
-}
+type DialogDetails = Readonly<{
+  message: string
+  confirm?: boolean
+}>
 
-interface SliceState extends DialogDetails {
-  readonly show: boolean
-  readonly result: boolean | undefined
-}
+type SliceState = DialogDetails & Readonly<{
+  show: boolean
+  result: boolean | null
+}>
 
 const initialState: SliceState = {
   show: false,
   message: '',
   confirm: false,
-  result: undefined
-}
-
-interface SliceRootState {
-  readonly browserDialog: SliceState
+  result: null
 }
 
 /**
@@ -34,20 +30,19 @@ export const browserDialogSlice = createSlice({
   initialState,
 
   reducers: {
-    setDialog (state, action: PayloadAction<DialogDetails>) {
+    setDialog: (state, { payload }: PayloadAction<DialogDetails>) => {
       state.show = true
-      state.message = action.payload.message
-      state.confirm = action.payload.confirm
-      state.result = undefined
+      state.message = payload.message
+      state.confirm = payload.confirm
+      state.result = null
     },
 
-    setShow (state, action: PayloadAction<boolean>) {
-      state.show = action.payload
+    setShow: (state, { payload }: PayloadAction<boolean>) => {
+      state.show = payload
     },
 
-    setResult (state, action: PayloadAction<boolean>) {
-      state.show = false
-      state.result = action.payload
+    storeResult: (state, { payload }: PayloadAction<boolean>) => {
+      state.result = payload
     }
   }
 })

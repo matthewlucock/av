@@ -1,10 +1,10 @@
 declare const __ELECTRON__: boolean
 
-declare interface RawAudioMetadata {
-  readonly artist?: string
-  readonly title?: string
-  readonly picture?: Blob
-}
+declare type RawAudioMetadata = Readonly<{
+  artist?: string
+  title?: string
+  picture?: Blob
+}>
 
 declare module 'parse-audio-metadata' {
   const parseAudioMetadata: (blob: Blob) => RawAudioMetadata

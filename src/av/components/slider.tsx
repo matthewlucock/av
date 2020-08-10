@@ -2,15 +2,9 @@ import * as React from 'react'
 import styled from '@emotion/styled'
 import useResizeObserver from 'use-resize-observer'
 
-import { CONTROLS_TINTED_FOREGROUND_COLOR, CONTROLS_SECONDARY_BACKGROUND_COLOR } from 'av/globals'
-
 const Wrapper = styled.div`
   width: 100%;
-  padding: .5em;
   cursor: pointer;
-`
-
-const Body = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
@@ -21,29 +15,29 @@ const Bar = styled.div`
   width: 100%;
   height: .15em;
   border-radius: 1em;
-  background: ${CONTROLS_SECONDARY_BACKGROUND_COLOR.string()};
+  background: hsl(0, 0%, 75%);
   cursor: pointer;
 `
 
 const ValueBar = styled(Bar)`
   position: absolute;
-  background: ${CONTROLS_TINTED_FOREGROUND_COLOR.string()};
+  background: hsl(0, 0%, 90%);
 `
 
 const Thumb = styled.div`
   position: absolute;
-  height: .5em;
   width: .5em;
+  height: .5em;
   border-radius: 100%;
-  background: currentColor;
+  background: hsl(0, 0%, 100%);
 `
 
-interface Props {
-  readonly value: number
-  readonly maximum: number
-  readonly changeValue: (newValue: number) => void
-  readonly draggingCallback?: (dragging: boolean) => void
-}
+type Props = Readonly<{
+  value: number
+  maximum: number
+  changeValue: (newValue: number) => void
+  draggingCallback?: (dragging: boolean) => void
+}>
 
 export const Slider: React.FC<Props> = props => {
   const bar = React.useRef<HTMLDivElement | null>(null)
@@ -114,16 +108,14 @@ export const Slider: React.FC<Props> = props => {
         ))
       }}
     >
-      <Body>
-        <Bar ref={bar} />
-        <ValueBar style={{ width: `${offset}px` }} />
+      <Bar ref={bar} />
+      <ValueBar style={{ width: `${offset}px` }} />
 
-        <Thumb
-          ref={thumb}
-          onMouseDown={() => setDragging(true)}
-          style={{ left: `${offset}px` }}
-        />
-      </Body>
+      <Thumb
+        ref={thumb}
+        onMouseDown={() => setDragging(true)}
+        style={{ left: `${offset}px` }}
+      />
     </Wrapper>
   )
 }

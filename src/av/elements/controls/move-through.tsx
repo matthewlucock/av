@@ -1,26 +1,52 @@
 import * as React from 'react'
+import styled from '@emotion/styled'
 import { useDispatch } from 'react-redux'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBackward, faForward } from '@fortawesome/free-solid-svg-icons'
 
-import { mediaSlice } from 'av/store/slices/media'
+import { CONTROL_ICON_OFFSET } from 'av/globals'
 
-import { RoundControlButton } from 'av/components/control-button'
+import { useSelector } from 'av/store'
+import { mediaSlice, getMediaFinished } from 'av/store/slices/media'
 
-interface Props {
-  readonly action: () => void
-  readonly disabled?: boolean
-  readonly children: React.ReactElement
-}
+import { Button } from 'av/components/button'
 
-export const MoveThrough: React.FC<Props> = props => {
+const RewindIcon = styled(FontAwesomeIcon)`
+  position: relative;
+  right: ${CONTROL_ICON_OFFSET};
+`
+
+const FastForwardIcon = styled(FontAwesomeIcon)`
+  position: relative;
+  left: ${CONTROL_ICON_OFFSET};
+`
+
+export const Rewind: React.FC = () => {
+  const playbackTime = useSelector(({ media }) => media.playbackTime)
   const dispatch = useDispatch()
 
   return (
-    <RoundControlButton
-      disabled={props.disabled}
-      onMouseDown={props.action}
-      onMouseUp={() => dispatch(mediaSlice.actions.clearMoveThrough())}
+    <Button
+      disabled={!playbackTime}
+      onMouseDown={() => dispatch(mediaSlice.actions.setMoveThrough('rewind'))}
+      onMouseUp={() => dispatch(mediaSlice.actions.setMoveThrough(''))}
     >
-      {props.children}
-    </RoundControlButton>
+      <RewindIcon icon={faBackward} />
+    </Button>
+  )
+}
+
+export const FastForward: React.FC = () => {
+  const finished = useSelector(getMediaFinished)
+  const dispatch = useDispatch()
+
+  return (
+    <Button
+      disabled={finished}
+      onMouseDown={() => dispatch(mediaSlice.actions.setMoveThrough('fastForward'))}
+      onMouseUp={() => dispatch(mediaSlice.actions.setMoveThrough(''))}
+    >
+      <FastForwardIcon icon={faForward} />
+    </Button>
   )
 }

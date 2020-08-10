@@ -1,10 +1,6 @@
 import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit'
 
-import {
-  MINIMUM_PLAYBACK_RATE,
-  MAXIMUM_PLAYBACK_RATE,
-  PLAYBACK_RATE_INCREMENT_VALUE
-} from 'av/globals'
+import { MINIMUM_PLAYBACK_RATE, MAXIMUM_PLAYBACK_RATE } from 'av/globals'
 import { boundValue } from 'av/util/bound-value'
 import { ProcessedAudioMetadata } from 'av/audio-metadata'
 
@@ -12,40 +8,40 @@ import { ProcessedAudioMetadata } from 'av/audio-metadata'
  * State
  */
 
-interface MediaDetails {
-  readonly url: string
-  readonly type: 'audio' | 'video' | ''
-  readonly electronPath: string
-}
+type MediaDetails = Readonly<{
+  url: string
+  type: 'audio' | 'video' | ''
+  electronPath: string
+}>
+type LoadedData = Readonly<{ duration: number }>
 
-interface SliceState extends MediaDetails {
-  readonly audioMetadata: ProcessedAudioMetadata
-  readonly loaded: boolean
-  readonly duration: number
-  readonly playing: boolean
-  readonly playbackTime: number
-  readonly playbackRate: number
-  readonly volume: number
-  readonly moveThrough: 'rewind' | 'fastForward' | ''
-}
+type SliceState = MediaDetails & LoadedData & Readonly<{
+  audioMetadata: ProcessedAudioMetadata
+  loaded: boolean
+  playing: boolean
+  playbackTime: number
+  playbackTimeNeedsUpdating: boolean
+  playbackRate: number
+  volume: number
+  moveThrough: 'rewind' | 'fastForward' | ''
+}>
 
 const initialState: SliceState = {
   url: '',
   type: '',
   electronPath: '',
-  audioMetadata: { artist: '', title: '', coverArtUrl: '', backgroundColor: '' },
+  audioMetadata: { artist: '', title: '', coverArtUrl: '', color: '' },
   loaded: false,
   duration: 0,
-  playing: false,
+  playing: true,
   playbackTime: 0,
+  playbackTimeNeedsUpdating: false,
   playbackRate: 1,
   volume: 1,
   moveThrough: ''
 }
 
-interface SliceRootState {
-  readonly media: SliceState
-}
+type SliceRootState = Readonly<{ media: SliceState }>
 
 /**
  * Slice
@@ -56,62 +52,56 @@ export const mediaSlice = createSlice({
   initialState,
 
   reducers: {
-    setMedia (state, action: PayloadAction<MediaDetails>) {
-      state.url = action.payload.url
-      state.type = action.payload.type
-      state.electronPath = action.payload.electronPath
+    setMedia: (state, { payload }: PayloadAction<MediaDetails>) => {
+      state.url = payload.url
+      state.type = payload.type
+      state.electronPath = payload.electronPath
     },
 
-    setAudioMetadata (state, action: PayloadAction<ProcessedAudioMetadata>) {
-      state.audioMetadata = action.payload
+    setAudioMetadata: (state, { payload }: PayloadAction<ProcessedAudioMetadata>) => {
+      state.audioMetadata = payload
     },
 
-    loaded (state, action: PayloadAction<{ readonly duration: number }>) {
-      state.duration = action.payload.duration
+    loaded: (state, { payload }: PayloadAction<LoadedData>) => {
+      state.duration = payload.duration
+      state.loaded = true
     },
 
-    setPlaying (state, action: PayloadAction<boolean>) {
-      state.playing = action.payload
+    setPlaying: (state, { payload }: PayloadAction<boolean>) => {
+      state.playing = payload
     },
 
-    playPause (state) {
+    playPause: state => {
       state.playing = !state.playing
     },
 
-    storePlaybackTime (state, action: PayloadAction<number>) {
-      state.playbackTime = boundValue(0, action.payload, state.duration)
+    storePlaybackTime: (state, { payload }: PayloadAction<number>) => {
+      state.playbackTime = boundValue(0, payload, state.duration)
 
       // Pause media upon it finishing.
-      if (state.playing && action.payload === state.duration) state.playing = false
+      if (state.playing && payload === state.duration) {
+        state.playing = false
+        console.log(payload, state.duration)
+      }
     },
 
-    setPlaybackRate (state, action: PayloadAction<number>) {
-      const roundingValue = 1 / PLAYBACK_RATE_INCREMENT_VALUE
-
-      state.playbackRate = boundValue(
-        MINIMUM_PLAYBACK_RATE,
-        Math.round(action.payload * roundingValue) / roundingValue,
-        MAXIMUM_PLAYBACK_RATE
-      )
+    setPlaybackTimeNeedsUpdating: (state, { payload }: PayloadAction<boolean>) => {
+      state.playbackTimeNeedsUpdating = payload
     },
 
-    setVolume (state, action: PayloadAction<number>) {
-      state.volume = boundValue(0, action.payload, 1)
+    setPlaybackRate: (state, { payload }: PayloadAction<number>) => {
+      state.playbackRate = boundValue(MINIMUM_PLAYBACK_RATE, payload, MAXIMUM_PLAYBACK_RATE)
     },
 
-    rewind (state) {
-      state.moveThrough = 'rewind'
+    setVolume: (state, { payload }: PayloadAction<number>) => {
+      state.volume = boundValue(0, payload, 1)
     },
 
-    fastForward (state) {
-      state.moveThrough = 'fastForward'
+    setMoveThrough: (state, { payload }: PayloadAction<SliceState['moveThrough']>) => {
+      state.moveThrough = payload
     },
 
-    clearMoveThrough (state) {
-      state.moveThrough = ''
-    },
-
-    clear (state) {
+    clear: state => {
       Object.assign(state, initialState, { volume: state.volume })
     }
   }
@@ -129,7 +119,7 @@ export const getAudioHasMetadata = createSelector<SliceRootState, ProcessedAudio
   metadata => Object.values(metadata).some(value => value)
 )
 export const getAnimateAudioBackgroundColor = ({ media }: SliceRootState): boolean => (
-  media.playing && !media.audioMetadata.backgroundColor
+  media.playing && !media.audioMetadata.color
 )
 export const getMediaStopConfirmText = ({ media }: SliceRootState): string => (
   `Are you sure you want to stop this ${media.type}?`

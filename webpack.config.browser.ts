@@ -13,10 +13,7 @@ export default merge(base, {
 
   module: {
     rules: [
-      {
-        test: path.resolve('node_modules/electron/index.js'),
-        use: 'null-loader'
-      }
+      { test: path.resolve('node_modules/electron/index.js'), use: 'null-loader' }
     ]
   },
 

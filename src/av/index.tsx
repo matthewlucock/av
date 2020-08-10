@@ -1,11 +1,9 @@
+// eslint-disable-next-line @typescript-eslint/triple-slash-reference
 /// <reference path="./.d.ts" />
 
 import * as React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider as ReduxProvider } from 'react-redux'
-import mitt from 'mitt'
-
-import { EmitterContext } from './contexts'
 
 import { store } from './store'
 
@@ -19,9 +17,7 @@ import 'av_static/index.css'
 const Root: React.FC = () => (
   <React.StrictMode>
     <ReduxProvider store={store}>
-      <EmitterContext.Provider value={mitt()}>
-        <App />
-      </EmitterContext.Provider>
+      <App />
     </ReduxProvider>
   </React.StrictMode>
 )

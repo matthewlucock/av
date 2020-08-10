@@ -1,36 +1,46 @@
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
-
-import { EmitterContext } from 'av/contexts'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUndo, faRedo } from '@fortawesome/free-solid-svg-icons'
 
 import { useSelector } from 'av/store'
-import { mediaSlice } from 'av/store/slices/media'
+import { mediaSlice, getMediaFinished } from 'av/store/slices/media'
 
-import { RoundControlButton } from 'av/components/control-button'
+import { Button } from 'av/components/button'
 
-interface Props {
-  readonly time: number
-  readonly disabled?: boolean
-  readonly children: React.ReactElement
-}
-
-export const SkipThrough: React.FC<Props> = props => {
-  const playbackTime = useSelector(state => state.media.playbackTime)
+export const SkipBack: React.FC = () => {
+  const skipBackTime = useSelector(({ settings }) => settings.skipBackTime)
+  const playbackTime = useSelector(({ media }) => media.playbackTime)
   const dispatch = useDispatch()
 
-  const emitter = React.useContext(EmitterContext)
+  return (
+    <Button
+      disabled={!playbackTime}
+      onClick={() => {
+        dispatch(mediaSlice.actions.storePlaybackTime(playbackTime + skipBackTime))
+        dispatch(mediaSlice.actions.setPlaybackTimeNeedsUpdating(true))
+      }}
+    >
+      <FontAwesomeIcon icon={faUndo} />
+    </Button>
+  )
+}
 
-  const changePlaybackTime = (playbackTime: number): void => {
-    dispatch(mediaSlice.actions.storePlaybackTime(playbackTime))
-    emitter.emit('playback-time-changed', playbackTime)
-  }
+export const SkipForward: React.FC = () => {
+  const skipForwardTime = useSelector(({ settings }) => settings.skipForwardTime)
+  const playbackTime = useSelector(({ media }) => media.playbackTime)
+  const finished = useSelector(getMediaFinished)
+  const dispatch = useDispatch()
 
   return (
-    <RoundControlButton
-      disabled={props.disabled}
-      onClick={() => changePlaybackTime(playbackTime + props.time)}
+    <Button
+      disabled={finished}
+      onClick={() => {
+        dispatch(mediaSlice.actions.storePlaybackTime(playbackTime + skipForwardTime))
+        dispatch(mediaSlice.actions.setPlaybackTimeNeedsUpdating(true))
+      }}
     >
-      {props.children}
-    </RoundControlButton>
+      <FontAwesomeIcon icon={faRedo} />
+    </Button>
   )
 }

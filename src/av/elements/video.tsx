@@ -10,10 +10,7 @@ import { Pane } from 'av/components/pane'
 import { Media } from 'av/media'
 import { Controls } from './controls'
 
-interface WrapperProps {
-  readonly scaleVideo: boolean
-}
-
+type WrapperProps = Readonly<{ scaleVideo: boolean }>
 const Wrapper = styled(Pane)<WrapperProps>`
   display: flex;
   justify-content: center;
@@ -27,7 +24,7 @@ const Wrapper = styled(Pane)<WrapperProps>`
 const NativeVideo = styled.video``
 
 export const Video: React.FC = () => {
-  const scaleVideo = useSelector(state => state.settings.scaleVideo)
+  const scaleVideo = useSelector(({ settings }) => settings.scaleVideo)
   const dispatch = useDispatch()
 
   React.useEffect(() => () => {

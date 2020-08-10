@@ -1,3 +1,4 @@
+import { css } from '@emotion/core'
 import Color from 'color'
 
 export const MINIMUM_PLAYBACK_RATE = 0.1 // Must be greater than 0
@@ -9,8 +10,9 @@ export const MAXIMUM_SKIP_TIME = 60
 export const PLAYBACK_RATE_INCREMENT_VALUE = 0.1
 export const CONTROLS_VISIBILITY_TIMEOUT = 5 * 1000
 
-export const TRANSITION_DURATION_MS = 250
-export const TRANSITION_DURATION = `${TRANSITION_DURATION_MS}ms`
+export const transitionStyles = css`
+  transition-duration: .25s;
+`
 
 export const BACKGROUND_COLOR_SATURATION = 75
 export const BACKGROUND_COLOR_LIGHTNESS = 30
@@ -22,7 +24,7 @@ export const BACKGROUND_COLOR_TRANSITION_HUE_INCREMENT = (
   )
 )
 
-export const AUDIO_METADATA_BACKGROUND_COLOR_LIGHTNESS_MODIFIER = 20
+export const AUDIO_METADATA_BACKGROUND_COLOR_LIGHTNESS_MODIFIER = 10
 
 export const CONTROL_HEIGHT = '2em'
 export const CONTROL_ICON_OFFSET = '.05em'

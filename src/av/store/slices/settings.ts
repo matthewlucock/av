@@ -7,22 +7,18 @@ import { boundValue } from 'av/util/bound-value'
  * State
  */
 
-interface SliceState {
-  readonly show: boolean
-  readonly skipBackTime: number
-  readonly skipForwardTime: number
-  readonly scaleVideo: boolean
-}
+type SliceState = Readonly<{
+  showSettings: boolean
+  skipBackTime: number
+  skipForwardTime: number
+  scaleVideo: boolean
+}>
 
 const initialState: SliceState = {
-  show: false,
+  showSettings: false,
   skipBackTime: -30,
   skipForwardTime: 30,
   scaleVideo: true
-}
-
-interface SliceRootState {
-  readonly settings: SliceState
 }
 
 /**
@@ -34,20 +30,20 @@ export const settingsSlice = createSlice({
   initialState,
 
   reducers: {
-    setShow (state, action: PayloadAction<boolean>) {
-      state.show = action.payload
+    toggleShowSettings: state => {
+      state.showSettings = !state.showSettings
     },
 
-    setSkipBackTime (state, action: PayloadAction<number>) {
-      state.skipBackTime = boundValue(-MAXIMUM_SKIP_TIME, action.payload, -MINIMUM_SKIP_TIME)
+    setSkipBackTime: (state, { payload }: PayloadAction<number>) => {
+      state.skipBackTime = boundValue(-MAXIMUM_SKIP_TIME, -payload, -MINIMUM_SKIP_TIME)
     },
 
-    setSkipForwardTime (state, action: PayloadAction<number>) {
-      state.skipForwardTime = boundValue(MINIMUM_SKIP_TIME, action.payload, MAXIMUM_SKIP_TIME)
+    setSkipForwardTime: (state, { payload }: PayloadAction<number>) => {
+      state.skipForwardTime = boundValue(MINIMUM_SKIP_TIME, payload, MAXIMUM_SKIP_TIME)
     },
 
-    setScaleVideo (state, action: PayloadAction<boolean>) {
-      state.scaleVideo = action.payload
+    setScaleVideo: (state, { payload }: PayloadAction<boolean>) => {
+      state.scaleVideo = payload
     }
   }
 })

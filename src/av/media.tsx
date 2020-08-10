@@ -3,33 +3,25 @@ import { useDispatch } from 'react-redux'
 
 import { MOVE_THROUGH_RATE } from './globals'
 import { electronResizeWindow } from 'av/env/electron-window'
-import { EmitterContext } from './contexts'
 
 import { useSelector } from 'av/store'
 import { mediaSlice } from 'av/store/slices/media'
 
-interface DispatchProps {
-  readonly mediaLoaded: (duration: number) => void
-  readonly setPlaying: (playing: boolean) => void
-  readonly storePlaybackTime: (playbackTime: number) => void
-}
-
-interface Props {
-  readonly nativeMedia: React.ElementType
-}
+type Props = Readonly<{ nativeMedia: React.ElementType}>
 
 export const Media: React.FC<Props> = props => {
-  const url = useSelector(state => state.media.url)
-  const playing = useSelector(state => state.media.playing)
-  const playbackRate = useSelector(state => state.media.playbackRate)
-  const volume = useSelector(state => state.media.volume)
-  const moveThrough = useSelector(state => state.media.moveThrough)
+  const url = useSelector(({ media }) => media.url)
+  const loaded = useSelector(({ media }) => media.loaded)
+  const playing = useSelector(({ media }) => media.playing)
+  const playbackTimeInStore = useSelector(({ media }) => media.playbackTime)
+  const playbackTimeNeedsUpdating = useSelector(({ media }) => media.playbackTimeNeedsUpdating)
+  const playbackRate = useSelector(({ media }) => media.playbackRate)
+  const volume = useSelector(({ media }) => media.volume)
+  const moveThrough = useSelector(({ media }) => media.moveThrough)
   const dispatch = useDispatch()
 
   const nativeMedia = React.useRef<HTMLMediaElement | null>(null)
   const wasPlaying = React.useRef<boolean>(false)
-
-  const emitter = React.useContext(EmitterContext)
 
   /**
    * Playback
@@ -44,40 +36,29 @@ export const Media: React.FC<Props> = props => {
   }
 
   React.useEffect(() => {
-    if (!nativeMedia.current) return
+    if (!nativeMedia.current || !loaded) return
 
     if (playing) {
-      void nativeMedia.current.play()
+      nativeMedia.current.play()
       playbackFrameRequestId.current = requestAnimationFrame(playbackFrame)
     } else {
       nativeMedia.current.pause()
       cancelAnimationFrame(playbackFrameRequestId.current)
     }
 
-    return () => {
-      cancelAnimationFrame(playbackFrameRequestId.current)
-    }
-  }, [playing])
+    return () => cancelAnimationFrame(playbackFrameRequestId.current)
+  }, [loaded, playing])
 
   /**
    * Playback time changed
    */
 
-  const playbackTimeChangedListener = React.useRef<(playbackTime: number | undefined) => void>()
-
   React.useEffect(() => {
-    playbackTimeChangedListener.current = (playbackTime: number | undefined) => {
-      if (nativeMedia.current && playbackTime) nativeMedia.current.currentTime = playbackTime
+    if (nativeMedia.current && playbackTimeNeedsUpdating) {
+      nativeMedia.current.currentTime = playbackTimeInStore
+      dispatch(mediaSlice.actions.setPlaybackTimeNeedsUpdating(false))
     }
-
-    emitter.on<number>('playback-time-changed', playbackTimeChangedListener.current)
-
-    return () => {
-      if (playbackTimeChangedListener.current) {
-        emitter.off<number>('playback-time-changed', playbackTimeChangedListener.current)
-      }
-    }
-  }, [])
+  }, [playbackTimeNeedsUpdating])
 
   /**
    * Playback rate changed

@@ -4,13 +4,13 @@ import { useDispatch } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMusic, faVideo } from '@fortawesome/free-solid-svg-icons'
 
+import { transitionStyles } from 'av/globals'
 import { browseForFile } from 'av/util/browse-for-file'
 import { electronResizeWindow, electronSetWindowResizable } from 'av/env/electron-window'
 
 import { openFile } from 'av/store/thunks'
 
 import { Pane } from 'av/components/pane'
-import { TranslucentButton } from 'av/components/translucent-button'
 
 const Wrapper = styled(Pane)`
   font-size: 1.5em;
@@ -28,6 +28,20 @@ const MediaIcons = styled.div`
 
   & > :not(:last-child) {
     margin-right: 0.5em;
+  }
+`
+
+const BrowseButton = styled.div`
+  display: inline-block;
+  padding: .2em .6em;
+  border-radius: 1em;
+  background-color: rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition-property: background-color;
+  ${transitionStyles}
+
+  &:hover, &:focus {
+    background-color: rgba(0, 0, 0, 0.6);
   }
 `
 
@@ -51,11 +65,9 @@ export const File: React.FC = () => {
 
         <div>
           Drag a file here or{' '}
-          <TranslucentButton
-            onClick={() => browseForFile(fileList => dispatch(openFile(fileList)))}
-          >
+          <BrowseButton onClick={() => browseForFile(fileList => dispatch(openFile(fileList)))}>
             browse
-          </TranslucentButton>{' '}
+          </BrowseButton>{' '}
           for one
         </div>
       </Body>

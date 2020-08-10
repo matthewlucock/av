@@ -8,20 +8,22 @@ export interface ProcessedAudioMetadata {
   readonly artist: string
   readonly title: string
   readonly coverArtUrl: string
-  readonly backgroundColor: string
+  readonly color: string
 }
 
-const getBackgroundColorFromImageUrl = async (url: string): Promise<string> => {
-  let backgroundColor = await getImageColorFromUrl(url)
+const getMetadataColorFromImageUrl = async (url: string): Promise<string> => {
+  let color = await getImageColorFromUrl(url)
 
   let lightnessModifier = AUDIO_METADATA_BACKGROUND_COLOR_LIGHTNESS_MODIFIER
-  if (backgroundColor.isLight()) lightnessModifier *= -1
+  if (color.isLight()) lightnessModifier *= -1
 
-  backgroundColor = backgroundColor.lightness(backgroundColor.lightness() + lightnessModifier)
-  return backgroundColor.string()
+  color = color.lightness(color.lightness() + lightnessModifier)
+  return color.string()
 }
 
-export const retrieveAudioMetadata = async (file: File): Promise<ProcessedAudioMetadata | void> => {
+export const retrieveAudioMetadata = async (
+  file: File
+): Promise<ProcessedAudioMetadata | undefined> => {
   if (getBaseFileType(file) !== 'audio') {
     throw new Error('retrieveAudioMetadata can only be called on audio files')
   }
@@ -36,7 +38,7 @@ export const retrieveAudioMetadata = async (file: File): Promise<ProcessedAudioM
 
   const { artist = '', title = '' } = metadata
   const coverArtUrl = metadata.picture?.size ? URL.createObjectURL(metadata.picture) : ''
-  const backgroundColor = coverArtUrl ? await getBackgroundColorFromImageUrl(coverArtUrl) : ''
+  const color = coverArtUrl ? await getMetadataColorFromImageUrl(coverArtUrl) : ''
 
-  return { artist, title, coverArtUrl, backgroundColor }
+  return { artist, title, coverArtUrl, color }
 }

@@ -1,48 +1,86 @@
 import * as React from 'react'
 import styled from '@emotion/styled'
 import { useDispatch } from 'react-redux'
+import useHover from '@react-hook/hover'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faVolumeMute, faVolumeDown, faVolumeUp } from '@fortawesome/free-solid-svg-icons'
+
+import { transitionStyles } from 'av/globals'
 
 import { useSelector } from 'av/store'
 import { mediaSlice } from 'av/store/slices/media'
 
 import { Slider } from 'av/components/slider'
-import { RoundControlButton } from 'av/components/control-button'
+import { Button } from 'av/components/button'
+
+const SLIDER_WIDTH = '3.5em'
 
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
-  width: 8em;
 `
 
-const MutedIcon = styled(FontAwesomeIcon)`
+const VolumeButton = styled(Button)`
+  justify-content: start;
+  width: 2.2em;
+`
+
+type SlideOverProps = Readonly<{ expanded: boolean }>
+// Since the slider thumb overflows the slider itself, this needs to have a set height to stop
+// hiding the overflow from cutting off the thumb, also requiring vertical centering.
+const SlideOver = styled.div<SlideOverProps>`
+  display: flex;
+  align-items: center;
   position: relative;
-  left: .165em;
+  width: ${props => props.expanded ? SLIDER_WIDTH : '0'};
+  height: .5em;
+  overflow-x: hidden;
+  transition-property: width;
+  ${transitionStyles}
+  transition-timing-function: ease-in;
+`
+
+const SliderWrapper = styled.div`
+  position: absolute;
+  width: ${SLIDER_WIDTH};
+  padding: 0 .5em;
 `
 
 export const Volume: React.FC = () => {
-  const volume = useSelector(state => state.media.volume)
+  const volume = useSelector(({ media }) => media.volume)
   const dispatch = useDispatch()
 
+  const wrapper = React.useRef<HTMLDivElement | null>(null)
+  const expanded = useHover(wrapper)
+
+  const lastVolume = React.useRef<number>(1)
+
   return (
-    <Wrapper>
-      <RoundControlButton
-        onClick={() => dispatch(mediaSlice.actions.setVolume(0))}
-        disabled={volume === 0}
+    <Wrapper ref={wrapper}>
+      <VolumeButton
+        onClick={() => {
+          const newVolume = volume > 0 ? 0 : lastVolume.current
+          lastVolume.current = volume
+          dispatch(mediaSlice.actions.setVolume(newVolume))
+        }}
       >
-        {volume ? <FontAwesomeIcon icon={faVolumeDown} /> : <MutedIcon icon={faVolumeMute} />}
-      </RoundControlButton>
+        <FontAwesomeIcon
+          icon={volume > 0 ? (volume > 0.3 ? faVolumeUp : faVolumeDown) : faVolumeMute}
+        />
+      </VolumeButton>
 
-      <Slider
-        value={volume}
-        maximum={1}
-        changeValue={value => dispatch(mediaSlice.actions.setVolume(value))}
-      />
-
-      <RoundControlButton onClick={() => dispatch(mediaSlice.actions.setVolume(1))}>
-        <FontAwesomeIcon icon={faVolumeUp} />
-      </RoundControlButton>
+      <SlideOver expanded={expanded}>
+        <SliderWrapper>
+          <Slider
+            value={volume}
+            maximum={1}
+            changeValue={value => dispatch(mediaSlice.actions.setVolume(value))}
+            draggingCallback={dragging => {
+              if (dragging) lastVolume.current = volume
+            }}
+          />
+        </SliderWrapper>
+      </SlideOver>
     </Wrapper>
   )
 }

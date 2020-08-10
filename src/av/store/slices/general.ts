@@ -7,21 +7,17 @@ import { BACKGROUND_COLOR_SATURATION, BACKGROUND_COLOR_LIGHTNESS } from 'av/glob
  * State
  */
 
-interface SliceState {
-  readonly appWidth: number
-  readonly appHeight: number
-  readonly backgroundHue: number
-}
+type SliceState = Readonly<{
+  appSize: Readonly<{ width: number, height: number }>
+  backgroundHue: number
+}>
 
 const initialState: SliceState = {
-  appWidth: 0,
-  appHeight: 0,
+  appSize: { width: 0, height: 0 },
   backgroundHue: 0
 }
 
-interface SliceRootState {
-  readonly general: SliceState
-}
+type SliceRootState = Readonly<{ general: SliceState }>
 
 /**
  * Slice
@@ -32,13 +28,12 @@ export const generalSlice = createSlice({
   initialState,
 
   reducers: {
-    setAppSize (state, action: PayloadAction<{ readonly width: number, readonly height: number }>) {
-      state.appWidth = action.payload.width
-      state.appHeight = action.payload.height
+    setAppSize: (state, { payload }: PayloadAction<SliceState['appSize']>) => {
+      state.appSize = payload
     },
 
-    setBackgroundHue (state, action: PayloadAction<number>) {
-      state.backgroundHue = action.payload % 360
+    setBackgroundHue: (state, { payload }: PayloadAction<number>) => {
+      state.backgroundHue = payload % 360
     }
   }
 })

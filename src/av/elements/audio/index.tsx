@@ -7,7 +7,7 @@ import { faMusic } from '@fortawesome/free-solid-svg-icons'
 import {
   BACKGROUND_COLOR_TRANSITION_DURATION_MS,
   BACKGROUND_COLOR_TRANSITION_HUE_INCREMENT
-} from '../globals'
+} from '../../globals'
 
 import { useSelector } from 'av/store'
 import { generalSlice } from 'av/store/slices/general'
@@ -17,7 +17,8 @@ import { randomizeBackgroundColor } from 'av/store/thunks'
 import { Pane } from 'av/components/pane'
 
 import { Media } from 'av/media'
-import { Controls } from './controls'
+import { Controls } from '../controls'
+import { AudioMetadata } from './metadata'
 
 const Wrapper = styled(Pane)`
   display: flex;
@@ -30,21 +31,11 @@ const Icon = styled(FontAwesomeIcon)`
   color: white;
 `
 
-const Metadata = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`
-
-const CoverArt = styled.img`
-  max-width: 50%;
-`
-
 const NativeAudio = styled.audio``
 
 export const Audio: React.FC = () => {
-  const backgroundHue = useSelector(state => state.general.backgroundHue)
-  const metadata = useSelector(state => state.media.audioMetadata)
+  const backgroundHue = useSelector(({ general }) => general.backgroundHue)
+  const metadataColor = useSelector(({ media }) => media.audioMetadata.color)
   const hasMetadata = useSelector(getAudioHasMetadata)
   const animateBackgroundColor = useSelector(getAnimateAudioBackgroundColor)
   const dispatch = useDispatch()
@@ -82,7 +73,7 @@ export const Audio: React.FC = () => {
 
   React.useEffect(() => {
     return () => {
-      if (metadata.backgroundColor) dispatch(randomizeBackgroundColor())
+      if (metadataColor) dispatch(randomizeBackgroundColor())
     }
   }, [])
 
@@ -90,24 +81,10 @@ export const Audio: React.FC = () => {
    * Component
    */
 
-  const metadataUi = (
-    <Metadata>
-      {metadata.coverArtUrl && (
-        <CoverArt
-          src={metadata.coverArtUrl}
-          onLoad={() => URL.revokeObjectURL(metadata.coverArtUrl)}
-        />
-      )}
-
-      {metadata.artist && <p>{metadata.artist}</p>}
-      {metadata.title && <p>{metadata.title}</p>}
-    </Metadata>
-  )
-
   return (
-    <Wrapper style={{ backgroundColor: metadata.backgroundColor }}>
-      {hasMetadata ? metadataUi : <Icon icon={faMusic} />}
+    <Wrapper style={{ background: metadataColor }}>
       <Media nativeMedia={NativeAudio} />
+      {hasMetadata ? <AudioMetadata /> : <Icon icon={faMusic} />}
       <Controls />
     </Wrapper>
   )
