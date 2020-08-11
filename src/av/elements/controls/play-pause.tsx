@@ -26,7 +26,7 @@ export const PlayPause: React.FC = () => {
    */
 
   useEvent(document, 'keyup', event => {
-    if (event.code === 'Space') dispatch(mediaSlice.actions.playPause())
+    if (event.code === 'Space') dispatch(mediaSlice.actions.playPauseShortcut())
   })
 
   /**

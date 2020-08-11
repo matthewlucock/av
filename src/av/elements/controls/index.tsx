@@ -101,7 +101,7 @@ export const Controls: React.FC = () => {
    */
 
   return (
-    <Wrapper visible={visible}>
+    <Wrapper visible={visible} onClick={event => event.stopPropagation()}>
       <PlaybackBar />
 
       <Body>

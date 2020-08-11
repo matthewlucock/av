@@ -19,6 +19,7 @@ import { Pane } from 'av/components/pane'
 import { Media } from 'av/media'
 import { Controls } from '../controls'
 import { AudioMetadata } from './metadata'
+import { ShortcutConfirmation } from '../shortcut-confirmation'
 
 const Wrapper = styled(Pane)`
   display: flex;
@@ -30,8 +31,6 @@ const Icon = styled(FontAwesomeIcon)`
   font-size: 9em;
   color: white;
 `
-
-const NativeAudio = styled.audio``
 
 export const Audio: React.FC = () => {
   const backgroundHue = useSelector(({ general }) => general.backgroundHue)
@@ -86,6 +85,7 @@ export const Audio: React.FC = () => {
       <Media />
       {hasMetadata ? <AudioMetadata /> : <Icon icon={faMusic} />}
       <Controls />
+      <ShortcutConfirmation />
     </Wrapper>
   )
 }

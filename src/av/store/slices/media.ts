@@ -26,6 +26,7 @@ type SliceState = MediaDetails & LoadedData & Readonly<{
   playbackRate: number
   volume: number
   moveThrough: 'rewind' | 'fastForward' | ''
+  shortcut: 'play' | 'pause' | ''
 }>
 
 const initialState: SliceState = {
@@ -41,7 +42,8 @@ const initialState: SliceState = {
   playbackTimeNeedsUpdating: false,
   playbackRate: 1,
   volume: 1,
-  moveThrough: ''
+  moveThrough: '',
+  shortcut: ''
 }
 
 type SliceRootState = Readonly<{ media: SliceState }>
@@ -79,6 +81,12 @@ export const mediaSlice = createSlice({
       state.playing = !state.playing
     },
 
+    playPauseShortcut: state => {
+      const willBePlaying = !state.playing
+      state.playing = willBePlaying
+      state.shortcut = willBePlaying ? 'play' : 'pause'
+    },
+
     storePlaybackTime: (state, { payload }: PayloadAction<number>) => {
       state.playbackTime = boundValue(0, payload, state.duration)
 
@@ -103,6 +111,10 @@ export const mediaSlice = createSlice({
 
     setMoveThrough: (state, { payload }: PayloadAction<SliceState['moveThrough']>) => {
       state.moveThrough = payload
+    },
+
+    setShortcut: (state, { payload }: PayloadAction<SliceState['shortcut']>) => {
+      state.shortcut = payload
     },
 
     clear: state => {

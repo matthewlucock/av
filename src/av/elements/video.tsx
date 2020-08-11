@@ -10,6 +10,7 @@ import { Pane } from 'av/components/pane'
 
 import { Media } from 'av/media'
 import { Controls } from './controls'
+import { ShortcutConfirmation } from './shortcut-confirmation'
 
 type WrapperProps = Readonly<{ scaleVideo: boolean }>
 const Wrapper = styled(Pane)<WrapperProps>`
@@ -22,8 +23,6 @@ const Wrapper = styled(Pane)<WrapperProps>`
   }
 `
 
-const NativeVideo = styled.video``
-
 export const Video: React.FC = () => {
   const scaleVideo = useSelector(({ settings }) => settings.scaleVideo)
   const dispatch = useDispatch()
@@ -33,9 +32,13 @@ export const Video: React.FC = () => {
   }, [])
 
   return (
-    <Wrapper scaleVideo={scaleVideo}>
+    <Wrapper
+      scaleVideo={scaleVideo}
+      onClick={() => dispatch(mediaSlice.actions.playPauseShortcut())}
+    >
       <Media />
       <Controls />
+      <ShortcutConfirmation />
     </Wrapper>
   )
 }
