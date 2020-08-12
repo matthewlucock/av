@@ -8,6 +8,7 @@ import { ShortcutConfirmation } from './shortcut-confirmation'
 
 export const Media: React.FC = () => {
   const name = useSelector(({ media }) => media.name)
+  const loaded = useSelector(({ media }) => media.loaded)
 
   /**
    * Window/document title
@@ -36,8 +37,12 @@ export const Media: React.FC = () => {
   return (
     <>
       <BaseMedia />
-      <Controls />
-      <ShortcutConfirmation />
+      {loaded && (
+        <>
+          <Controls />
+          <ShortcutConfirmation />
+        </>
+      )}
     </>
   )
 }

@@ -50,7 +50,7 @@ export const openFile = (fileList: FileList): AppThunk => async (dispatch, getSt
 
   // TODO: Check the file format somehow
 
-  await dispatch(stopMedia())
+  if (state.media.loaded) await dispatch(stopMedia())
 
   // Only play new media if old media (if there was any) was stopped.
   if (getState().media.url) return
