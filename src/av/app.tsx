@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 import { useDispatch } from 'react-redux'
 import useResizeObserver from 'use-resize-observer'
 
-import { transitionStyles, BACKGROUND_COLOR_TRANSITION_DURATION_MS } from './globals'
+import { TRANSITION_DURATION, BACKGROUND_COLOR_TRANSITION_DURATION_MS } from './globals'
 
 import { useSelector } from 'av/store'
 import { generalSlice, getBackgroundColor } from 'av/store/slices/general'
@@ -35,7 +35,7 @@ const DragOverlay = styled(Pane)<DragOverlayProps>`
   visibility: ${(props) => props.dragging ? 'visible' : 'hidden'};
   opacity: ${(props) => props.dragging ? 0.5 : 0};
   transition-property: visibility, opacity;
-  ${transitionStyles}
+  transition-duration: ${TRANSITION_DURATION};
 `
 
 export const App: React.FC = () => {

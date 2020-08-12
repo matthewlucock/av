@@ -7,10 +7,9 @@ import { electronResizeWindow } from 'av/env/electron-window'
 import { store, useSelector } from 'av/store'
 import { mediaSlice } from 'av/store/slices/media'
 
-export const Media: React.FC = () => {
+export const BaseMedia: React.FC = () => {
   const type = useSelector(({ media }) => media.type)
   const url = useSelector(({ media }) => media.url)
-  const name = useSelector(({ media }) => media.name)
   const loaded = useSelector(({ media }) => media.loaded)
   const playing = useSelector(({ media }) => media.playing)
   const playbackTimeNeedsUpdating = useSelector(({ media }) => media.playbackTimeNeedsUpdating)
@@ -21,25 +20,6 @@ export const Media: React.FC = () => {
 
   const nativeMedia = React.useRef<HTMLMediaElement | null>(null)
   const wasPlaying = React.useRef<boolean>(false)
-
-  /**
-   * Window/document title
-   */
-
-  const originalTitle = React.useRef(document.title)
-  React.useEffect(() => {
-    const clear = (): void => {
-      document.title = originalTitle.current
-    }
-
-    if (name) {
-      document.title = `${originalTitle.current} — ${name}`
-    } else {
-      clear()
-    }
-
-    return clear
-  }, [name])
 
   /**
    * Playback
@@ -161,6 +141,8 @@ export const Media: React.FC = () => {
    * Component
    */
 
+  if (!url) throw new Error('<BaseMedia /> rendered without a source URL')
+
   const onLoadedData = (): void => {
     if (!nativeMedia.current) return
     dispatch(mediaSlice.actions.loaded({ duration: nativeMedia.current.duration }))
@@ -188,7 +170,15 @@ export const Media: React.FC = () => {
     // solves this issue and ensures correct typing.
     // Interestingly, `HTMLMediaElement` satisfies `HTMLAudioElement`, rendering this only
     // necessary for `HTMLVideoElement`.
-    return <video ref={node => nativeMedia.current = node} src={url} onLoadedData={onLoadedData} />
+    return (
+      <video
+        ref={node => {
+          nativeMedia.current = node
+        }}
+        src={url}
+        onLoadedData={onLoadedData}
+      />
+    )
   } else {
     return null
   }

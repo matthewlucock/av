@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMusic, faVideo } from '@fortawesome/free-solid-svg-icons'
 
-import { transitionStyles } from 'av/globals'
+import { TRANSITION_DURATION } from 'av/globals'
 import { browseForFile } from 'av/util/browse-for-file'
 import { electronResizeWindow, electronSetWindowResizable } from 'av/env/electron-window'
 
@@ -35,13 +35,13 @@ const BrowseButton = styled.div`
   display: inline-block;
   padding: .2em .6em;
   border-radius: 1em;
-  background-color: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.3);
   cursor: pointer;
-  transition-property: background-color;
-  ${transitionStyles}
+  transition-property: background;
+  transition-duration: ${TRANSITION_DURATION};
 
   &:hover, &:focus {
-    background-color: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.6);
   }
 `
 

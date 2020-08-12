@@ -15,6 +15,8 @@ export const PlaybackBar: React.FC = () => {
 
   const wasPlaying = React.useRef<boolean>(false)
 
+  if (!duration) throw new Error('<PlaybackBar /> rendered without a duration')
+
   return (
     <Slider
       value={playbackTime}

@@ -1,25 +1,13 @@
 import * as React from 'react'
-import styled from '@emotion/styled'
 import { useDispatch } from 'react-redux'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBackward, faForward } from '@fortawesome/free-solid-svg-icons'
 
-import { CONTROL_ICON_OFFSET } from 'av/globals'
+import { LeftOffsetIcon, RightOffsetIcon } from 'av/util/offset-icons'
 
 import { useSelector } from 'av/store'
 import { mediaSlice, getMediaFinished } from 'av/store/slices/media'
 
 import { Button } from 'av/components/button'
-
-const RewindIcon = styled(FontAwesomeIcon)`
-  position: relative;
-  right: ${CONTROL_ICON_OFFSET};
-`
-
-const FastForwardIcon = styled(FontAwesomeIcon)`
-  position: relative;
-  left: ${CONTROL_ICON_OFFSET};
-`
 
 export const Rewind: React.FC = () => {
   const playbackTime = useSelector(({ media }) => media.playbackTime)
@@ -29,9 +17,9 @@ export const Rewind: React.FC = () => {
     <Button
       disabled={!playbackTime}
       onMouseDown={() => dispatch(mediaSlice.actions.setMoveThrough('rewind'))}
-      onMouseUp={() => dispatch(mediaSlice.actions.setMoveThrough(''))}
+      onMouseUp={() => dispatch(mediaSlice.actions.setMoveThrough(null))}
     >
-      <RewindIcon icon={faBackward} />
+      <RightOffsetIcon icon={faBackward} />
     </Button>
   )
 }
@@ -44,9 +32,9 @@ export const FastForward: React.FC = () => {
     <Button
       disabled={finished}
       onMouseDown={() => dispatch(mediaSlice.actions.setMoveThrough('fastForward'))}
-      onMouseUp={() => dispatch(mediaSlice.actions.setMoveThrough(''))}
+      onMouseUp={() => dispatch(mediaSlice.actions.setMoveThrough(null))}
     >
-      <FastForwardIcon icon={faForward} />
+      <LeftOffsetIcon icon={faForward} />
     </Button>
   )
 }

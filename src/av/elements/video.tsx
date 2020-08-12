@@ -8,9 +8,7 @@ import { randomizeBackgroundColor } from 'av/store/thunks'
 
 import { Pane } from 'av/components/pane'
 
-import { Media } from 'av/media'
-import { Controls } from './controls'
-import { ShortcutConfirmation } from './shortcut-confirmation'
+import { Media } from './media'
 
 type WrapperProps = Readonly<{ scaleVideo: boolean }>
 const Wrapper = styled(Pane)<WrapperProps>`
@@ -37,8 +35,6 @@ export const Video: React.FC = () => {
       onClick={() => dispatch(mediaSlice.actions.playPauseShortcut())}
     >
       <Media />
-      <Controls />
-      <ShortcutConfirmation />
     </Wrapper>
   )
 }

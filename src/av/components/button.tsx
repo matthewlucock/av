@@ -2,7 +2,7 @@ import { css } from '@emotion/core'
 import styled from '@emotion/styled'
 
 import {
-  transitionStyles,
+  TRANSITION_DURATION,
   CONTROLS_SECONDARY_FOREGROUND_COLOR,
   CONTROLS_FADED_FOREGROUND_COLOR
 } from '../globals'
@@ -18,8 +18,8 @@ export const Button = styled.div<Props>`
       ? CONTROLS_FADED_FOREGROUND_COLOR.string()
       : props.primary ? 'inherit' : CONTROLS_SECONDARY_FOREGROUND_COLOR.string()
   )};
-  transition-property: background-color, color;
-  ${transitionStyles}
+  transition-property: background, color;
+  transition-duration: ${TRANSITION_DURATION};
 
   ${props => !props.disabled && css`
     cursor: pointer;

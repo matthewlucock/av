@@ -1,7 +1,7 @@
 import * as React from 'react'
 import styled from '@emotion/styled'
 
-import { transitionStyles, CONTROLS_VISIBILITY_TIMEOUT } from 'av/globals'
+import { TRANSITION_DURATION } from 'av/globals'
 
 import { useSelector } from 'av/store'
 
@@ -13,6 +13,8 @@ import { Volume } from './volume'
 import { PlaybackTime } from './playback-time'
 import { Settings } from './settings'
 import { Stop } from './stop'
+
+const VISIBLE_DURATION = 5000
 
 type WrapperProps = Readonly<{ visible: boolean }>
 const Wrapper = styled.div<WrapperProps>`
@@ -27,7 +29,7 @@ const Wrapper = styled.div<WrapperProps>`
   box-shadow: 0 0 2em black;
   backdrop-filter: blur(10px);
   transition-property: opacity;
-  ${transitionStyles}
+  transition-duration: ${TRANSITION_DURATION};
 `
 
 const Body = styled.div`
@@ -67,7 +69,7 @@ export const Controls: React.FC = () => {
   const showControls = (): void => {
     setVisible(true)
     window.clearTimeout(timeoutId.current)
-    timeoutId.current = window.setTimeout(() => setVisible(false), CONTROLS_VISIBILITY_TIMEOUT)
+    timeoutId.current = window.setTimeout(() => setVisible(false), VISIBLE_DURATION)
   }
 
   const timeoutId = React.useRef<number>(0)
@@ -79,7 +81,7 @@ export const Controls: React.FC = () => {
 
   React.useEffect(() => {
     if (autoHide) {
-      timeoutId.current = window.setTimeout(() => setVisible(false), CONTROLS_VISIBILITY_TIMEOUT)
+      timeoutId.current = window.setTimeout(() => setVisible(false), VISIBLE_DURATION)
 
       document.addEventListener('mousemove', showControls)
       document.addEventListener('mousedown', showControls)

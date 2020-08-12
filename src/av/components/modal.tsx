@@ -1,14 +1,11 @@
 import * as React from 'react'
 import styled from '@emotion/styled'
 
-import { transitionStyles } from 'av/globals'
+import { TRANSITION_DURATION } from 'av/globals'
 
 import { Pane } from './pane'
 
-interface WrapperProps {
-  readonly show: boolean
-}
-
+type WrapperProps = Readonly<{ show: boolean }>
 const Wrapper = styled(Pane)<WrapperProps>`
   display: flex;
   justify-content: center;
@@ -18,7 +15,7 @@ const Wrapper = styled(Pane)<WrapperProps>`
   opacity: ${props => props.show ? 1 : 0};
   backdrop-filter: blur(10px);
   transition-property: visibility, opacity;
-  ${transitionStyles}
+  transition-duration: ${TRANSITION_DURATION};
 `
 
 const Body = styled.div`
@@ -29,10 +26,7 @@ const Body = styled.div`
   width: 50%;
 `
 
-interface Props {
-  readonly show: boolean
-  readonly children: ReadonlyArray<React.ReactElement | string>
-}
+type Props = Readonly<{ show: boolean, children: ReadonlyArray<React.ReactElement | string> }>
 
 export const Modal: React.FC<Props> = props => (
   <Wrapper show={props.show}>

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import styled from '@emotion/styled'
 
-import { transitionStyles } from 'av/globals'
+import { TRANSITION_DURATION } from 'av/globals'
 
 const THUMB_SIZE_EM = 1.5
 
@@ -22,7 +22,7 @@ const Bar = styled.div<ElementProps>`
   border-radius: 1em;
   background: hsla(0, 0%, 100%, ${props => props.isOn ? 0.5 : 0.25});
   transition-property: background;
-  ${transitionStyles}
+  transition-duration: ${TRANSITION_DURATION};
 `
 
 const Thumb = styled.div<ElementProps>`
@@ -32,8 +32,11 @@ const Thumb = styled.div<ElementProps>`
   background: hsl(0, 0%, ${props => props.isOn ? 100 : 60}%);
   transform: translateX(${props => props.isOn ? '100%' : '0'});
   transition-property: background, transform;
-  ${transitionStyles}
+  transition-duration: ${TRANSITION_DURATION};
 `
+
+// `isOn` needs to be used here instead of simply `on`, as `on` is an attribute that React passes
+// through to the DOM.
 
 type Props = Readonly<{ isOn: boolean, setIsOn: (on: boolean) => void }>
 

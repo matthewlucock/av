@@ -2,6 +2,7 @@ import { createSlice, createSelector } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
 import { MINIMUM_PLAYBACK_RATE, MAXIMUM_PLAYBACK_RATE } from 'av/globals'
+import type { Nullable } from 'av/util/nullable'
 import { boundValue } from 'av/util/bound-value'
 import type { ProcessedAudioMetadata } from 'av/audio-metadata'
 
@@ -10,14 +11,15 @@ import type { ProcessedAudioMetadata } from 'av/audio-metadata'
  */
 
 type MediaDetails = Readonly<{
-  type: 'audio' | 'video' | ''
+  type: 'audio' | 'video'
   url: string
   name: string
   electronPath: string
 }>
+
 type LoadedData = Readonly<{ duration: number }>
 
-type SliceState = MediaDetails & LoadedData & Readonly<{
+type SliceState = Nullable<MediaDetails> & Nullable<LoadedData> & Readonly<{
   audioMetadata: ProcessedAudioMetadata
   loaded: boolean
   playing: boolean
@@ -25,25 +27,25 @@ type SliceState = MediaDetails & LoadedData & Readonly<{
   playbackTimeNeedsUpdating: boolean
   playbackRate: number
   volume: number
-  moveThrough: 'rewind' | 'fastForward' | ''
-  shortcut: 'play' | 'pause' | ''
+  moveThrough: 'rewind' | 'fastForward' | null
+  shortcut: 'play' | 'pause' | null
 }>
 
 const initialState: SliceState = {
-  type: '',
-  url: '',
-  name: '',
-  electronPath: '',
-  audioMetadata: { artist: '', title: '', coverArtUrl: '', color: '' },
+  type: null,
+  url: null,
+  name: null,
+  electronPath: null,
+  audioMetadata: { artist: null, title: null, coverArtUrl: null, color: null },
   loaded: false,
-  duration: 0,
+  duration: null,
   playing: true,
   playbackTime: 0,
   playbackTimeNeedsUpdating: false,
   playbackRate: 1,
   volume: 1,
-  moveThrough: '',
-  shortcut: ''
+  moveThrough: null,
+  shortcut: null
 }
 
 type SliceRootState = Readonly<{ media: SliceState }>
@@ -88,6 +90,8 @@ export const mediaSlice = createSlice({
     },
 
     storePlaybackTime: (state, { payload }: PayloadAction<number>) => {
+      if (!state.duration) throw new Error('playbackTime stored without a duration')
+
       state.playbackTime = boundValue(0, payload, state.duration)
 
       // Pause media upon it finishing.
@@ -138,5 +142,5 @@ export const getAnimateAudioBackgroundColor = ({ media }: SliceRootState): boole
   media.playing && !media.audioMetadata.color
 )
 export const getMediaStopConfirmText = ({ media }: SliceRootState): string => (
-  `Are you sure you want to stop this ${media.type}?`
+  media.type ? `Are you sure you want to stop this ${media.type}?` : ''
 )

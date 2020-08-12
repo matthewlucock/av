@@ -75,6 +75,8 @@ export const stopMedia = (): AppThunk => async (dispatch, getState) => {
   const finished = getMediaFinished(state)
   const confirmText = getMediaStopConfirmText(state)
 
+  if (!state.media.url) throw new Error('Media stopped with no source URL')
+
   if (!state.media.playbackTime || finished) {
     dispatch(mediaSlice.actions.clear())
     return

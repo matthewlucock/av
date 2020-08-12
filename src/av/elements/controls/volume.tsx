@@ -5,7 +5,7 @@ import useHover from '@react-hook/hover'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faVolumeMute, faVolumeDown, faVolumeUp } from '@fortawesome/free-solid-svg-icons'
 
-import { transitionStyles } from 'av/globals'
+import { TRANSITION_DURATION } from 'av/globals'
 
 import { useSelector } from 'av/store'
 import { mediaSlice } from 'av/store/slices/media'
@@ -36,7 +36,7 @@ const SlideOver = styled.div<SlideOverProps>`
   height: .5em;
   overflow-x: hidden;
   transition-property: width;
-  ${transitionStyles}
+  transition-duration: ${TRANSITION_DURATION};
   transition-timing-function: ease-in;
 `
 

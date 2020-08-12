@@ -1,21 +1,15 @@
 import * as React from 'react'
-import styled from '@emotion/styled'
 import { useDispatch } from 'react-redux'
 import useEvent from '@react-hook/event'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faPause } from '@fortawesome/free-solid-svg-icons'
 
-import { CONTROL_ICON_OFFSET } from 'av/globals'
+import { LeftOffsetIcon } from 'av/util/offset-icons'
 
 import { useSelector } from 'av/store'
 import { mediaSlice } from 'av/store/slices/media'
 
 import { Button } from 'av/components/button'
-
-const PlayIcon = styled(FontAwesomeIcon)`
-  position: relative;
-  left: ${CONTROL_ICON_OFFSET};
-`
 
 export const PlayPause: React.FC = () => {
   const playing = useSelector(({ media }) => media.playing)
@@ -35,7 +29,7 @@ export const PlayPause: React.FC = () => {
 
   return (
     <Button primary onClick={() => dispatch(mediaSlice.actions.playPause())}>
-      {playing ? <FontAwesomeIcon icon={faPause} /> : <PlayIcon icon={faPlay} />}
+      {playing ? <FontAwesomeIcon icon={faPause} /> : <LeftOffsetIcon icon={faPlay} />}
     </Button>
   )
 }

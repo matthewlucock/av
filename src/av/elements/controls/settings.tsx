@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCog } from '@fortawesome/free-solid-svg-icons'
 
 import {
-  transitionStyles,
+  TRANSITION_DURATION,
   MINIMUM_PLAYBACK_RATE,
   MAXIMUM_PLAYBACK_RATE,
   MINIMUM_SKIP_TIME,
@@ -28,7 +28,7 @@ const SettingsIconWrapper = styled.div<Readonly<{ showSettings: boolean }>>`
   line-height: 1;
   transform: rotate(${props => props.showSettings ? '-30deg' : 0});
   transition-property: transform;
-  ${transitionStyles}
+  transition-duration: ${TRANSITION_DURATION};
   transition-timing-function: ease-in;
 `
 
@@ -46,7 +46,7 @@ const Menu = styled.div<Readonly<{ show: boolean }>>`
   visibility: ${props => props.show ? 'visible' : 'hidden'};
   opacity: ${props => props.show ? 1 : 0};
   transition-property: visibility, opacity;
-  ${transitionStyles}
+  transition-duration: ${TRANSITION_DURATION};
 `
 
 const MenuItem = styled.div`

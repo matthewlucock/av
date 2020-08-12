@@ -7,19 +7,21 @@ import { faMusic } from '@fortawesome/free-solid-svg-icons'
 import {
   BACKGROUND_COLOR_TRANSITION_DURATION_MS,
   BACKGROUND_COLOR_TRANSITION_HUE_INCREMENT
-} from '../../globals'
+} from 'av/globals'
 
 import { useSelector } from 'av/store'
 import { generalSlice } from 'av/store/slices/general'
-import { getAudioHasMetadata, getAnimateAudioBackgroundColor } from 'av/store/slices/media'
+import {
+  mediaSlice,
+  getAudioHasMetadata,
+  getAnimateAudioBackgroundColor
+} from 'av/store/slices/media'
 import { randomizeBackgroundColor } from 'av/store/thunks'
 
 import { Pane } from 'av/components/pane'
 
-import { Media } from 'av/media'
-import { Controls } from '../controls'
+import { Media } from 'av/elements/media'
 import { AudioMetadata } from './metadata'
-import { ShortcutConfirmation } from '../shortcut-confirmation'
 
 const Wrapper = styled(Pane)`
   display: flex;
@@ -81,11 +83,12 @@ export const Audio: React.FC = () => {
    */
 
   return (
-    <Wrapper style={{ background: metadataColor }}>
+    <Wrapper
+      style={{ background: metadataColor ?? '' }}
+      onClick={() => dispatch(mediaSlice.actions.playPauseShortcut())}
+    >
       <Media />
       {hasMetadata ? <AudioMetadata /> : <Icon icon={faMusic} />}
-      <Controls />
-      <ShortcutConfirmation />
     </Wrapper>
   )
 }
