@@ -7,6 +7,7 @@ import { TRANSITION_DURATION, BACKGROUND_COLOR_TRANSITION_DURATION_MS } from './
 
 import { useSelector } from 'av/store'
 import { generalSlice, getBackgroundColor } from 'av/store/slices/general'
+import { mediaSlice } from 'av/store/slices/media'
 import { randomizeBackgroundColor, openFile } from './store/thunks'
 
 import { Pane } from './components/pane'
@@ -23,6 +24,10 @@ const Wrapper = styled(Pane)`
   overflow: hidden;
   user-select: none;
   transition: background-color ${BACKGROUND_COLOR_TRANSITION_DURATION_MS}ms;
+
+  &:focus {
+    outline: none;
+  }
 
   * {
     line-height: 1;
@@ -44,6 +49,7 @@ export const App: React.FC = () => {
     !(state.settings.showSettings || state.browserDialog.show)
   ))
   const mediaType = useSelector(({ media }) => media.type)
+  const mediaLoaded = useSelector(({ media }) => media.loaded)
   const dispatch = useDispatch()
 
   const wrapper = React.useRef<HTMLDivElement | null>(null)
@@ -64,12 +70,20 @@ export const App: React.FC = () => {
     dispatch(randomizeBackgroundColor())
   }, [])
 
+  const onKeyUp = (event: React.KeyboardEvent): void => {
+    if (!mediaLoaded) return
+
+    if (event.key === ' ') dispatch(mediaSlice.actions.playPauseShortcut())
+  }
+
   return (
     <Wrapper
       ref={wrapper}
       style={{ backgroundColor: backgroundColor }}
+      onKeyUp={onKeyUp}
       onDragEnter={() => setDragging(draggingEnabled)}
       onContextMenu={event => event.preventDefault()}
+      tabIndex={-1}
     >
       {mediaType === 'audio' ? <Audio /> : (mediaType === 'video' ? <Video /> : <File />)}
 

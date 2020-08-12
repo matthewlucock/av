@@ -53,7 +53,6 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.30",
     "@fortawesome/free-solid-svg-icons": "^5.14.0",
     "@fortawesome/react-fontawesome": "^0.1.11",
-    "@react-hook/event": "^1.2.2",
     "@react-hook/hover": "^4.0.0",
     "@reduxjs/toolkit": "^1.4.0",
     "color": "^3.1.2",
