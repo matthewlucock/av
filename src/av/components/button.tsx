@@ -14,14 +14,14 @@ export const Button = styled.div<Props>`
   align-items: center;
   padding: .5em;
   color: ${props => (
-    props.disabled
+    props.disabled === true
       ? CONTROLS_FADED_FOREGROUND_COLOR.string()
-      : props.primary ? 'inherit' : CONTROLS_SECONDARY_FOREGROUND_COLOR.string()
+      : props.primary === true ? 'inherit' : CONTROLS_SECONDARY_FOREGROUND_COLOR.string()
   )};
   transition-property: background, color;
   transition-duration: ${TRANSITION_DURATION};
 
-  ${props => !props.disabled && css`
+  ${props => props.disabled !== true && css`
     cursor: pointer;
     &:hover, &:focus {
       color: inherit;

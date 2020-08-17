@@ -74,7 +74,7 @@ export const Audio: React.FC = () => {
 
   React.useEffect(() => {
     return () => {
-      if (metadataColor) dispatch(randomizeBackgroundColor())
+      if (metadataColor !== null) dispatch(randomizeBackgroundColor())
     }
   }, [])
 

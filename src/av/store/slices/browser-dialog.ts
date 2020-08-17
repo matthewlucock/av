@@ -10,7 +10,7 @@ type DialogDetails = Readonly<{
   confirm?: boolean
 }>
 
-type SliceState = DialogDetails & Readonly<{
+type SliceState = Required<DialogDetails> & Readonly<{
   show: boolean
   result: boolean | null
 }>
@@ -34,7 +34,7 @@ export const browserDialogSlice = createSlice({
     setDialog: (state, { payload }: PayloadAction<DialogDetails>) => {
       state.show = true
       state.message = payload.message
-      state.confirm = payload.confirm
+      state.confirm = payload.confirm ?? false
       state.result = null
     },
 

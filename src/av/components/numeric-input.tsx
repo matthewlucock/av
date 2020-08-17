@@ -46,7 +46,7 @@ export const NumericInput: React.FC<Props> = props => {
     // For float values, the modifier may be longer than the maximum value
     let newLength = Math.max(props.maximumValue.toString().length, modifier.toString().length)
 
-    if (props.suffix) newLength += props.suffix.length
+    if (typeof props.suffix === 'string') newLength += props.suffix.length
 
     setLength(newLength)
   }, [props.modifier, props.maximumValue, props.suffix])

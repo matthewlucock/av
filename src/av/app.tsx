@@ -1,12 +1,11 @@
 import * as React from 'react'
 import styled from '@emotion/styled'
 import { useDispatch } from 'react-redux'
-import useResizeObserver from 'use-resize-observer'
 
 import { TRANSITION_DURATION, BACKGROUND_COLOR_TRANSITION_DURATION_MS } from './globals'
 
 import { useSelector } from 'av/store'
-import { generalSlice, getBackgroundColor } from 'av/store/slices/general'
+import { getBackgroundColor } from 'av/store/slices/general'
 import { mediaSlice } from 'av/store/slices/media'
 import { randomizeBackgroundColor, openFile } from './store/thunks'
 
@@ -54,17 +53,6 @@ export const App: React.FC = () => {
 
   const wrapper = React.useRef<HTMLDivElement | null>(null)
   const [dragging, setDragging] = React.useState(false)
-
-  /**
-   * App size tracking
-   */
-  useResizeObserver({
-    ref: wrapper,
-    onResize: ({ width, height }) => {
-      if (!width || !height) return
-      dispatch(generalSlice.actions.setAppSize({ width, height }))
-    }
-  })
 
   React.useEffect(() => {
     dispatch(randomizeBackgroundColor())

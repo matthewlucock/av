@@ -35,9 +35,9 @@ export const retrieveAudioMetadata = async (file: File): Promise<ProcessedAudioM
     return null
   }
 
-  const { artist = null, title = null } = metadata
-  const coverArtUrl = metadata.picture?.size ? URL.createObjectURL(metadata.picture) : null
-  const color = coverArtUrl ? await getMetadataColorFromImageUrl(coverArtUrl) : null
+  const { artist = null, title = null, picture = null } = metadata
+  const coverArtUrl = picture !== null ? URL.createObjectURL(picture) : null
+  const color = coverArtUrl !== null ? await getMetadataColorFromImageUrl(coverArtUrl) : null
 
   return { artist, title, coverArtUrl, color }
 }

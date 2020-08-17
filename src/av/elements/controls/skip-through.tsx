@@ -15,7 +15,7 @@ export const SkipBack: React.FC = () => {
 
   return (
     <Button
-      disabled={!playbackTime}
+      disabled={playbackTime === 0}
       onClick={() => {
         dispatch(mediaSlice.actions.storePlaybackTime(playbackTime + skipBackTime))
         dispatch(mediaSlice.actions.setPlaybackTimeNeedsUpdating(true))

@@ -21,7 +21,7 @@ export const Media: React.FC = () => {
       document.title = originalTitle.current
     }
 
-    if (name) {
+    if (name !== null) {
       document.title = `${originalTitle.current} — ${name}`
     } else {
       clear()

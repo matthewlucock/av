@@ -15,7 +15,7 @@ export const Rewind: React.FC = () => {
 
   return (
     <Button
-      disabled={!playbackTime}
+      disabled={playbackTime === 0}
       onMouseDown={() => dispatch(mediaSlice.actions.setMoveThrough('rewind'))}
       onMouseUp={() => dispatch(mediaSlice.actions.setMoveThrough(null))}
     >

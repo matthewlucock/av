@@ -28,13 +28,13 @@ export const BaseMedia: React.FC = () => {
   const playbackFrameRequestId = React.useRef<number>(0)
 
   const playbackFrame = (): void => {
-    if (!nativeMedia.current) return
+    if (nativeMedia.current === null) return
     dispatch(mediaSlice.actions.storePlaybackTime(nativeMedia.current.currentTime))
     playbackFrameRequestId.current = requestAnimationFrame(playbackFrame)
   }
 
   React.useEffect(() => {
-    if (!nativeMedia.current || !loaded) return
+    if (nativeMedia.current === null || !loaded) return
 
     if (playing) {
       nativeMedia.current.play()
@@ -52,7 +52,7 @@ export const BaseMedia: React.FC = () => {
    */
 
   React.useEffect(() => {
-    if (nativeMedia.current && playbackTimeNeedsUpdating) {
+    if (nativeMedia.current !== null && playbackTimeNeedsUpdating) {
       nativeMedia.current.currentTime = store.getState().media.playbackTime
       dispatch(mediaSlice.actions.setPlaybackTimeNeedsUpdating(false))
     }
@@ -63,7 +63,7 @@ export const BaseMedia: React.FC = () => {
    */
 
   React.useEffect(() => {
-    if (!nativeMedia.current) return
+    if (nativeMedia.current === null) return
     nativeMedia.current.playbackRate = playbackRate
   }, [playbackRate])
 
@@ -72,7 +72,7 @@ export const BaseMedia: React.FC = () => {
    */
 
   React.useEffect(() => {
-    if (!nativeMedia.current) return
+    if (nativeMedia.current === null) return
     nativeMedia.current.volume = volume
   }, [volume])
 
@@ -84,7 +84,7 @@ export const BaseMedia: React.FC = () => {
   const lastMoveThroughFrameTime = React.useRef<number>(0)
 
   const moveThroughFrame = (time: number): void => {
-    if (!nativeMedia.current) return
+    if (nativeMedia.current === null) return
 
     const frameTimeDelta = time - lastMoveThroughFrameTime.current
     lastMoveThroughFrameTime.current = time
@@ -122,7 +122,7 @@ export const BaseMedia: React.FC = () => {
   const lastPlaybackRate = React.useRef<number>(playbackRate)
 
   React.useEffect(() => {
-    if (!nativeMedia.current) return
+    if (nativeMedia.current === null) return
 
     if (playing) {
       if (moveThrough === 'fastForward') {
@@ -141,10 +141,10 @@ export const BaseMedia: React.FC = () => {
    * Component
    */
 
-  if (!url) throw new Error('<BaseMedia /> rendered without a source URL')
+  if (url === null) throw new Error('<BaseMedia /> rendered without a source URL')
 
   const onLoadedData = (): void => {
-    if (!nativeMedia.current) return
+    if (nativeMedia.current === null) return
     dispatch(mediaSlice.actions.loaded({ duration: nativeMedia.current.duration }))
 
     // Type guard is necessary to reference video-only properties as opposed to simply evaluating

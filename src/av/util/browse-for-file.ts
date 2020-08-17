@@ -3,7 +3,7 @@ export const browseForFile = (callback: (fileList: FileList) => void): void => {
   input.type = 'file'
 
   input.oninput = () => {
-    if (input.files) callback(input.files)
+    if (input.files !== null) callback(input.files)
   }
 
   input.click()

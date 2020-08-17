@@ -26,7 +26,7 @@ export const randomizeBackgroundColor = (): AppThunk => (dispatch, getState) => 
 export const openFile = (fileList: FileList): AppThunk => async (dispatch, getState) => {
   const state = getState()
 
-  if (!fileList.length) return
+  if (fileList.length === 0) return
 
   if (fileList.length > 1) {
     error('av can only open a single file at a time.')
@@ -53,11 +53,11 @@ export const openFile = (fileList: FileList): AppThunk => async (dispatch, getSt
   if (state.media.loaded) await dispatch(stopMedia())
 
   // Only play new media if old media (if there was any) was stopped.
-  if (getState().media.url) return
+  if (getState().media.url !== null) return
 
   if (type === 'audio') {
     const metadata = await retrieveAudioMetadata(file)
-    if (metadata) dispatch(mediaSlice.actions.setAudioMetadata(metadata))
+    if (metadata !== null) dispatch(mediaSlice.actions.setAudioMetadata(metadata))
   }
 
   dispatch(
@@ -75,9 +75,9 @@ export const stopMedia = (): AppThunk => async (dispatch, getState) => {
   const finished = getMediaFinished(state)
   const confirmText = getMediaStopConfirmText(state)
 
-  if (!state.media.url) throw new Error('Media stopped with no source URL')
+  if (state.media.url === null) throw new Error('Media stopped with no source URL')
 
-  if (!state.media.playbackTime || finished) {
+  if (state.media.playbackTime === 0 || finished) {
     dispatch(mediaSlice.actions.clear())
     return
   }

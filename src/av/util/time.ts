@@ -9,7 +9,10 @@ const getTimeParts = (time: number): number[] => {
 
 export const getTimestamp = (time: number, maximumTime?: number): string => {
   let timeParts = getTimeParts(time)
-  if (maximumTime) timeParts = timeParts.slice(0, getTimeParts(maximumTime).filter(x => x).length)
+
+  if (maximumTime !== undefined) {
+    timeParts = timeParts.slice(0, getTimeParts(maximumTime).filter(x => x > 0).length)
+  }
 
   let timestamp = timeParts.map(x => x < 10 ? `0${x}` : x).reverse().join(':')
   if (timeParts.length === 1) timestamp = `:${timestamp}`

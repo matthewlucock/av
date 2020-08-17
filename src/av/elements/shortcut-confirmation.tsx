@@ -54,7 +54,7 @@ export const ShortcutConfirmation: React.FC = () => {
   const hideTimeoutId = React.useRef<number | undefined>()
 
   React.useEffect(() => {
-    if (providedShortcut) {
+    if (providedShortcut !== null) {
       setVisible(true)
       setCurrentShortcut(providedShortcut)
 
@@ -71,7 +71,7 @@ export const ShortcutConfirmation: React.FC = () => {
 
   return (
     <Display visible={visible}>
-      {currentShortcut && ICONS[currentShortcut]}
+      {currentShortcut !== null && ICONS[currentShortcut]}
     </Display>
   )
 }

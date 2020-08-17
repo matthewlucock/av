@@ -16,7 +16,7 @@ export const PlaybackTime: React.FC = () => {
   const playbackTime = useSelector(({ media }) => media.playbackTime)
   const finished = useSelector(getMediaFinished)
 
-  if (!duration) throw new Error('<PlaybackTime /> rendered without a duration')
+  if (duration === null) throw new Error('<PlaybackTime /> rendered without a duration')
 
   const roundedDuration = Math.ceil(duration)
   const roundedPlaybackTime = finished ? Math.ceil(playbackTime) : Math.floor(playbackTime)

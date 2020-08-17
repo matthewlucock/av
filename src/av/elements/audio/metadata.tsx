@@ -25,18 +25,20 @@ const InformationLine = styled.div`
   }
 `
 
+// TODO: Metadata when there is no cover art
+
 export const AudioMetadata: React.FC = () => {
   const { coverArtUrl, artist, title } = useSelector(({ media }) => media.audioMetadata)
 
   return (
     <Metadata>
-      {coverArtUrl && (
+      {coverArtUrl !== null && (
         <CoverArt src={coverArtUrl} onLoad={() => URL.revokeObjectURL(coverArtUrl)} />
       )}
 
       <Information>
-        {artist && <InformationLine>{artist}</InformationLine>}
-        {title && <InformationLine>{title}</InformationLine>}
+        {artist !== null && <InformationLine>{artist}</InformationLine>}
+        {title !== null && <InformationLine>{title}</InformationLine>}
       </Information>
     </Metadata>
   )

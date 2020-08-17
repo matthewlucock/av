@@ -54,23 +54,22 @@ export const Slider: React.FC<Props> = props => {
   const offset = props.value / props.maximum * usableBarWidth
 
   const unbindMouseListeners = (): void => {
-    if (mouseMoveListener.current) {
+    if (mouseMoveListener.current !== undefined) {
       document.removeEventListener('mousemove', mouseMoveListener.current)
     }
-    if (mouseUpListener.current) {
+    if (mouseUpListener.current !== undefined) {
       document.removeEventListener('mouseup', mouseUpListener.current)
     }
   }
 
   const changeValueWithOffset = (newOffset: number): void => {
-    if (!bar.current) return
-    if (barWidth) props.changeValue(newOffset / usableBarWidth * props.maximum)
+    props.changeValue(newOffset / usableBarWidth * props.maximum)
   }
 
   React.useEffect((): () => void => {
     if (dragging) {
       mouseMoveListener.current = (event: MouseEvent) => {
-        if (!bar.current) return
+        if (bar.current === null) return
 
         const { left, right } = bar.current.getBoundingClientRect()
 
@@ -87,10 +86,10 @@ export const Slider: React.FC<Props> = props => {
 
       document.addEventListener('mousemove', mouseMoveListener.current)
       document.addEventListener('mouseup', mouseUpListener.current)
-      if (props.draggingCallback) props.draggingCallback(true)
+      if (props.draggingCallback !== undefined) props.draggingCallback(true)
     } else {
       unbindMouseListeners()
-      if (props.draggingCallback) props.draggingCallback(false)
+      if (props.draggingCallback !== undefined) props.draggingCallback(false)
     }
 
     return unbindMouseListeners
@@ -99,7 +98,7 @@ export const Slider: React.FC<Props> = props => {
   return (
     <Wrapper
       onClick={(event) => {
-        if (!bar.current) return
+        if (bar.current === null) return
 
         const { left } = bar.current.getBoundingClientRect()
         changeValueWithOffset(Math.min(

@@ -90,7 +90,7 @@ export const mediaSlice = createSlice({
     },
 
     storePlaybackTime: (state, { payload }: PayloadAction<number>) => {
-      if (!state.duration) throw new Error('playbackTime stored without a duration')
+      if (state.duration === null) throw new Error('playbackTime stored without a duration')
 
       state.playbackTime = boundValue(0, payload, state.duration)
 
@@ -139,8 +139,8 @@ export const getAudioHasMetadata = createSelector<SliceRootState, ProcessedAudio
   metadata => Object.values(metadata).some(value => value)
 )
 export const getAnimateAudioBackgroundColor = ({ media }: SliceRootState): boolean => (
-  media.playing && !media.audioMetadata.color
+  media.playing && media.audioMetadata.color === null
 )
 export const getMediaStopConfirmText = ({ media }: SliceRootState): string => (
-  media.type ? `Are you sure you want to stop this ${media.type}?` : ''
+  media.type !== null ? `Are you sure you want to stop this ${media.type}?` : ''
 )
