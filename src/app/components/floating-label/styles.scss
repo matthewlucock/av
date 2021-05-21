@@ -1,0 +1,25 @@
+.label {
+  position: absolute;
+  font-size: 0.6em;
+  opacity: 0;
+  transition-property: opacity;
+
+  &.left {
+    right: 100%;
+    padding-right: 0.2em;
+  }
+
+  &.right {
+    left: 100%;
+  }
+
+  &.visible {
+    opacity: 1;
+  }
+}
+
+.label-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}

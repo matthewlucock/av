@@ -1,0 +1,42 @@
+$solid-background-color: hsl(0, 0%, 25%);
+$translucent-background-color: hsla(0, 0%, 20%, 0.7);
+
+.wrapper {
+  position: absolute;
+  bottom: 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 90%;
+  max-width: 22em;
+  padding: 0.5em;
+  background-color: $solid-background-color;
+  border-radius: 1em;
+  backdrop-filter: blur(1em);
+
+  &.translucent {
+    background-color: $translucent-background-color;
+  }
+}
+
+.buttons {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+%positioned-buttons {
+  position: absolute;
+  display: flex;
+}
+.left-buttons {
+  @extend %positioned-buttons;
+  left: 0;
+}
+.right-buttons {
+  @extend %positioned-buttons;
+  right: 0;
+}

@@ -1,10 +1,13 @@
 {
-  "extends": [ "standard-with-typescript" ],
-  "parser": "@typescript-eslint/parser",
+  "extends": ["standard-with-typescript", "standard-jsx"],
   "parserOptions": { "project": "./tsconfig.json" },
+  "ignorePatterns": ["dist", "lib"],
 
   "rules": {
-    "max-len": [ "error", { "code": 100, "ignoreStrings": true } ],
-    "no-void": [ "error", { "allowAsStatement": true } ]
+    "max-len": ["error", { "code": 100, "ignoreStrings": true }],
+    "no-console": "error",
+    "@typescript-eslint/consistent-type-definitions": ["error", "type"],
+    "@typescript-eslint/lines-between-class-members": "off",
+    "react/jsx-handler-names": "off"
   }
 }

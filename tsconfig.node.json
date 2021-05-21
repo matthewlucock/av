@@ -1,9 +1,0 @@
-{
-  "extends": "./tsconfig",
-  "include": ["src/node"],
-
-  "compilerOptions": {
-    "module": "commonjs",
-    "outDir": "lib"
-  }
-}

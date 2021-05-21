@@ -1,0 +1,37 @@
+name: 'Build'
+on: ['push']
+
+jobs:
+  build:
+    name: 'Build'
+    runs-on: 'ubuntu-latest'
+
+    steps:
+      - name: 'Checkout'
+        uses: 'actions/checkout@v2'
+
+      - name: 'Setup Node'
+        uses: 'actions/setup-node@v1'
+        with:
+          node-version: '15.x'
+
+      - name: 'Install dependencies'
+        run: 'npm ci'
+
+      - name: 'Lint scripts'
+        run: 'npm run lint:scripts'
+
+      - name: 'Lint styles'
+        run: 'npm run lint:styles'
+
+      - name: 'Lint HTML'
+        run: 'npm run lint:html'
+
+      - name: 'Build Electron renderer process'
+        run: 'npm run build:electron:av'
+
+      - name: 'Build Electron main process'
+        run: 'npm run build:electron:node'
+
+      - name: 'Build for browser'
+        run : 'npm run build:browser'

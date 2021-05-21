@@ -1,0 +1,33 @@
+$background-color: hsla(0, 0%, 0%, 0.75);
+$arrow-color: hsl(0, 0%, 11%);
+$arrow-size: 0.5em;
+
+.popper {
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1em;
+  font-size: 0.7em;
+  color: hsl(0, 0%, 100%);
+  visibility: hidden;
+  background-color: $background-color;
+  border-radius: 0.75em;
+  opacity: 0;
+  backdrop-filter: blur(1em);
+  transition-property: visibility, opacity;
+
+  &.visible {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+.arrow {
+  top: 100%;
+  width: 0;
+  height: 0;
+  border-top: $arrow-size solid $arrow-color;
+  border-right: $arrow-size solid transparent;
+  border-left: $arrow-size solid transparent;
+}

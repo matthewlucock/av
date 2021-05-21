@@ -1,0 +1,19 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 75%;
+  height: 100%;
+  padding-bottom: 2em;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.logo {
+  margin-bottom: 0.25em;
+  font-size: 5em;
+  font-weight: bold;
+  line-height: 1;
+  opacity: 0.5;
+}

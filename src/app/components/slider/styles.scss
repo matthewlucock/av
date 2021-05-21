@@ -1,0 +1,36 @@
+$border-radius: 1em;
+
+.wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  cursor: pointer;
+}
+
+%bar {
+  width: 100%;
+  height: 0.25em;
+  cursor: pointer;
+  background-color: hsl(0, 0%, 75%);
+  border-radius: 1em;
+}
+
+.bar {
+  @extend %bar;
+}
+
+.value {
+  @extend %bar;
+
+  position: absolute;
+  background: hsl(0, 0%, 90%);
+}
+
+.thumb {
+  position: absolute;
+  width: 0.75em;
+  height: 0.75em;
+  background-color: hsl(0, 0%, 100%);
+  border-radius: 100%;
+}

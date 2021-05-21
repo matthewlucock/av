@@ -1,0 +1,11 @@
+.button {
+  display: flex;
+  justify-content: center;
+  width: 1.5em;
+  padding: 0.25em;
+  font-size: 0.75em;
+
+  &.primary {
+    font-size: 1em;
+  }
+}

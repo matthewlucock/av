@@ -1,8 +1,0 @@
-{
-  "extends": [".eslintrc", "standard-react"],
-
-  "rules": {
-    "react/prop-types": "off",
-    "react/jsx-handler-names": "off"
-  }
-}

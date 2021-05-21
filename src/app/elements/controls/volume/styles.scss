@@ -1,0 +1,16 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.slider-container {
+  width: 3em;
+  visibility: hidden;
+  opacity: 0;
+  transition-property: visibility, opacity;
+
+  .expanded & {
+    visibility: visible;
+    opacity: 1;
+  }
+}
