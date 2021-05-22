@@ -32,10 +32,12 @@ $translucent-background-color: hsla(0, 0%, 20%, 0.7);
   position: absolute;
   display: flex;
 }
+
 .left-buttons {
   @extend %positioned-buttons;
   left: 0;
 }
+
 .right-buttons {
   @extend %positioned-buttons;
   right: 0;

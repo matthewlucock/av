@@ -9,10 +9,7 @@
   "rules": {
     "selector-list-comma-space-after": "always-single-line",
     "selector-list-comma-newline-after": "always-multi-line",
-    "declaration-empty-line-before": [
-      "always",
-      { "except": ["first-nested"], "ignore": ["after-declaration", "after-comment"] }
-    ],
+    "declaration-empty-line-before": "never",
     "max-nesting-depth": [2, { "ignore": ["pseudo-classes"] }],
     "order/properties-alphabetical-order": null
   }

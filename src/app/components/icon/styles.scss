@@ -4,6 +4,7 @@
 }
 
 $offset: 0.05em;
+
 %offset {
   position: relative;
 }
@@ -12,6 +13,7 @@ $offset: 0.05em;
   @extend %offset;
   left: $offset;
 }
+
 .right {
   @extend %offset;
   right: $offset;

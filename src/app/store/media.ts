@@ -28,9 +28,18 @@ export class Media {
     this.info = { ...info, duration: 0 }
   }
 
+  public destroy (): void {
+    URL.revokeObjectURL(this.info.src)
+  }
+
+  /**
+   * Computed properties
+   */
+
   public get notStarted (): boolean {
     return this.playbackTime === 0
   }
+
   public get finished (): boolean {
     return this.playbackTime === this.info.duration
   }
@@ -42,9 +51,14 @@ export class Media {
   public get rewinding (): boolean {
     return this.speedThroughRate < 0
   }
+
   public get fastForwarding (): boolean {
     return this.speedThroughRate > 0
   }
+
+  /**
+   * Media loaded
+   */
 
   public onLoaded (nativeMedia: HTMLMediaElement): void {
     this.info.duration = nativeMedia.duration
@@ -55,13 +69,19 @@ export class Media {
     }
   }
 
+  /**
+   * Play/pause
+   */
+
   public play (): void {
     this.playing = true
   }
+
   public pause (): void {
     this.playing = false
     this.clearSpeedThroughRate()
   }
+
   public playPause (): void {
     if (this.playing) {
       this.pause()
@@ -69,6 +89,10 @@ export class Media {
       this.play()
     }
   }
+
+  /**
+   * Playback time
+   */
 
   public storePlaybackTime (playbackTime: number): void {
     this.playbackTime = boundNumber(0, playbackTime, this.info.duration)
@@ -82,6 +106,7 @@ export class Media {
     this.storePlaybackTime(playbackTime)
     this.playbackTimeNeedsUpdating = true
   }
+
   public clearPlaybackTimeUpdate (): void {
     this.playbackTimeNeedsUpdating = false
   }
@@ -90,24 +115,33 @@ export class Media {
     this.updatePlaybackTime(this.playbackTime + offset)
   }
 
+  /**
+   * Playback rate
+   */
+
   public changePlaybackRate (playbackRate: number): void {
     this.playbackRate = boundNumber(MIN_PLAYBACK_RATE, playbackRate, MAX_PLAYBACK_RATE)
   }
+
+  /**
+   * Speed through
+   */
 
   public toggleSpeedThroughRate (multiplier: number): void {
     this.speedThroughRate = 2 * multiplier
 
     if (this.fastForwarding) this.play()
   }
+
   private clearSpeedThroughRate (): void {
     this.speedThroughRate = 0
   }
 
+  /**
+   * Volume
+   */
+
   public setVolume (volume: number): void {
     this.volume = boundNumber(0, volume, 1)
-  }
-
-  public destroy (): void {
-    URL.revokeObjectURL(this.info.src)
   }
 }

@@ -22,7 +22,6 @@ $border-radius: 1em;
 
 .value {
   @extend %bar;
-
   position: absolute;
   background: hsl(0, 0%, 90%);
 }
