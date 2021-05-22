@@ -22,7 +22,7 @@ export const Audio: preact.FunctionComponent = () => {
         }
 
         return (
-          <div class={styles.audioIconContainer}>
+          <div className={styles.audioIconContainer}>
             <VolumeIcon />
           </div>
         )

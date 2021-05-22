@@ -20,6 +20,6 @@ export const VolumeIcon: preact.FunctionComponent = view(props => {
   const media = useMedia()
 
   return (
-    <div class={styles.wrapper}>{getVolumeIcon(media.volume)}</div>
+    <div className={styles.wrapper}>{getVolumeIcon(media.volume)}</div>
   )
 })

@@ -20,7 +20,7 @@ export const PlaybackSpeedButton: preact.FunctionComponent = view(() => {
   }, [])
 
   return (
-    <div class={floatingLabelContainerClass}>
+    <div className={floatingLabelContainerClass}>
       <ControlButton
         ref_={(button): void => {
           if (button !== null) controlsStore.playbackSpeed.storeButton(button)

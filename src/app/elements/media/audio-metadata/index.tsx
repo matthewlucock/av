@@ -10,8 +10,8 @@ export const AudioMetadata: preact.FunctionComponent<Props> = props => {
   const { data } = props
 
   return (
-    <div class={styles.wrapper}>
-      {data.artSrc !== null && <img class={styles.art} src={data.artSrc} />}
+    <div className={styles.wrapper}>
+      {data.artSrc !== null && <img className={styles.art} src={data.artSrc} />}
       <div>{data.artist}</div>
       <div>{data.title}</div>
     </div>

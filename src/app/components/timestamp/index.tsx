@@ -7,7 +7,7 @@ import { getTimestamp } from '@/util/time'
 import styles from './styles.scss'
 
 type Props = Readonly<{
-  readonly class?: string
+  readonly className?: string
   readonly time: number
   readonly max: number
 }>
@@ -23,7 +23,7 @@ export const Timestamp: preact.FunctionComponent<Props> = props => {
    */
 
   return (
-    <div class={clsx(styles.timestamp, props.class)} style={{ width: `${length + 1}ch` }}>
+    <div className={clsx(styles.timestamp, props.className)} style={{ width: `${length + 1}ch` }}>
       {getTimestamp(props.time, props.max)}
     </div>
   )

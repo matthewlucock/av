@@ -55,7 +55,7 @@ export const Skip: preact.FunctionComponent<Props> = view(props => {
   } = getDirectionData(props.direction, controlsStore.skipAmount)
 
   return (
-    <div class={floatingLabelContainerClass}>
+    <div className={floatingLabelContainerClass}>
       <ControlButton
         ref_={button}
         onClick={(): void => media.offsetPlaybackTime(offset)}

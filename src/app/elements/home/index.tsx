@@ -16,8 +16,8 @@ export const Home: preact.FunctionComponent = () => {
   }
 
   return (
-    <div class={styles.wrapper}>
-      <div class={styles.logo}>av</div>
+    <div className={styles.wrapper}>
+      <div className={styles.logo}>av</div>
       <p>
         Drag an audio/video file here or{' '}
         <SimpleButton onClick={() => handlePromiseRejection(browseForFiles())}>

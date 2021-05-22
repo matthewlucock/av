@@ -9,7 +9,7 @@ import { useMedia } from '@/store'
 import { NativeMedia } from '@/elements/media/native'
 
 type Props = Readonly<{
-  class?: string
+  className?: string
   controls: JSX.Element
 }>
 
@@ -18,7 +18,7 @@ export const MediaWrapper: preact.FunctionComponent<Props> = view(props => {
 
   return (
     <div
-      className={clsx(styles.wrapper, props.class)}
+      className={clsx(styles.wrapper, props.className)}
       onClick={(): void => media.playPause()}
     >
       <NativeMedia />

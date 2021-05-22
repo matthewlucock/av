@@ -26,7 +26,7 @@ export const FloatingLabel: preact.FunctionComponent<Props> = props => {
   const positionClass = getPositionClass(props.position)
 
   return (
-    <div class={clsx(styles.label, positionClass, props.visible && styles.visible)}>
+    <div className={clsx(styles.label, positionClass, props.visible && styles.visible)}>
       {props.children}
     </div>
   )

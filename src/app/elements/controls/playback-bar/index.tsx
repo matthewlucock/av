@@ -18,7 +18,7 @@ export const PlaybackBar: preact.FunctionComponent = view(() => {
   )
 
   return (
-    <div class={styles.wrapper}>
+    <div className={styles.wrapper}>
       <Timestamp time={roundedPlaybackTime} max={roundedDuration} />
 
       <Slider

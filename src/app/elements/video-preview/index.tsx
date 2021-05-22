@@ -26,15 +26,15 @@ export const VideoPreview: preact.FunctionComponent = view(() => {
 
   return (
     <Popper
-      class={styles.wrapper}
+      className={styles.wrapper}
       reference={controlsStore.videoPreview.virtualElement}
       offset={offset}
       visible={controlsStore.videoPreview.visible}
     >
-      <video ref={video} class={styles.video} src={media.info.src} />
+      <video ref={video} className={styles.video} src={media.info.src} />
 
       <Timestamp
-        class={styles.time}
+        className={styles.time}
         time={controlsStore.videoPreview.time}
         max={media.info.duration}
       />

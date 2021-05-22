@@ -55,13 +55,13 @@ export const SpeedThrough: preact.FunctionComponent<Props> = view(props => {
   }, [media.speedThroughRate])
 
   return (
-    <div class={styles.wrapper}>
+    <div className={styles.wrapper}>
       <ControlButton onClick={(): void => media.toggleSpeedThroughRate(multiplier)}>
         {icon}
       </ControlButton>
 
-      <div class={clsx(styles.labelWrapper, positionClass, props.active && styles.active)}>
-        <div class={styles.label}>{label}</div>
+      <div className={clsx(styles.labelWrapper, positionClass, props.active && styles.active)}>
+        <div className={styles.label}>{label}</div>
       </div>
     </div>
   )
@@ -71,7 +71,7 @@ export const SpeedThroughShiftGroup: preact.FunctionComponent<Props> = props => 
   const { positionClass } = getDirectionData(props.direction)
 
   return (
-    <div class={clsx(styles.shiftGroup, positionClass, props.active && styles.active)}>
+    <div className={clsx(styles.shiftGroup, positionClass, props.active && styles.active)}>
       {props.children}
     </div>
   )

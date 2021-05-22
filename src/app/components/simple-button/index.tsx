@@ -8,7 +8,7 @@ type Props = Readonly<{
 
 export const SimpleButton: preact.FunctionComponent<Props> = props => {
   return (
-    <button class={styles.button} onClick={props.onClick}>
+    <button className={styles.button} onClick={props.onClick}>
       {props.children}
     </button>
   )

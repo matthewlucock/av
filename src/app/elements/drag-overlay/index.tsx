@@ -12,7 +12,7 @@ type Props = Readonly<{
 export const DragOverlay: preact.FunctionComponent<Props> = props => {
   return (
     <div
-      class={clsx(styles.draggingOverlay, props.dragging && styles.dragging)}
+      className={clsx(styles.draggingOverlay, props.dragging && styles.dragging)}
       onDragOver={event => event.preventDefault()}
       onDragLeave={() => props.setDragging(false)}
       onDrop={event => {

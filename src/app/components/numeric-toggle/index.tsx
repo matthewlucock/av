@@ -38,12 +38,12 @@ export const NumericToggle: React.FC<Props> = props => {
   }
 
   return (
-    <div class={styles.wrapper}>
+    <div className={styles.wrapper}>
       <ControlButton onClick={() => modifyValue(-1)}>
         {SUBTRACT_ICON}
       </ControlButton>
 
-      <div class={styles.value} style={{ width: `${length + 1}ch` }}>
+      <div className={styles.value} style={{ width: `${length + 1}ch` }}>
         {makeLabel(props.value)}
       </div>
 

@@ -12,7 +12,7 @@ type PopperStyles = Readonly<{
 }>
 
 type Props = Readonly<{
-  class?: string
+  className?: string
   reference: HTMLElement | PopperVirtualElement | null
   offset: PopperOffset
   visible: boolean
@@ -35,7 +35,7 @@ export const Popper: preact.FunctionComponent<Props> = props => {
   return (
     <div
       ref={setContainer}
-      className={clsx(styles.popper, props.class, props.visible && styles.visible)}
+      className={clsx(styles.popper, props.className, props.visible && styles.visible)}
       style={popperStyles.popper}
     >
       <div ref={setArrow} className={styles.arrow} style={popperStyles.arrow} />

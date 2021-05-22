@@ -37,12 +37,12 @@ export const Volume: preact.FunctionComponent = view(() => {
   }
 
   return (
-    <div ref={wrapper} class={clsx(styles.wrapper, expanded && styles.expanded)}>
+    <div ref={wrapper} className={clsx(styles.wrapper, expanded && styles.expanded)}>
       <ControlButton ref_={button} onClick={toggleVolume}>
         <VolumeIcon />
       </ControlButton>
 
-      <div class={styles.sliderContainer}>
+      <div className={styles.sliderContainer}>
         <Slider
           value={media.volume}
           max={1}

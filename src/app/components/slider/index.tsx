@@ -75,17 +75,17 @@ export const Slider: preact.FunctionComponent<Props> = props => {
 
   return (
     <div
-      class={styles.wrapper}
+      className={styles.wrapper}
       onMouseDown={changeValueFromMouseEvent}
       onMouseMove={onMouseMove}
       onMouseOut={props.onMouseOut}
     >
-      <div ref={bar} class={styles.bar} />
-      <div class={styles.value} style={{ width: `${valueWidth}px` }} />
+      <div ref={bar} className={styles.bar} />
+      <div className={styles.value} style={{ width: `${valueWidth}px` }} />
 
       <div
         ref={thumb}
-        class={styles.thumb}
+        className={styles.thumb}
         style={{ left: `${valueWidth}px` }}
         onMouseDown={(): void => setDragging(true)}
       />

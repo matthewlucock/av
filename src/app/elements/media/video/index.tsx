@@ -25,7 +25,7 @@ export const Video: preact.FunctionComponent = () => {
 
   return (
     <MediaWrapper
-      class={styles.videoWrapper}
+      className={styles.videoWrapper}
       controls={<Controls translucent />}
     >
       <VideoPreview />

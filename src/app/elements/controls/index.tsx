@@ -27,11 +27,11 @@ export const Controls: preact.FunctionComponent<Props> = view(props => {
   return (
     <>
       <div
-        class={clsx(styles.wrapper, props.translucent === true && styles.translucent)}
+        className={clsx(styles.wrapper, props.translucent === true && styles.translucent)}
         onClick={(event): void => event.stopPropagation()}
       >
-        <div class={styles.buttons}>
-          <div class={styles.leftButtons}>
+        <div className={styles.buttons}>
+          <div className={styles.leftButtons}>
             <Volume />
           </div>
 
@@ -49,7 +49,7 @@ export const Controls: preact.FunctionComponent<Props> = view(props => {
             <Skip direction='forwards' />
           </SpeedThroughShiftGroup>
 
-          <div class={styles.rightButtons}>
+          <div className={styles.rightButtons}>
             <PlaybackSpeedButton />
 
             <ControlButton onClick={() => {}}>
