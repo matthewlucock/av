@@ -5,10 +5,10 @@
     "lint:styles": "stylelint \"**/*.scss\"",
     "lint:html": "html-validate \"**/*.html\"",
     "lint": "npm run lint:scripts && npm run lint:styles && npm run lint:html",
-    "build:browser": "webpack --config build/webpack.config.browser.ts",
     "build:electron:app": "webpack --config build/webpack.config.electron.ts",
     "build:electron:electron": "rm -rf lib && tsc src/electron/index.ts src/electron/preload.ts src/.d.ts --module commonjs --outdir lib --target es2019",
     "build:electron": "npm run build:electron:app && npm run build:electron:electron",
+    "build:browser": "webpack --config build/webpack.config.browser.ts",
     "verify": "npm run lint && npm run build:browser && npm run build:electron",
     "start:browser": "webpack-dev-server --config build/webpack.config.browser.ts",
     "start:electron": "electron ."
