@@ -1,7 +1,8 @@
 import * as preact from 'preact'
-import clsx from 'clsx'
 
 import styles from './styles.scss'
+
+import { Overlay } from '@/components/overlay'
 
 type Props = Readonly<{
   dragging: boolean
@@ -11,8 +12,9 @@ type Props = Readonly<{
 
 export const DragOverlay: preact.FunctionComponent<Props> = props => {
   return (
-    <div
-      className={clsx(styles.draggingOverlay, props.dragging && styles.dragging)}
+    <Overlay
+      className={styles.dragOverlay}
+      visible={props.dragging}
       onDragOver={event => event.preventDefault()}
       onDragLeave={() => props.setDragging(false)}
       onDrop={event => {
