@@ -29,7 +29,7 @@ export const PlaybackBar: preact.FunctionComponent = view(() => {
         onMouseOut={() => controlsStore.videoPreview.clear()}
       />
 
-      <Timestamp time={roundedDuration} max={roundedDuration} />
+      <Timestamp className={styles.duration} time={roundedDuration} max={roundedDuration} />
     </div>
   )
 })

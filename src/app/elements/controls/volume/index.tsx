@@ -38,7 +38,7 @@ export const Volume: preact.FunctionComponent = view(() => {
 
   return (
     <div ref={wrapper} className={clsx(styles.wrapper, expanded && styles.expanded)}>
-      <ControlButton ref_={button} onClick={toggleVolume}>
+      <ControlButton ref_={button} onClick={toggleVolume} end='left'>
         <VolumeIcon />
       </ControlButton>
 

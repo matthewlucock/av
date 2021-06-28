@@ -56,7 +56,10 @@ export const Controls: preact.FunctionComponent<Props> = view(props => {
               {FULLSCREEN_ICON}
             </ControlButton>
 
-            <ControlButton onClick={(): void => handlePromiseRejection(mediaStore.stop())}>
+            <ControlButton
+              onClick={(): void => handlePromiseRejection(mediaStore.stop())}
+              end='right'
+            >
               {STOP_ICON}
             </ControlButton>
           </div>

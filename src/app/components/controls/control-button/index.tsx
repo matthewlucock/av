@@ -8,15 +8,20 @@ type Props = Readonly<{
   className?: string
   onClick: () => void
   primary?: boolean
+  end?: 'left' | 'right'
 }>
 
 export const ControlButton: preact.FunctionComponent<Props> = props => {
+  const className = clsx(
+    styles.button,
+    props.primary === true && styles.primary,
+    props.end === 'left' && styles.leftEnd,
+    props.end === 'right' && styles.rightEnd,
+    props.className
+  )
+
   return (
-    <button
-      ref={props.ref_}
-      className={clsx(styles.button, props.primary === true && styles.primary, props.className)}
-      onClick={props.onClick}
-    >
+    <button ref={props.ref_} className={className} onClick={props.onClick}>
       {props.children}
     </button>
   )

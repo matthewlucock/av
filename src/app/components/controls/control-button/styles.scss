@@ -1,11 +1,21 @@
+$padding: 0.25em;
+
 .button {
   display: flex;
   justify-content: center;
   width: 1.5em;
-  padding: 0.25em;
+  padding: $padding;
   font-size: 0.75em;
 
   &.primary {
     font-size: 1em;
   }
+}
+
+.left-end {
+  margin-left: -$padding;
+}
+
+.right-end {
+  margin-right: -$padding;
 }
