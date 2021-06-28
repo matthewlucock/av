@@ -4,25 +4,31 @@ import { view } from '@risingstack/react-easy-state'
 
 import styles from './styles.scss'
 
-import { useMedia } from '@/store'
+import { useStore, useMedia } from '@/store'
 
 import { NativeMedia } from '@/elements/media/native'
+import { Controls } from '@/elements/controls'
 
 type Props = Readonly<{
   className?: string
-  controls: JSX.Element
 }>
 
 export const MediaWrapper: preact.FunctionComponent<Props> = view(props => {
+  const { controlsStore } = useStore()
   const media = useMedia()
 
+  const className = clsx(
+    styles.wrapper,
+    !controlsStore.visible && styles.controlsHidden,
+    props.className
+  )
+
   return (
-    <div
-      className={clsx(styles.wrapper, props.className)}
-      onClick={(): void => media.playPause()}
-    >
+    <div className={className} onClick={(): void => media.playPause()}>
       <NativeMedia />
-      {media.loaded && props.controls}
+      {media.loaded && (
+        <Controls mediaType={media.info.type} visible={controlsStore.visible} />
+      )}
       {props.children}
     </div>
   )

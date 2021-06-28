@@ -8,7 +8,6 @@ import styles from './styles.scss'
 import { useMedia } from '@/store'
 
 import { MediaWrapper } from '@/elements/media/wrapper'
-import { Controls } from '@/elements/controls'
 import { VideoPreview } from '@/elements/video-preview'
 
 export const Video: preact.FunctionComponent = () => {
@@ -24,10 +23,7 @@ export const Video: preact.FunctionComponent = () => {
   }
 
   return (
-    <MediaWrapper
-      className={styles.videoWrapper}
-      controls={<Controls translucent />}
-    >
+    <MediaWrapper className={styles.videoWrapper}>
       <VideoPreview />
     </MediaWrapper>
   )

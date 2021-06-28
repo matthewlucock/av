@@ -43,10 +43,19 @@ class VideoPreview {
 export class ControlsStore {
   public playbackSpeed: PlaybackSpeed = store(new PlaybackSpeed())
   public videoPreview: VideoPreview = store(new VideoPreview(this.rootStore))
+  public visible: boolean = false
 
   public constructor (private readonly rootStore: Store) {}
 
   public get skipAmount (): number {
     return this.rootStore.keyboardStore.shiftMode ? 10 : 30
+  }
+
+  public show (): void {
+    this.visible = true
+  }
+
+  public hide (): void {
+    this.visible = false
   }
 }
