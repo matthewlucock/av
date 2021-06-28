@@ -56,6 +56,14 @@ export class Media {
     return this.speedThroughRate > 0
   }
 
+  public get roundedDuration (): number {
+    return Math.ceil(this.info.duration)
+  }
+
+  public get roundedPlaybackTime (): number {
+    return this.finished ? Math.ceil(this.playbackTime) : Math.floor(this.playbackTime)
+  }
+
   /**
    * Media loaded
    */

@@ -12,14 +12,9 @@ export const PlaybackBar: preact.FunctionComponent = view(() => {
   const { controlsStore } = useStore()
   const media = useMedia()
 
-  const roundedDuration = Math.ceil(media.info.duration)
-  const roundedPlaybackTime = (
-    media.finished ? Math.ceil(media.playbackTime) : Math.floor(media.playbackTime)
-  )
-
   return (
     <div className={styles.wrapper}>
-      <Timestamp time={roundedPlaybackTime} max={roundedDuration} />
+      <Timestamp time={media.roundedPlaybackTime} max={media.roundedDuration} />
 
       <Slider
         value={media.playbackTime}
@@ -29,7 +24,11 @@ export const PlaybackBar: preact.FunctionComponent = view(() => {
         onMouseOut={() => controlsStore.videoPreview.clear()}
       />
 
-      <Timestamp className={styles.duration} time={roundedDuration} max={roundedDuration} />
+      <Timestamp
+        className={styles.duration}
+        time={media.roundedDuration}
+        max={media.roundedDuration}
+      />
     </div>
   )
 })
