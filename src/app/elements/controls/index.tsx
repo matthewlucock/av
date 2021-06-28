@@ -17,6 +17,7 @@ import { Volume } from '@/elements/controls/volume'
 import { PlaybackBar } from '@/elements/controls/playback-bar'
 import { PlaybackSpeedButton } from '@/elements/controls/playback-speed-button'
 import { PlaybackSpeedMenu } from '@/elements/controls/playback-speed-menu'
+import { ShortcutDisplay } from '@/elements/controls/shortcut-display'
 
 const LeftControls: preact.FunctionComponent = () => {
   return (
@@ -109,6 +110,7 @@ export const Controls: preact.FunctionComponent = view(() => {
       </div>
 
       <PlaybackSpeedMenu />
+      <ShortcutDisplay />
     </>
   )
 })

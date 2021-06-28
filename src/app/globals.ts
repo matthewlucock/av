@@ -4,3 +4,5 @@ export type MediaType = 'audio' | 'video'
 
 export const MIN_PLAYBACK_RATE = 0.5
 export const MAX_PLAYBACK_RATE = 2
+
+export type Shortcut = 'play' | 'pause'

@@ -1,0 +1,24 @@
+$size: 2em;
+
+.shortcut-display {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: $size;
+  height: $size;
+  padding: 0.5em;
+  font-size: 3em;
+  visibility: hidden;
+  background-color: hsla(0, 0%, 20%, 0.7);
+  backdrop-filter: blur(0.15em);
+  border-radius: 100%;
+  box-shadow: 0 0 0.5em hsl(0, 0%, 35%);
+  opacity: 0;
+  transition-property: visibility, opacity;
+
+  &.visible {
+    visibility: visible;
+    opacity: 1;
+  }
+}
