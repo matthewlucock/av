@@ -3,6 +3,8 @@ import { store } from '@risingstack/react-easy-state'
 import { PopperVirtualElement, Coordinates, makePopperVirtualElement } from '@/util/popper'
 import type { Store } from '.'
 
+const ACTIVITY_TIMEOUT_DURATION = 3000
+
 class PlaybackSpeed {
   public button: HTMLButtonElement | null = null
   public open: boolean = false
@@ -40,16 +42,9 @@ class VideoPreview {
   }
 }
 
-export class ControlsStore {
-  public playbackSpeed: PlaybackSpeed = store(new PlaybackSpeed())
-  public videoPreview: VideoPreview = store(new VideoPreview(this.rootStore))
+class Activity {
   public visible: boolean = false
-
-  public constructor (private readonly rootStore: Store) {}
-
-  public get skipAmount (): number {
-    return this.rootStore.keyboardStore.shiftMode ? 10 : 30
-  }
+  private timeoutId: number = 0
 
   public show (): void {
     this.visible = true
@@ -57,5 +52,34 @@ export class ControlsStore {
 
   public hide (): void {
     this.visible = false
+  }
+
+  public reset (): void {
+    window.clearTimeout(this.timeoutId)
+  }
+
+  public active (): void {
+    if (!document.hasFocus()) return
+
+    this.reset()
+    this.show()
+    this.timeoutId = window.setTimeout(() => this.hide(), ACTIVITY_TIMEOUT_DURATION)
+  }
+
+  public inactive (): void {
+    this.reset()
+    this.hide()
+  }
+}
+
+export class ControlsStore {
+  public playbackSpeed: PlaybackSpeed = store(new PlaybackSpeed())
+  public videoPreview: VideoPreview = store(new VideoPreview(this.rootStore))
+  public activity: Activity = store(new Activity())
+
+  public constructor (private readonly rootStore: Store) {}
+
+  public get skipAmount (): number {
+    return this.rootStore.keyboardStore.shiftMode ? 10 : 30
   }
 }

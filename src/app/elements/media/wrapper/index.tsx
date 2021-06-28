@@ -15,20 +15,19 @@ type Props = Readonly<{
 
 export const MediaWrapper: preact.FunctionComponent<Props> = view(props => {
   const { controlsStore } = useStore()
+  const { activity } = controlsStore
   const media = useMedia()
 
   const className = clsx(
     styles.wrapper,
-    !controlsStore.visible && styles.controlsHidden,
+    !activity.visible && styles.controlsHidden,
     props.className
   )
 
   return (
     <div className={className} onClick={(): void => media.playPause()}>
       <NativeMedia />
-      {media.loaded && (
-        <Controls mediaType={media.info.type} visible={controlsStore.visible} />
-      )}
+      {media.loaded && <Controls />}
       {props.children}
     </div>
   )

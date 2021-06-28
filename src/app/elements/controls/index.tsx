@@ -1,14 +1,14 @@
 import * as preact from 'preact'
-import { useRef, useLayoutEffect } from 'preact/hooks'
+import { useEffect, useLayoutEffect } from 'preact/hooks'
 import useEvent from '@react-hook/event'
 import clsx from 'clsx'
 import { view } from '@risingstack/react-easy-state'
+import { throttle } from 'throttle-debounce'
 
 import styles from './styles.scss'
 
-import type { MediaType } from '@/globals'
 import { handlePromiseRejection } from '@/util'
-import { useStore } from '@/store'
+import { useStore, useMedia } from '@/store'
 import { STOP_ICON, FULLSCREEN_ICON } from '@/icons'
 
 import { ControlButton } from '@/components/controls/control-button'
@@ -47,61 +47,53 @@ const RightControls: preact.FunctionComponent = () => {
   )
 }
 
-type UseActive = Readonly<{
-  setActive: (active: boolean) => void
-}>
-const useActive = (mediaType: MediaType): UseActive => {
-  const audio = mediaType === 'audio'
+const ACTIVITY_MOUSEMOVE_THROTTLE_DURATION = 100
+const useActive = (): void => {
   const { controlsStore } = useStore()
-  const timeoutId = useRef<number>(0)
+  const { activity } = controlsStore
+  const media = useMedia()
 
-  const setActive = (active: boolean): void => {
-    if (audio) return
-
-    if (document.hasFocus() && active) {
-      controlsStore.show()
-    } else {
-      controlsStore.hide()
-    }
-
-    window.clearTimeout(timeoutId.current)
-
-    if (active) {
-      timeoutId.current = window.setTimeout(() => controlsStore.hide(), 3000)
-    }
-  }
-
-  if (!audio) {
-    useEvent(document, 'mousemove', (): void => setActive(true))
-    useEvent(document, 'mouseleave', (): void => setActive(false))
-    useEvent(window, 'focus', (): void => setActive(true))
-    useEvent(window, 'blur', (): void => setActive(false))
-
+  if (media.info.type === 'audio') {
     useLayoutEffect(() => {
-      setActive(true)
+      activity.show()
     }, [])
+    return
   }
 
-  return { setActive }
+  useLayoutEffect(() => {
+    activity.active()
+  }, [])
+  useEffect(() => {
+    return () => {
+      activity.reset()
+    }
+  })
+
+  useEvent(
+    document,
+    'mousemove',
+    throttle(ACTIVITY_MOUSEMOVE_THROTTLE_DURATION, true, (): void => activity.active())
+  )
+  useEvent(document, 'mouseleave', (): void => activity.inactive())
+  useEvent(window, 'focus', (): void => activity.active())
+  useEvent(window, 'blur', (): void => activity.inactive())
 }
 
-type Props = Readonly<{
-  mediaType: MediaType
-  visible: boolean
-}>
-
-export const Controls: preact.FunctionComponent<Props> = view(props => {
-  const { setActive } = useActive(props.mediaType)
+export const Controls: preact.FunctionComponent = view(() => {
+  const { controlsStore } = useStore()
+  const { activity } = controlsStore
+  const media = useMedia()
+  useActive()
 
   const onClick = (event: MouseEvent): void => {
-    setActive(true)
+    activity.active()
     event.stopPropagation()
   }
 
   const className = clsx(
     styles.wrapper,
-    props.mediaType === 'video' && styles.video,
-    props.visible && styles.visible
+    media.info.type === 'video' && styles.video,
+    activity.visible && styles.visible
   )
 
   return (
