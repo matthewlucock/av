@@ -3,7 +3,7 @@ import { useState, useEffect } from 'preact/hooks'
 import useEvent from '@react-hook/event'
 
 import { handlePromiseRejection } from '@/util'
-import { useStore } from '@/store'
+import { useKeyboardStore, useMediaStore } from '@/store'
 import { isModifierKey } from '@/store/keyboard-store'
 
 import { Main } from '@/main'
@@ -11,7 +11,8 @@ import { DragOverlay } from '@/elements/drag-overlay'
 import { BrowserDialog } from '@/elements/browser-dialog'
 
 export const App: preact.FunctionComponent = () => {
-  const { keyboardStore, mediaStore } = useStore()
+  const keyboardStore = useKeyboardStore()
+  const mediaStore = useMediaStore()
 
   useEvent(document, 'keydown', (key): void => {
     if (isModifierKey(key)) keyboardStore.modifierKeyDown(key)

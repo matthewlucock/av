@@ -8,7 +8,7 @@ import { throttle } from 'throttle-debounce'
 import styles from './styles.scss'
 
 import { handlePromiseRejection } from '@/util'
-import { useStore, useMedia } from '@/store'
+import { useMediaStore, useControlsStore, useMedia } from '@/store'
 import { STOP_ICON, FULLSCREEN_ICON } from '@/icons'
 
 import { ControlButton } from '@/components/controls/control-button'
@@ -27,7 +27,7 @@ const LeftControls: preact.FunctionComponent = () => {
 }
 
 const RightControls: preact.FunctionComponent = () => {
-  const { mediaStore } = useStore()
+  const mediaStore = useMediaStore()
 
   return (
     <div className={styles.rightButtons}>
@@ -49,7 +49,7 @@ const RightControls: preact.FunctionComponent = () => {
 
 const ACTIVITY_MOUSEMOVE_THROTTLE_DURATION = 100
 const useActive = (): void => {
-  const { controlsStore } = useStore()
+  const controlsStore = useControlsStore()
   const { activity } = controlsStore
   const media = useMedia()
 
@@ -80,7 +80,7 @@ const useActive = (): void => {
 }
 
 export const Controls: preact.FunctionComponent = view(() => {
-  const { controlsStore } = useStore()
+  const controlsStore = useControlsStore()
   const { activity } = controlsStore
   const media = useMedia()
   useActive()

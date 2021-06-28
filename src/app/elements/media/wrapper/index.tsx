@@ -4,7 +4,7 @@ import { view } from '@risingstack/react-easy-state'
 
 import styles from './styles.scss'
 
-import { useStore, useMedia } from '@/store'
+import { useControlsStore, useMedia } from '@/store'
 
 import { NativeMedia } from '@/elements/media/native'
 import { Controls } from '@/elements/controls'
@@ -14,7 +14,7 @@ type Props = Readonly<{
 }>
 
 export const MediaWrapper: preact.FunctionComponent<Props> = view(props => {
-  const { controlsStore } = useStore()
+  const controlsStore = useControlsStore()
   const { activity } = controlsStore
   const media = useMedia()
 

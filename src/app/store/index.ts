@@ -16,15 +16,31 @@ export class Store {
 }
 
 export const StoreContext = createContext<Store | null>(null)
-export const useStore = (): Store => {
+const useStore = (): Store => {
   const store = useContext(StoreContext)
   if (store === null) throw new Error('No store')
   return store
 }
 
-export const useMedia = (): Media => {
+export const useKeyboardStore = (): KeyboardStore => {
+  const { keyboardStore } = useStore()
+  return keyboardStore
+}
+export const useMediaStore = (): MediaStore => {
   const { mediaStore } = useStore()
-  const { media } = mediaStore
+  return mediaStore
+}
+export const useControlsStore = (): ControlsStore => {
+  const { controlsStore } = useStore()
+  return controlsStore
+}
+export const useDialogStore = (): DialogStore => {
+  const { dialogStore } = useStore()
+  return dialogStore
+}
+
+export const useMedia = (): Media => {
+  const { media } = useMediaStore()
   if (media === null) throw new Error('No media')
   return media
 }

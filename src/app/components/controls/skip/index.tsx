@@ -4,7 +4,7 @@ import useHover from '@react-hook/hover'
 import { view } from '@risingstack/react-easy-state'
 
 import type { HorizontalDirection, PlaybackDirection } from '@/globals'
-import { useStore, useMedia } from '@/store'
+import { useControlsStore, useMedia } from '@/store'
 import { SKIP_BACK_ICON, SKIP_FORWARD_ICON } from '@/icons'
 
 import { ControlButton } from '@/components/controls/control-button'
@@ -41,7 +41,7 @@ type Props = Readonly<{
 }>
 
 export const Skip: preact.FunctionComponent<Props> = view(props => {
-  const { controlsStore } = useStore()
+  const controlsStore = useControlsStore()
   const media = useMedia()
 
   const button = useRef<HTMLButtonElement>()

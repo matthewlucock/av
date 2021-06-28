@@ -5,7 +5,7 @@ import { view } from '@risingstack/react-easy-state'
 import styles from './styles.scss'
 
 import type { PopperOffset } from '@/util/popper'
-import { useStore, useMedia } from '@/store'
+import { useControlsStore, useMedia } from '@/store'
 
 import { Timestamp } from '@/components/timestamp'
 import { Popper } from '@/components/popper'
@@ -13,7 +13,7 @@ import { Popper } from '@/components/popper'
 const offset: PopperOffset = [0, 30]
 
 export const VideoPreview: preact.FunctionComponent = view(() => {
-  const { controlsStore } = useStore()
+  const controlsStore = useControlsStore()
   const media = useMedia()
 
   const video = useRef<HTMLVideoElement>()

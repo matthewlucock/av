@@ -3,13 +3,14 @@ import { view } from '@risingstack/react-easy-state'
 
 import styles from './styles.scss'
 
-import { useStore, useMedia } from '@/store'
+import { useControlsStore, useMedia } from '@/store'
 
 import { Slider } from '@/components/slider'
 import { Timestamp } from '@/components/timestamp'
 
 export const PlaybackBar: preact.FunctionComponent = view(() => {
-  const { controlsStore } = useStore()
+  const controlsStore = useControlsStore()
+  const { videoPreview } = controlsStore
   const media = useMedia()
 
   return (
@@ -20,8 +21,8 @@ export const PlaybackBar: preact.FunctionComponent = view(() => {
         value={media.playbackTime}
         max={media.info.duration}
         changeValue={(newTime: number): void => media.updatePlaybackTime(newTime)}
-        onMouseMove={(...args): void => controlsStore.videoPreview.update(...args)}
-        onMouseOut={() => controlsStore.videoPreview.clear()}
+        onMouseMove={(...args): void => videoPreview.update(...args)}
+        onMouseOut={() => videoPreview.clear()}
       />
 
       <Timestamp

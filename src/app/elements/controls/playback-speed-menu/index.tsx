@@ -4,7 +4,7 @@ import { view } from '@risingstack/react-easy-state'
 import { MIN_PLAYBACK_RATE, MAX_PLAYBACK_RATE } from '@/globals'
 import { makeRateString } from '@/util/media'
 import type { PopperOffset } from '@/util/popper'
-import { useStore, useMedia } from '@/store'
+import { useControlsStore, useMedia } from '@/store'
 
 import { NumericToggle } from '@/components/numeric-toggle'
 import { Popper } from '@/components/popper'
@@ -12,7 +12,7 @@ import { Popper } from '@/components/popper'
 const offset: PopperOffset = ({ reference }) => [0, reference.height / 3]
 
 export const PlaybackSpeedMenu: preact.FunctionComponent = view(() => {
-  const { controlsStore } = useStore()
+  const controlsStore = useControlsStore()
   const media = useMedia()
 
   return (

@@ -3,12 +3,12 @@ import * as preact from 'preact'
 import styles from './styles.scss'
 
 import { handlePromiseRejection, browseForFiles as baseBrowseForFiles } from '@/util'
-import { useStore } from '@/store'
+import { useMediaStore } from '@/store'
 
 import { SimpleButton } from '@/components/simple-button'
 
 export const Home: preact.FunctionComponent = () => {
-  const { mediaStore } = useStore()
+  const mediaStore = useMediaStore()
 
   const browseForFiles = async (): Promise<void> => {
     const file = await baseBrowseForFiles()

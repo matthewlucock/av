@@ -2,10 +2,10 @@ import * as preact from 'preact'
 import { useEffect } from 'preact/hooks'
 import { view } from '@risingstack/react-easy-state'
 
-import { useStore } from '@/store'
+import { useDialogStore } from '@/store'
 
 export const BrowserDialog: preact.FunctionComponent = view(() => {
-  const { dialogStore } = useStore()
+  const dialogStore = useDialogStore()
 
   useEffect(() => {
     if (dialogStore.show && dialogStore.info !== null) {
