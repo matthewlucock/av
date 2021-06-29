@@ -6,23 +6,6 @@ import type { Store } from '.'
 
 const ACTIVITY_TIMEOUT_DURATION = 3000
 
-class PlaybackSpeed {
-  public button: HTMLButtonElement | null = null
-  public open: boolean = false
-
-  public storeButton (button: HTMLButtonElement): void {
-    this.button = button
-  }
-
-  public clearButton (): void {
-    this.button = null
-  }
-
-  public toggle (): void {
-    this.open = !this.open
-  }
-}
-
 class VideoPreview {
   public virtualElement: PopperVirtualElement | null = null
   public time: number = 0
@@ -99,14 +82,19 @@ class ShortcutDisplay {
 }
 
 export class ControlsStore {
-  public playbackSpeed: PlaybackSpeed = store(new PlaybackSpeed())
   public videoPreview: VideoPreview = store(new VideoPreview(this.rootStore))
   public activity: Activity = store(new Activity())
   public shortcutDisplay: ShortcutDisplay = store(new ShortcutDisplay())
+
+  public playbackSpeedOpen: boolean = false
 
   public constructor (private readonly rootStore: Store) {}
 
   public get skipAmount (): number {
     return this.rootStore.keyboardStore.shiftMode ? 10 : 30
+  }
+
+  public togglePlaybackSpeedOpen (): void {
+    this.playbackSpeedOpen = !this.playbackSpeedOpen
   }
 }

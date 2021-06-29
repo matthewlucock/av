@@ -1,5 +1,4 @@
-$background-color: hsla(0, 0%, 0%, 0.7);
-$arrow-color: hsl(0, 0%, 5%);
+$color: hsl(0, 0%, 10%);
 $arrow-size: 0.5em;
 
 .popper {
@@ -8,13 +7,12 @@ $arrow-size: 0.5em;
   flex-direction: column;
   align-items: center;
   padding: 1em;
-  font-size: 0.7em;
+  font-size: 0.6em;
   color: hsl(0, 0%, 100%);
   visibility: hidden;
-  background-color: $background-color;
+  background-color: $color;
   border-radius: 0.75em;
   opacity: 0;
-  backdrop-filter: blur(0.5em);
   transition-property: visibility, opacity;
 
   &.visible {
@@ -27,7 +25,7 @@ $arrow-size: 0.5em;
   top: 100%;
   width: 0;
   height: 0;
-  border-top: $arrow-size solid $arrow-color;
+  border-top: $arrow-size solid $color;
   border-right: $arrow-size solid transparent;
   border-left: $arrow-size solid transparent;
 }

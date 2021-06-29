@@ -15,8 +15,7 @@ import { ControlButton } from '@/components/controls/control-button'
 import { PlaybackControls } from '@/elements/controls/playback-controls'
 import { Volume } from '@/elements/controls/volume'
 import { PlaybackBar } from '@/elements/controls/playback-bar'
-import { PlaybackSpeedButton } from '@/elements/controls/playback-speed-button'
-import { PlaybackSpeedMenu } from '@/elements/controls/playback-speed-menu'
+import { PlaybackSpeed } from '@/elements/controls/playback-speed'
 import { ShortcutDisplay } from '@/elements/controls/shortcut-display'
 
 const LeftControls: preact.FunctionComponent = () => {
@@ -32,7 +31,7 @@ const RightControls: preact.FunctionComponent = () => {
 
   return (
     <div className={styles.rightButtons}>
-      <PlaybackSpeedButton />
+      <PlaybackSpeed />
 
       <ControlButton onClick={() => {}}>
         {FULLSCREEN_ICON}
@@ -109,7 +108,6 @@ export const Controls: preact.FunctionComponent = view(() => {
         <PlaybackBar />
       </div>
 
-      <PlaybackSpeedMenu />
       <ShortcutDisplay />
     </>
   )
