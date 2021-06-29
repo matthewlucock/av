@@ -1,5 +1,5 @@
-$background-color: hsla(0, 0%, 0%, 0.75);
-$arrow-color: hsl(0, 0%, 11%);
+$background-color: hsla(0, 0%, 0%, 0.7);
+$arrow-color: hsl(0, 0%, 5%);
 $arrow-size: 0.5em;
 
 .popper {
@@ -14,7 +14,7 @@ $arrow-size: 0.5em;
   background-color: $background-color;
   border-radius: 0.75em;
   opacity: 0;
-  backdrop-filter: blur(1em);
+  backdrop-filter: blur(0.5em);
   transition-property: visibility, opacity;
 
   &.visible {
