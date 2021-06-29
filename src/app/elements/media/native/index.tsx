@@ -73,7 +73,10 @@ export const NativeMedia: preact.FunctionComponent = view(() => {
     return (): void => cancelAnimationFrame(rewindFrameRequestId.current)
   }, [media.speedThroughRate])
 
-  useEffect(() => {
+  // This being a layout effect means that volume change happens during the callback of the user's
+  // interaction to change the volume, ensuring that the change will be allowed by browser autoplay
+  // restrictions.
+  useLayoutEffect(() => {
     nativeMedia.current.volume = media.volume
   }, [media.volume])
 
