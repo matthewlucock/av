@@ -15,10 +15,10 @@ export const Media: preact.FunctionComponent = view(() => {
     if (key.code === 'Space') {
       if (media.playing) {
         media.pause()
-        shortcutDisplay.display('pause')
+        shortcutDisplay.displayShortcut('pause')
       } else {
         media.play()
-        shortcutDisplay.display('play')
+        shortcutDisplay.displayShortcut('play')
       }
     }
   })

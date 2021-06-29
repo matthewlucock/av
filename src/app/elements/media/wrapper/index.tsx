@@ -20,7 +20,7 @@ export const MediaWrapper: preact.FunctionComponent<Props> = view(props => {
 
   const className = clsx(
     styles.wrapper,
-    !activity.visible && styles.controlsHidden,
+    !activity.showing && styles.controlsHidden,
     props.className
   )
 

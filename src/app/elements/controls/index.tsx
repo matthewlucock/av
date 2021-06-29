@@ -53,30 +53,25 @@ const useActive = (): void => {
   const { activity } = controlsStore
   const media = useMedia()
 
-  if (media.info.type === 'audio') {
-    useLayoutEffect(() => {
-      activity.show()
-    }, [])
-    return
-  }
+  if (media.info.type === 'audio') return
 
   useLayoutEffect(() => {
-    activity.active()
+    activity.show()
   }, [])
   useEffect(() => {
     return () => {
-      activity.reset()
+      activity.clearTimeout()
     }
   })
 
   useEvent(
     document,
     'mousemove',
-    throttle(ACTIVITY_MOUSEMOVE_THROTTLE_DURATION, true, (): void => activity.active())
+    throttle(ACTIVITY_MOUSEMOVE_THROTTLE_DURATION, true, (): void => activity.show())
   )
-  useEvent(document, 'mouseleave', (): void => activity.inactive())
-  useEvent(window, 'focus', (): void => activity.active())
-  useEvent(window, 'blur', (): void => activity.inactive())
+  useEvent(document, 'mouseleave', (): void => activity.hide())
+  useEvent(window, 'focus', (): void => activity.show())
+  useEvent(window, 'blur', (): void => activity.hide())
 }
 
 export const Controls: preact.FunctionComponent = view(() => {
@@ -86,14 +81,16 @@ export const Controls: preact.FunctionComponent = view(() => {
   useActive()
 
   const onClick = (event: MouseEvent): void => {
-    activity.active()
+    activity.show()
     event.stopPropagation()
   }
+
+  const visible = media.info.type === 'audio' || activity.showing
 
   const className = clsx(
     styles.wrapper,
     media.info.type === 'video' && styles.video,
-    activity.visible && styles.visible
+    visible && styles.visible
   )
 
   return (

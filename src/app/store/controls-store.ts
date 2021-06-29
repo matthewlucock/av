@@ -1,7 +1,9 @@
 import { store } from '@risingstack/react-easy-state'
 
 import type { Shortcut } from '@/globals'
-import { PopperVirtualElement, Coordinates, makePopperVirtualElement } from '@/util/popper'
+import { AutoHider } from '@/util/auto-hider'
+import { makePopperVirtualElement } from '@/util/popper'
+import type { PopperVirtualElement, Coordinates } from '@/util/popper'
 import type { Store } from '.'
 
 const ACTIVITY_TIMEOUT_DURATION = 3000
@@ -26,58 +28,27 @@ class VideoPreview {
   }
 }
 
-class Activity {
-  public visible: boolean = false
-  private timeoutId: number = 0
+class Activity extends AutoHider {
+  public constructor () {
+    super({ showDuration: ACTIVITY_TIMEOUT_DURATION })
+  }
 
   public show (): void {
-    this.visible = true
-  }
-
-  public hide (): void {
-    this.visible = false
-  }
-
-  public reset (): void {
-    window.clearTimeout(this.timeoutId)
-  }
-
-  public active (): void {
     if (!document.hasFocus()) return
-
-    this.reset()
-    this.show()
-    this.timeoutId = window.setTimeout(() => this.hide(), ACTIVITY_TIMEOUT_DURATION)
-  }
-
-  public inactive (): void {
-    this.reset()
-    this.hide()
+    super.show()
   }
 }
 
-class ShortcutDisplay {
-  public visible: boolean = false
+class ShortcutDisplay extends AutoHider {
   public shortcut: Shortcut | null = null
-  private timeoutId: number = 0
 
-  private show (): void {
-    this.visible = true
+  public constructor () {
+    super({ showDuration: 500 })
   }
 
-  private hide (): void {
-    this.visible = false
-  }
-
-  public reset (): void {
-    window.clearTimeout(this.timeoutId)
-  }
-
-  public display (shortcut: Shortcut): void {
-    this.reset()
+  public displayShortcut (shortcut: Shortcut): void {
     this.shortcut = shortcut
-    this.show()
-    this.timeoutId = window.setTimeout(() => this.hide(), 500)
+    super.show()
   }
 }
 

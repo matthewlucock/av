@@ -24,12 +24,12 @@ export const ShortcutDisplay: preact.FunctionComponent = view(() => {
 
   useEffect(() => {
     return () => {
-      shortcutDisplay.reset()
+      shortcutDisplay.clearTimeout()
     }
   }, [])
 
   return (
-    <div className={clsx(styles.shortcutDisplay, shortcutDisplay.visible && styles.visible)}>
+    <div className={clsx(styles.shortcutDisplay, shortcutDisplay.showing && styles.visible)}>
       {shortcutDisplay.shortcut !== null && getShortcutIcon(shortcutDisplay.shortcut)}
     </div>
   )
