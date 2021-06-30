@@ -8,6 +8,7 @@ import { useControlsStore, useMedia } from '@/store'
 
 import { NativeMedia } from '@/elements/media/native'
 import { Controls } from '@/elements/controls'
+import { ShortcutDisplay } from '@/elements/shortcut-display'
 import { AutoplayBlockOverlay } from '@/elements/autoplay-block-overlay'
 
 type Props = Readonly<{
@@ -21,6 +22,7 @@ export const MediaWrapper: preact.FunctionComponent<Props> = view(props => {
 
   const className = clsx(
     styles.wrapper,
+    media.isVideo && styles.video,
     !activity.showing && styles.controlsHidden,
     props.className
   )
@@ -28,8 +30,11 @@ export const MediaWrapper: preact.FunctionComponent<Props> = view(props => {
   return (
     <div className={className} onClick={(): void => media.playPause()}>
       <NativeMedia />
+
       {media.loaded && <Controls />}
+      <ShortcutDisplay />
       <AutoplayBlockOverlay />
+
       {props.children}
     </div>
   )

@@ -1,11 +1,13 @@
 import * as preact from 'preact'
+import { useLayoutEffect } from 'preact/hooks'
 import useEvent from '@react-hook/event'
 import { view } from '@risingstack/react-easy-state'
 
 import { useControlsStore, useMedia } from '@/store'
+import mainProcess from '__main_process__'
 
-import { Audio } from '@/elements/media/audio'
-import { Video } from '@/elements/media/video'
+import { MediaWrapper } from './wrapper'
+import { AudioContent } from './audio-content'
 
 export const Media: preact.FunctionComponent = view(() => {
   const { shortcutDisplay } = useControlsStore()
@@ -23,11 +25,16 @@ export const Media: preact.FunctionComponent = view(() => {
     }
   })
 
-  if (media.isAudio) {
-    return <Audio />
-  } else if (media.isVideo) {
-    return <Video />
-  } else {
-    throw new Error('Invalid media type')
+  if (__ELECTRON__ && media.isVideo) {
+    useLayoutEffect(() => {
+      mainProcess.setWindowResizable(true)
+      return (): void => mainProcess.setWindowResizable(false)
+    }, [])
   }
+
+  return (
+    <MediaWrapper>
+      {media.isAudio && <AudioContent />}
+    </MediaWrapper>
+  )
 })

@@ -16,7 +16,6 @@ import { PlaybackControls } from '@/elements/controls/playback-controls'
 import { Volume } from '@/elements/controls/volume'
 import { PlaybackBar } from '@/elements/controls/playback-bar'
 import { PlaybackSpeed } from '@/elements/controls/playback-speed'
-import { ShortcutDisplay } from '@/elements/controls/shortcut-display'
 
 const LeftControls: preact.FunctionComponent = () => {
   return (
@@ -80,11 +79,6 @@ export const Controls: preact.FunctionComponent = view(() => {
   const media = useMedia()
   useActive()
 
-  const onClick = (event: MouseEvent): void => {
-    activity.show()
-    event.stopPropagation()
-  }
-
   const visible = media.isAudio || activity.showing
 
   const className = clsx(
@@ -93,19 +87,20 @@ export const Controls: preact.FunctionComponent = view(() => {
     visible && styles.visible
   )
 
-  return (
-    <>
-      <div className={className} onClick={onClick}>
-        <div className={styles.buttons}>
-          <LeftControls />
-          <PlaybackControls />
-          <RightControls />
-        </div>
+  const onClick = (event: MouseEvent): void => {
+    event.stopPropagation()
+    activity.show()
+  }
 
-        <PlaybackBar />
+  return (
+    <div className={className} onClick={onClick}>
+      <div className={styles.buttons}>
+        <LeftControls />
+        <PlaybackControls />
+        <RightControls />
       </div>
 
-      <ShortcutDisplay />
-    </>
+      <PlaybackBar />
+    </div>
   )
 })

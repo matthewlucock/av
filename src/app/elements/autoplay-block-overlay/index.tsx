@@ -9,6 +9,8 @@ import { useMedia } from '@/store'
 import { Overlay } from '@/components/overlay'
 
 export const AutoplayBlockOverlay: preact.FunctionComponent = view(() => {
+  if (__ELECTRON__) return null
+
   const media = useMedia()
 
   const onClick = (event: MouseEvent): void => {

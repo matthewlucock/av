@@ -7,6 +7,7 @@ import { useControlsStore, useMedia } from '@/store'
 
 import { Slider } from '@/components/slider'
 import { Timestamp } from '@/components/timestamp'
+import { VideoPreview } from './video-preview'
 
 export const PlaybackBar: preact.FunctionComponent = view(() => {
   const controlsStore = useControlsStore()
@@ -14,22 +15,26 @@ export const PlaybackBar: preact.FunctionComponent = view(() => {
   const media = useMedia()
 
   return (
-    <div className={styles.wrapper}>
-      <Timestamp time={media.roundedPlaybackTime} max={media.roundedDuration} />
+    <>
+      <div className={styles.wrapper}>
+        <Timestamp time={media.roundedPlaybackTime} max={media.roundedDuration} />
 
-      <Slider
-        value={media.playbackTime}
-        max={media.info.duration}
-        changeValue={(newTime: number): void => media.updatePlaybackTime(newTime)}
-        onMouseMove={(...args): void => videoPreview.update(...args)}
-        onMouseOut={() => videoPreview.clear()}
-      />
+        <Slider
+          value={media.playbackTime}
+          max={media.info.duration}
+          changeValue={(newTime: number): void => media.updatePlaybackTime(newTime)}
+          onMouseMove={(...args): void => videoPreview.update(...args)}
+          onMouseOut={() => videoPreview.clear()}
+        />
 
-      <Timestamp
-        className={styles.duration}
-        time={media.roundedDuration}
-        max={media.roundedDuration}
-      />
-    </div>
+        <Timestamp
+          className={styles.duration}
+          time={media.roundedDuration}
+          max={media.roundedDuration}
+        />
+      </div>
+
+      <VideoPreview />
+    </>
   )
 })

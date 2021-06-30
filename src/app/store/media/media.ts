@@ -73,6 +73,10 @@ export class Media {
     return this.finished ? Math.ceil(this.playbackTime) : Math.floor(this.playbackTime)
   }
 
+  public get hasAudioMetadata (): boolean {
+    return this.info.audioMetadata !== undefined
+  }
+
   /**
    * Media loaded
    */
