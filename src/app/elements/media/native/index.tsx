@@ -2,7 +2,7 @@ import * as preact from 'preact'
 import { useRef, useEffect, useLayoutEffect } from 'preact/hooks'
 import { view } from '@risingstack/react-easy-state'
 
-import { handlePromiseRejection } from '@/util'
+import { handlePromiseRejection, errorIsNotAllowedError } from '@/util'
 import { useMedia } from '@/store'
 
 export const NativeMedia: preact.FunctionComponent = view(() => {
@@ -15,12 +15,28 @@ export const NativeMedia: preact.FunctionComponent = view(() => {
     playbackFrameRequestId.current = requestAnimationFrame(playbackFrame)
   }
 
+  const play = async (): Promise<void> => {
+    try {
+      await nativeMedia.current.play()
+    } catch (error) {
+      if (errorIsNotAllowedError(error)) {
+        media.applyAutoplayBlock()
+        setTimeout(() => handlePromiseRejection(play()))
+      } else {
+        throw error
+      }
+
+      return
+    }
+
+    playbackFrameRequestId.current = requestAnimationFrame(playbackFrame)
+  }
+
   useEffect(() => {
     if (!media.loaded) return
 
     if (media.playing) {
-      handlePromiseRejection(nativeMedia.current.play())
-      playbackFrameRequestId.current = requestAnimationFrame(playbackFrame)
+      handlePromiseRejection(play())
     } else {
       nativeMedia.current.pause()
       cancelAnimationFrame(playbackFrameRequestId.current)
@@ -79,6 +95,10 @@ export const NativeMedia: preact.FunctionComponent = view(() => {
   useLayoutEffect(() => {
     nativeMedia.current.volume = media.volume
   }, [media.volume])
+
+  useEffect(() => {
+
+  })
 
   const onLoadedData = (): void => {
     media.onLoaded(nativeMedia.current)

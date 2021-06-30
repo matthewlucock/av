@@ -23,6 +23,7 @@ export class Media {
   public playbackRate: number = 1
   public speedThroughRate: number = 0
   public volume: number = 1
+  public autoplayBlocked: boolean = false
 
   public constructor (info: UnloadedMediaInfo) {
     this.info = { ...info, duration: 0 }
@@ -151,5 +152,18 @@ export class Media {
 
   public setVolume (volume: number): void {
     this.volume = boundNumber(0, volume, 1)
+  }
+
+  /**
+   * Autoplay
+   */
+
+  public applyAutoplayBlock (): void {
+    this.setVolume(0)
+    this.autoplayBlocked = true
+  }
+
+  public clearAutoplayBlock (): void {
+    this.autoplayBlocked = false
   }
 }

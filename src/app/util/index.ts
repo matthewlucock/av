@@ -11,6 +11,8 @@ export const boundNumber = (min: number, value: number, max: number): number => 
   return value
 }
 
+export const errorIsNotAllowedError = (error: Error): boolean => error.name === 'NotAllowedError'
+
 export const browseForFiles = async (): Promise<FileList> => {
   return await new Promise(resolve => {
     const input = document.createElement('input')
