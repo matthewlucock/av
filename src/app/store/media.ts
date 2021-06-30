@@ -159,11 +159,12 @@ export class Media {
    */
 
   public applyAutoplayBlock (): void {
-    this.setVolume(0)
+    this.pause()
     this.autoplayBlocked = true
   }
 
   public clearAutoplayBlock (): void {
+    this.play()
     this.autoplayBlocked = false
   }
 }

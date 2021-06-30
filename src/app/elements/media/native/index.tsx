@@ -21,7 +21,6 @@ export const NativeMedia: preact.FunctionComponent = view(() => {
     } catch (error) {
       if (errorIsNotAllowedError(error)) {
         media.applyAutoplayBlock()
-        setTimeout(() => handlePromiseRejection(play()))
       } else {
         throw error
       }
@@ -32,7 +31,7 @@ export const NativeMedia: preact.FunctionComponent = view(() => {
     playbackFrameRequestId.current = requestAnimationFrame(playbackFrame)
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!media.loaded) return
 
     if (media.playing) {

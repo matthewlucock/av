@@ -8,6 +8,7 @@ import { useControlsStore, useMedia } from '@/store'
 
 import { NativeMedia } from '@/elements/media/native'
 import { Controls } from '@/elements/controls'
+import { AutoplayBlockOverlay } from '@/elements/autoplay-block-overlay'
 
 type Props = Readonly<{
   className?: string
@@ -28,6 +29,7 @@ export const MediaWrapper: preact.FunctionComponent<Props> = view(props => {
     <div className={className} onClick={(): void => media.playPause()}>
       <NativeMedia />
       {media.loaded && <Controls />}
+      <AutoplayBlockOverlay visible={media.autoplayBlocked} />
       {props.children}
     </div>
   )

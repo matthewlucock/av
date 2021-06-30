@@ -1,0 +1,12 @@
+.overlay {
+  cursor: pointer;
+}
+
+.icon-container {
+  padding: 0.1em;
+  transition-property: color;
+
+  &:hover {
+    color: hsl(0, 0%, 70%);
+  }
+}
