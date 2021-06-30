@@ -103,7 +103,7 @@ export const NativeMedia: preact.FunctionComponent = view(() => {
     media.onLoaded(nativeMedia.current)
   }
 
-  if (media.info.type === 'video') {
+  if (media.isVideo) {
     return (
       <video
         ref={node => {
@@ -113,7 +113,7 @@ export const NativeMedia: preact.FunctionComponent = view(() => {
         onLoadedData={onLoadedData}
       />
     )
-  } else if (media.info.type === 'audio') {
+  } else if (media.isAudio) {
     return (
       <audio
         ref={nativeMedia}

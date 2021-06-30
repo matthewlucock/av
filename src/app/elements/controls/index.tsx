@@ -8,8 +8,8 @@ import { throttle } from 'throttle-debounce'
 import styles from './styles.scss'
 
 import { handlePromiseRejection } from '@/util'
-import { useMediaStore, useControlsStore, useMedia } from '@/store'
 import { STOP_ICON, FULLSCREEN_ICON } from '@/icons'
+import { useMediaStore, useMedia, useControlsStore } from '@/store'
 
 import { ControlButton } from '@/components/controls/control-button'
 import { PlaybackControls } from '@/elements/controls/playback-controls'
@@ -53,7 +53,7 @@ const useActive = (): void => {
   const { activity } = controlsStore
   const media = useMedia()
 
-  if (media.info.type === 'audio') return
+  if (media.isAudio) return
 
   useLayoutEffect(() => {
     activity.show()
@@ -85,11 +85,11 @@ export const Controls: preact.FunctionComponent = view(() => {
     event.stopPropagation()
   }
 
-  const visible = media.info.type === 'audio' || activity.showing
+  const visible = media.isAudio || activity.showing
 
   const className = clsx(
     styles.wrapper,
-    media.info.type === 'video' && styles.video,
+    media.isVideo && styles.video,
     visible && styles.visible
   )
 

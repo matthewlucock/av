@@ -1,9 +1,10 @@
 import { store } from '@risingstack/react-easy-state'
 
 import { getMediaType } from '@/util/media'
+import type { Store } from '@/store'
+
 import { Media } from './media'
 import type { UnloadedMediaInfo } from './media'
-import type { Store } from '.'
 
 import mainProcess from '__main_process__'
 

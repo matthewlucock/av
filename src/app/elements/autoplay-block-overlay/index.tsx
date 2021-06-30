@@ -1,17 +1,14 @@
 import * as preact from 'preact'
+import { view } from '@risingstack/react-easy-state'
 
 import styles from './styles.scss'
 
-import { useMedia } from '@/store'
 import { PLAY_ICON } from '@/icons'
+import { useMedia } from '@/store'
 
 import { Overlay } from '@/components/overlay'
 
-type Props = Readonly<{
-  visible: boolean
-}>
-
-export const AutoplayBlockOverlay: preact.FunctionComponent<Props> = props => {
+export const AutoplayBlockOverlay: preact.FunctionComponent = view(() => {
   const media = useMedia()
 
   const onClick = (event: MouseEvent): void => {
@@ -20,10 +17,10 @@ export const AutoplayBlockOverlay: preact.FunctionComponent<Props> = props => {
   }
 
   return (
-    <Overlay visible={props.visible} className={styles.overlay} onClick={onClick}>
+    <Overlay visible={media.autoplayBlocked} className={styles.overlay} onClick={onClick}>
       <div className={styles.iconContainer}>
         {PLAY_ICON}
       </div>
     </Overlay>
   )
-}
+})

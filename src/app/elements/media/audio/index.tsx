@@ -11,7 +11,7 @@ import { AudioMetadata } from '@/elements/media/audio-metadata'
 export const Audio: preact.FunctionComponent = () => {
   const media = useMedia()
 
-  if (media.info.type !== 'audio') throw new Error('No audio')
+  if (!media.isAudio) throw new Error('No audio')
 
   return (
     <MediaWrapper>

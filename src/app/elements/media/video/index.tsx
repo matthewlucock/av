@@ -13,7 +13,7 @@ import { VideoPreview } from '@/elements/video-preview'
 export const Video: preact.FunctionComponent = () => {
   const media = useMedia()
 
-  if (media.info.type !== 'video') throw new Error('No video')
+  if (!media.isVideo) throw new Error('No video')
 
   if (__ELECTRON__) {
     useLayoutEffect(() => {

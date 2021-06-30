@@ -18,7 +18,7 @@ export const VideoPreview: preact.FunctionComponent = view(() => {
 
   const video = useRef<HTMLVideoElement>()
 
-  if (media.info.type !== 'video') throw new Error('No video')
+  if (!media.isVideo) throw new Error('No video')
 
   useEffect(() => {
     video.current.currentTime = controlsStore.videoPreview.time

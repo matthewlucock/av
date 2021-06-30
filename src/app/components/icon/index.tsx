@@ -15,15 +15,14 @@ export const Icon: preact.FunctionComponent<Props> = props => {
   const viewBoxHeight = icon[1]
   const path = icon[4] as string
 
+  const className = clsx(
+    styles.icon,
+    props.offset === 'left' && styles.left,
+    props.offset === 'right' && styles.right
+  )
+
   return (
-    <svg
-      className={clsx(
-        styles.icon,
-        props.offset === 'left' && styles.left,
-        props.offset === 'right' && styles.right
-      )}
-      viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`}
-    >
+    <svg className={className} viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`}>
       <path d={path} />
     </svg>
   )

@@ -37,6 +37,14 @@ export class Media {
    * Computed properties
    */
 
+  public get isAudio (): boolean {
+    return this.info.type === 'audio'
+  }
+
+  public get isVideo (): boolean {
+    return this.info.type === 'video'
+  }
+
   public get notStarted (): boolean {
     return this.playbackTime === 0
   }

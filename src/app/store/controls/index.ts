@@ -1,12 +1,11 @@
 import { store } from '@risingstack/react-easy-state'
 
+import { CONTROLS_SHOW_DURATION, SHORTCUT_DISPLAY_SHOW_DURATION } from '@/globals'
 import type { Shortcut } from '@/globals'
 import { AutoHider } from '@/util/auto-hider'
 import { makePopperVirtualElement } from '@/util/popper'
 import type { PopperVirtualElement, Coordinates } from '@/util/popper'
-import type { Store } from '.'
-
-const ACTIVITY_TIMEOUT_DURATION = 3000
+import type { Store } from '@/store'
 
 class VideoPreview {
   public virtualElement: PopperVirtualElement | null = null
@@ -30,7 +29,7 @@ class VideoPreview {
 
 class Activity extends AutoHider {
   public constructor () {
-    super({ showDuration: ACTIVITY_TIMEOUT_DURATION })
+    super({ showDuration: CONTROLS_SHOW_DURATION })
   }
 
   public show (): void {
@@ -43,7 +42,7 @@ class ShortcutDisplay extends AutoHider {
   public shortcut: Shortcut | null = null
 
   public constructor () {
-    super({ showDuration: 500 })
+    super({ showDuration: SHORTCUT_DISPLAY_SHOW_DURATION })
   }
 
   public displayShortcut (shortcut: Shortcut): void {

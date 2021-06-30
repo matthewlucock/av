@@ -1,28 +1,35 @@
 import * as preact from 'preact'
+import { useState } from 'preact/hooks'
+import useEvent from '@react-hook/event'
 
-import styles from './styles.scss'
+import { handlePromiseRejection } from '@/util'
+import { useMediaStore } from '@/store'
 
 import { Overlay } from '@/components/overlay'
 
-type Props = Readonly<{
-  dragging: boolean
-  setDragging: (dragging: boolean) => void
-  callback: (files: FileList) => void
-}>
+export const DragOverlay: preact.FunctionComponent = () => {
+  const mediaStore = useMediaStore()
 
-export const DragOverlay: preact.FunctionComponent<Props> = props => {
+  const [dragging, setDragging] = useState<boolean>(false)
+  useEvent(document, 'dragenter', (): void => setDragging(true))
+
+  const onDrop = (event: DragEvent): void => {
+    event.preventDefault()
+
+    if (event.dataTransfer !== null) {
+      handlePromiseRejection(mediaStore.open(event.dataTransfer.files))
+    }
+
+    setDragging(false)
+  }
+
   return (
     <Overlay
-      className={styles.dragOverlay}
-      visible={props.dragging}
+      light
+      visible={dragging}
       onDragOver={event => event.preventDefault()}
-      onDragLeave={() => props.setDragging(false)}
-      onDrop={event => {
-        event.preventDefault()
-
-        if (event.dataTransfer !== null) props.callback(event.dataTransfer.files)
-        props.setDragging(false)
-      }}
+      onDragLeave={() => setDragging(false)}
+      onDrop={onDrop}
     />
   )
 }

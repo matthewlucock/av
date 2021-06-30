@@ -29,7 +29,7 @@ export const MediaWrapper: preact.FunctionComponent<Props> = view(props => {
     <div className={className} onClick={(): void => media.playPause()}>
       <NativeMedia />
       {media.loaded && <Controls />}
-      <AutoplayBlockOverlay visible={media.autoplayBlocked} />
+      <AutoplayBlockOverlay />
       {props.children}
     </div>
   )

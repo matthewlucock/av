@@ -3,8 +3,8 @@ import { view } from '@risingstack/react-easy-state'
 
 import styles from './styles.scss'
 
-import { useMedia } from '@/store'
 import { VOLUME_UP_ICON, VOLUME_DOWN_ICON, VOLUME_MUTED_ICON } from '@/icons'
+import { useMedia } from '@/store'
 
 const getVolumeIcon = (volume: number): JSX.Element => {
   if (volume > 0.4) {
@@ -16,7 +16,7 @@ const getVolumeIcon = (volume: number): JSX.Element => {
   }
 }
 
-export const VolumeIcon: preact.FunctionComponent = view(props => {
+export const VolumeIcon: preact.FunctionComponent = view(() => {
   const media = useMedia()
 
   return (

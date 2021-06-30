@@ -1,8 +1,8 @@
 import * as preact from 'preact'
 import { view } from '@risingstack/react-easy-state'
 
-import { useMedia } from '@/store'
 import { PLAY_ICON, PAUSE_ICON } from '@/icons'
+import { useMedia } from '@/store'
 
 import { ControlButton } from '@/components/controls/control-button'
 import { SpeedThrough, SpeedThroughShiftGroup } from '@/components/controls/speed-through'

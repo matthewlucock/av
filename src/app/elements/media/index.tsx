@@ -23,9 +23,9 @@ export const Media: preact.FunctionComponent = view(() => {
     }
   })
 
-  if (media.info.type === 'audio') {
+  if (media.isAudio) {
     return <Audio />
-  } else if (media.info.type === 'video') {
+  } else if (media.isVideo) {
     return <Video />
   } else {
     throw new Error('Invalid media type')

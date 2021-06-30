@@ -4,8 +4,8 @@ import useHover from '@react-hook/hover'
 import { view } from '@risingstack/react-easy-state'
 
 import type { HorizontalDirection, PlaybackDirection } from '@/globals'
-import { useControlsStore, useMedia } from '@/store'
 import { SKIP_BACK_ICON, SKIP_FORWARD_ICON } from '@/icons'
+import { useControlsStore, useMedia } from '@/store'
 
 import { ControlButton } from '@/components/controls/control-button'
 import { FloatingLabel, floatingLabelContainerClass } from '@/components/floating-label'

@@ -4,8 +4,8 @@ import { view } from '@risingstack/react-easy-state'
 
 import { MIN_PLAYBACK_RATE, MAX_PLAYBACK_RATE } from '@/globals'
 import { makeRateString } from '@/util/media'
-import { useControlsStore, useMedia } from '@/store'
 import { PLAYBACK_SPEED_ICON } from '@/icons'
+import { useControlsStore, useMedia } from '@/store'
 
 import { ControlButton } from '@/components/controls/control-button'
 import { FloatingLabel, floatingLabelContainerClass } from '@/components/floating-label'

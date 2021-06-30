@@ -6,8 +6,8 @@ import { view } from '@risingstack/react-easy-state'
 import styles from './styles.scss'
 
 import { makeRateString } from '@/util/media'
-import { useMedia } from '@/store'
 import { REWIND_ICON, FAST_FORWARD_ICON } from '@/icons'
+import { useMedia } from '@/store'
 
 import { ControlButton } from '@/components/controls/control-button'
 
