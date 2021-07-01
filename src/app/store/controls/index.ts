@@ -1,7 +1,6 @@
 import { store } from '@risingstack/react-easy-state'
 
-import { CONTROLS_SHOW_DURATION, SHORTCUT_DISPLAY_SHOW_DURATION } from '@/globals'
-import type { Shortcut } from '@/globals'
+import { CONTROLS_SHOW_DURATION } from '@/globals'
 import { AutoHider } from '@/util/auto-hider'
 import { makePopperVirtualElement } from '@/util/popper'
 import type { PopperVirtualElement, Coordinates } from '@/util/popper'
@@ -38,23 +37,9 @@ class Activity extends AutoHider {
   }
 }
 
-class ShortcutDisplay extends AutoHider {
-  public shortcut: Shortcut | null = null
-
-  public constructor () {
-    super({ showDuration: SHORTCUT_DISPLAY_SHOW_DURATION })
-  }
-
-  public displayShortcut (shortcut: Shortcut): void {
-    this.shortcut = shortcut
-    super.show()
-  }
-}
-
 export class ControlsStore {
   public videoPreview: VideoPreview = store(new VideoPreview(this.rootStore))
   public activity: Activity = store(new Activity())
-  public shortcutDisplay: ShortcutDisplay = store(new ShortcutDisplay())
 
   public playbackSpeedOpen: boolean = false
 

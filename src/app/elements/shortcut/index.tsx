@@ -5,12 +5,14 @@ import { view } from '@risingstack/react-easy-state'
 
 import styles from './styles.scss'
 
-import type { Shortcut } from '@/globals'
 import { PLAY_ICON, PAUSE_ICON } from '@/icons'
-import { useControlsStore } from '@/store'
+import { useShortcutStore } from '@/store'
+import type { ShortcutName } from '@/store/shortcut'
 
-const getShortcutIcon = (name: Shortcut): JSX.Element => {
-  if (name === 'play') {
+const getShortcutIcon = (name: ShortcutName | null): JSX.Element | null => {
+  if (name === null) {
+    return null
+  } else if (name === 'play') {
     return PLAY_ICON
   } else if (name === 'pause') {
     return PAUSE_ICON
@@ -19,23 +21,23 @@ const getShortcutIcon = (name: Shortcut): JSX.Element => {
   }
 }
 
-export const ShortcutDisplay: preact.FunctionComponent = view(() => {
-  const { shortcutDisplay } = useControlsStore()
+export const Shortcut: preact.FunctionComponent = view(() => {
+  const shortcutStore = useShortcutStore()
 
   useEffect(() => {
     return () => {
-      shortcutDisplay.clearTimeout()
+      shortcutStore.clearTimeout()
     }
   }, [])
 
   const className = clsx(
-    styles.shortcutDisplay,
-    shortcutDisplay.showing && styles.visible
+    styles.shortcut,
+    shortcutStore.showing && styles.visible
   )
 
   return (
     <div className={className}>
-      {shortcutDisplay.shortcut !== null && getShortcutIcon(shortcutDisplay.shortcut)}
+      {getShortcutIcon(shortcutStore.shortcutName)}
     </div>
   )
 })

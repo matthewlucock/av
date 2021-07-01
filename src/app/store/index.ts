@@ -7,12 +7,14 @@ import { DialogStore } from './dialog'
 import { MediaStore } from './media'
 import type { Media } from './media/media'
 import { ControlsStore } from './controls'
+import { ShortcutStore } from './shortcut'
 
 export class Store {
   public readonly keyboardStore: KeyboardStore = store(new KeyboardStore())
   public readonly dialogStore: DialogStore = store(new DialogStore())
   public readonly mediaStore: MediaStore = store(new MediaStore(this))
   public readonly controlsStore: ControlsStore = store(new ControlsStore(this))
+  public readonly shortcutStore: ShortcutStore = store(new ShortcutStore())
 }
 
 export const StoreContext = createContext<Store | null>(null)
@@ -42,4 +44,8 @@ export const useMedia = (): Media => {
 export const useControlsStore = (): ControlsStore => {
   const { controlsStore } = useStore()
   return controlsStore
+}
+export const useShortcutStore = (): ShortcutStore => {
+  const { shortcutStore } = useStore()
+  return shortcutStore
 }

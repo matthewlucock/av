@@ -8,7 +8,7 @@ import { useControlsStore, useMedia } from '@/store'
 
 import { NativeMedia } from '@/elements/media/native'
 import { Controls } from '@/elements/controls'
-import { ShortcutDisplay } from '@/elements/shortcut-display'
+import { Shortcut } from '@/elements/shortcut'
 import { AutoplayBlockOverlay } from '@/elements/autoplay-block-overlay'
 
 type Props = Readonly<{
@@ -32,7 +32,7 @@ export const MediaWrapper: preact.FunctionComponent<Props> = view(props => {
       <NativeMedia />
 
       {media.loaded && <Controls />}
-      <ShortcutDisplay />
+      <Shortcut />
       <AutoplayBlockOverlay />
 
       {props.children}
