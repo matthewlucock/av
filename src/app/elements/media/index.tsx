@@ -3,26 +3,18 @@ import { useLayoutEffect } from 'preact/hooks'
 import useEvent from '@react-hook/event'
 import { view } from '@risingstack/react-easy-state'
 
-import { useMedia, useShortcutStore } from '@/store'
+import { useMediaStore, useMedia } from '@/store'
 import mainProcess from '__main_process__'
 
 import { MediaWrapper } from './wrapper'
 import { AudioContent } from './audio-content'
 
 export const Media: preact.FunctionComponent = view(() => {
+  const mediaStore = useMediaStore()
   const media = useMedia()
-  const shortcutStore = useShortcutStore()
 
   useEvent(document, 'keypress', (key): void => {
-    if (key.code === 'Space') {
-      if (media.playing) {
-        media.pause()
-        shortcutStore.displayShortcut('pause')
-      } else {
-        media.play()
-        shortcutStore.displayShortcut('play')
-      }
-    }
+    if (key.code === 'Space') mediaStore.playPauseShortcut()
   })
 
   if (__ELECTRON__ && media.isVideo) {

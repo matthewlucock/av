@@ -4,7 +4,7 @@ import { view } from '@risingstack/react-easy-state'
 
 import styles from './styles.scss'
 
-import { useControlsStore, useMedia } from '@/store'
+import { useMediaStore, useMedia, useControlsStore } from '@/store'
 
 import { NativeMedia } from '@/elements/media/native'
 import { Controls } from '@/elements/controls'
@@ -16,9 +16,10 @@ type Props = Readonly<{
 }>
 
 export const MediaWrapper: preact.FunctionComponent<Props> = view(props => {
+  const mediaStore = useMediaStore()
+  const media = useMedia()
   const controlsStore = useControlsStore()
   const { activity } = controlsStore
-  const media = useMedia()
 
   const className = clsx(
     styles.wrapper,
@@ -28,7 +29,7 @@ export const MediaWrapper: preact.FunctionComponent<Props> = view(props => {
   )
 
   return (
-    <div className={className} onClick={(): void => media.playPause()}>
+    <div className={className} onClick={(): void => mediaStore.playPauseShortcut()}>
       <NativeMedia />
 
       {media.loaded && <Controls />}

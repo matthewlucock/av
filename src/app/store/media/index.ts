@@ -86,4 +86,16 @@ export class MediaStore {
       audioMetadata
     })
   }
+
+  public playPauseShortcut (): void {
+    if (this.media === null) throw new Error('No media')
+
+    this.media.playPause()
+
+    if (this.media.playing) {
+      this.root.shortcutStore.displayShortcut('play')
+    } else {
+      this.root.shortcutStore.displayShortcut('pause')
+    }
+  }
 }
