@@ -18,9 +18,9 @@ export class DialogStore {
     this.show = true
   }
 
-  public close (result: boolean): void {
+  public close (result?: boolean): void {
     this.show = false
-    this.result = result
+    this.result = result === true
   }
 
   public async confirm (question: string): Promise<boolean> {

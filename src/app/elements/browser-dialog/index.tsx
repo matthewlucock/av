@@ -1,23 +1,22 @@
 import * as preact from 'preact'
-import { useEffect } from 'preact/hooks'
 import { view } from '@risingstack/react-easy-state'
 
 import { useDialogStore } from '@/store'
 
+import { Overlay } from '@/components/overlay'
+import { Dialog } from '@/components/dialog'
+
 export const BrowserDialog: preact.FunctionComponent = view(() => {
   const dialogStore = useDialogStore()
 
-  useEffect(() => {
-    if (dialogStore.show && dialogStore.info !== null) {
-      if (dialogStore.info.confirm) {
-        const result = window.confirm(dialogStore.info.message)
-        dialogStore.close(result)
-      } else {
-        window.alert(dialogStore.info.message)
-        dialogStore.show = false
-      }
-    }
-  }, [dialogStore.show])
-
-  return null
+  return (
+    <Overlay visible={dialogStore.show}>
+      <Dialog
+        confirm={dialogStore.info?.confirm}
+        close={(result?: boolean) => dialogStore.close(result)}
+      >
+        {dialogStore.info?.message}
+      </Dialog>
+    </Overlay>
+  )
 })

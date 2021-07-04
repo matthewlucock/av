@@ -1,14 +1,21 @@
 @use 'sass:color';
 
-$background-color: hsla(0, 0%, 100%, 0.2);
+@mixin background-color($base-color) {
+  $background-color: color.change($base-color, $alpha: 0.25);
+  background-color: $background-color;
+
+  &:hover {
+    background-color: color.adjust($background-color, $alpha: -0.1);
+  }
+}
 
 .button {
+  @include background-color(hsl(0, 0%, 100%));
   padding: 0.2em 0.4em;
-  background-color: $background-color;
   border-radius: 0.35em;
   transition-property: background-color;
 
-  &:hover {
-    background-color: color.adjust($background-color, $alpha: -0.05);
+  &.light {
+    @include background-color(hsl(0, 0%, 10%));
   }
 }
