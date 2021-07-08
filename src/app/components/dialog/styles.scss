@@ -5,12 +5,16 @@
   justify-content: center;
   padding: 1em;
   color: hsl(0, 0%, 0%);
-  background-color: hsla(0, 0%, 75%, 0.7);
+  background-color: hsl(0, 0%, 90%);
   backdrop-filter: blur(0.5em);
-  border-radius: 1em;
+  border-radius: 0.5em;
 }
 
 .buttons {
   display: flex;
   margin-top: 1em;
+
+  > :not(:last-child) {
+    margin-right: 0.5em;
+  }
 }
