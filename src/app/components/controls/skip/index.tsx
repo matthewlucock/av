@@ -14,22 +14,25 @@ type DirectionData = Readonly<{
   offset: number
   icon: JSX.Element
   label: string
-  labelPosition: HorizontalDirection
+  amountLabel: string
+  amountLabelPosition: HorizontalDirection
 }>
 const getDirectionData = (direction: PlaybackDirection, skipAmount: number): DirectionData => {
   if (direction === 'backwards') {
     return {
       offset: -1 * skipAmount,
       icon: SKIP_BACK_ICON,
-      label: '-' + skipAmount.toString(),
-      labelPosition: 'left'
+      label: 'Skip back',
+      amountLabel: '-' + skipAmount.toString(),
+      amountLabelPosition: 'left'
     }
   } else if (direction === 'forwards') {
     return {
       offset: skipAmount,
       icon: SKIP_FORWARD_ICON,
-      label: '+' + skipAmount.toString(),
-      labelPosition: 'right'
+      label: 'Skip forward',
+      amountLabel: '+' + skipAmount.toString(),
+      amountLabelPosition: 'right'
     }
   } else {
     throw new Error('Invalid direction')
@@ -51,20 +54,18 @@ export const Skip: preact.FunctionComponent<Props> = view(props => {
     offset,
     icon,
     label,
-    labelPosition
+    amountLabel,
+    amountLabelPosition
   } = getDirectionData(props.direction, controlsStore.skipAmount)
 
   return (
     <div className={floatingLabelContainerClass}>
-      <ControlButton
-        ref_={button}
-        onClick={(): void => media.offsetPlaybackTime(offset)}
-      >
+      <ControlButton label={label} onClick={(): void => media.offsetPlaybackTime(offset)}>
         {icon}
       </ControlButton>
 
-      <FloatingLabel position={labelPosition} visible={hovering}>
-        {label}
+      <FloatingLabel position={amountLabelPosition} visible={hovering}>
+        {amountLabel}
       </FloatingLabel>
     </div>
   )

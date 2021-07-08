@@ -39,7 +39,7 @@ export const NumericToggle: React.FC<Props> = props => {
 
   return (
     <div className={styles.wrapper}>
-      <ControlButton onClick={() => modifyValue(-1)}>
+      <ControlButton label='Decrement' onClick={() => modifyValue(-1)} forceHideTooltip>
         {SUBTRACT_ICON}
       </ControlButton>
 
@@ -47,7 +47,7 @@ export const NumericToggle: React.FC<Props> = props => {
         {makeLabel(props.value)}
       </div>
 
-      <ControlButton onClick={() => modifyValue(1)}>
+      <ControlButton label='Increment' onClick={() => modifyValue(1)} forceHideTooltip>
         {ADD_ICON}
       </ControlButton>
     </div>

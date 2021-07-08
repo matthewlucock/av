@@ -15,6 +15,7 @@ type Direction = 'backwards' | 'forwards'
 
 type DirectionData = Readonly<{
   icon: JSX.Element
+  label: string
   multiplier: number
   positionClass: string
 }>
@@ -22,12 +23,14 @@ const getDirectionData = (direction: Direction): DirectionData => {
   if (direction === 'backwards') {
     return {
       icon: REWIND_ICON,
+      label: 'Rewind',
       multiplier: -1,
       positionClass: styles.left
     }
   } else if (direction === 'forwards') {
     return {
       icon: FAST_FORWARD_ICON,
+      label: 'Fast forward',
       multiplier: 1,
       positionClass: styles.right
     }
@@ -45,8 +48,8 @@ export const SpeedThrough: preact.FunctionComponent<Props> = view(props => {
   const media = useMedia()
   const lastRate = useRef<number>(0)
 
-  const { icon, multiplier, positionClass } = getDirectionData(props.direction)
-  const label = makeRateString(
+  const { icon, label, multiplier, positionClass } = getDirectionData(props.direction)
+  const rateLabel = makeRateString(
     media.speedThroughRate !== 0 ? media.speedThroughRate : lastRate.current
   )
 
@@ -54,14 +57,20 @@ export const SpeedThrough: preact.FunctionComponent<Props> = view(props => {
     if (props.active) lastRate.current = media.speedThroughRate
   }, [media.speedThroughRate])
 
+  const rateLabelWrapperClassName = clsx(
+    styles.rateLabelWrapper,
+    positionClass,
+    props.active && styles.active
+  )
+
   return (
     <div className={styles.wrapper}>
-      <ControlButton onClick={(): void => media.toggleSpeedThroughRate(multiplier)}>
+      <ControlButton label={label} onClick={(): void => media.toggleSpeedThroughRate(multiplier)}>
         {icon}
       </ControlButton>
 
-      <div className={clsx(styles.labelWrapper, positionClass, props.active && styles.active)}>
-        <div className={styles.label}>{label}</div>
+      <div className={rateLabelWrapperClassName}>
+        <div className={styles.rateLabel}>{rateLabel}</div>
       </div>
     </div>
   )

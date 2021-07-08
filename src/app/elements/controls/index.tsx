@@ -32,11 +32,12 @@ const RightControls: preact.FunctionComponent = () => {
     <div className={styles.rightButtons}>
       <PlaybackSpeed />
 
-      <ControlButton onClick={() => {}}>
+      <ControlButton label='Enter fullscreen' onClick={() => {}}>
         {FULLSCREEN_ICON}
       </ControlButton>
 
       <ControlButton
+        label='Stop'
         onClick={(): void => handlePromiseRejection(mediaStore.stop())}
         end='right'
       >

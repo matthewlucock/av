@@ -16,15 +16,20 @@ export const PlaybackSpeed: preact.FunctionComponent = view(() => {
   const controlsStore = useControlsStore()
   const media = useMedia()
 
-  const [button, setButton] = useState<HTMLButtonElement | null>(null)
+  const [wrapper, setWrapper] = useState<HTMLDivElement | null>(null)
+
+  const [tooltipIsShowing, setTooltipIsShowing] = useState<boolean>(false)
+  const [menuIsShowing, setMenuIsShowing] = useState<boolean>(false)
 
   const showLabel = !media.normalPlaybackRate && !controlsStore.playbackSpeedOpen
 
   return (
-    <div className={floatingLabelContainerClass}>
+    <div ref={setWrapper} className={floatingLabelContainerClass}>
       <ControlButton
-        ref_={setButton}
+        label='Change playback speed'
         onClick={(): void => controlsStore.togglePlaybackSpeedOpen()}
+        tooltipCurrentlyShowingCallback={setTooltipIsShowing}
+        forceHideTooltip={controlsStore.playbackSpeedOpen || menuIsShowing}
       >
         {PLAYBACK_SPEED_ICON}
       </ControlButton>
@@ -34,8 +39,9 @@ export const PlaybackSpeed: preact.FunctionComponent = view(() => {
       </FloatingLabel>
 
       <Popper
-        reference={button}
-        visible={controlsStore.playbackSpeedOpen}
+        reference={wrapper}
+        visible={controlsStore.playbackSpeedOpen && !tooltipIsShowing}
+        currentlyShowingCallback={setMenuIsShowing}
       >
         <NumericToggle
           value={media.playbackRate}

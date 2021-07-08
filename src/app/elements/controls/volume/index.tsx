@@ -16,9 +16,8 @@ export const Volume: preact.FunctionComponent = view(() => {
   const media = useMedia()
 
   const wrapper = useRef<HTMLDivElement>()
-  const button = useRef<HTMLButtonElement>()
   const hoveringWrapper = useHover(wrapper)
-  const hoveringButton = useHover(button)
+  const [hoveringButton, setHoveringButton] = useState<boolean>(false)
 
   const [expanded, setExpanded] = useState<boolean>(false)
   useEffect(() => {
@@ -38,7 +37,7 @@ export const Volume: preact.FunctionComponent = view(() => {
 
   return (
     <div ref={wrapper} className={clsx(styles.wrapper, expanded && styles.expanded)}>
-      <ControlButton ref_={button} onClick={toggleVolume} end='left'>
+      <ControlButton label='Volume' onClick={toggleVolume} hoveringCallback={setHoveringButton} end='left'>
         <VolumeIcon />
       </ControlButton>
 

@@ -18,7 +18,7 @@ export const PlaybackControls: preact.FunctionComponent = view(() => {
       </SpeedThroughShiftGroup>
       <SpeedThrough direction='backwards' active={media.rewinding} />
 
-      <ControlButton primary onClick={(): void => media.playPause()}>
+      <ControlButton primary label='Play/pause' onClick={(): void => media.playPause()}>
         {media.playing ? PAUSE_ICON : PLAY_ICON}
       </ControlButton>
 
