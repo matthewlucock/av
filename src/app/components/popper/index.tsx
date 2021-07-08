@@ -26,7 +26,7 @@ export const Popper: preact.FunctionComponent<Props> = props => {
   const [container, setContainer] = useState<HTMLDivElement | null>(null)
   const [arrow, setArrow] = useState<HTMLDivElement | null>(null)
 
-  const compact = props.compact ?? true
+  const compact = props.compact ?? false
   const offset = props.offset ?? DEFAULT_OFFSET
 
   const popperData = usePopper(props.reference, container, {
