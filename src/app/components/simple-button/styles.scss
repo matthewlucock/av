@@ -1,11 +1,11 @@
 @use 'sass:color';
 
 @mixin background-color($base-color) {
-  $background-color: color.change($base-color, $alpha: 0.25);
+  $background-color: color.change($base-color, $alpha: 0.15);
   background-color: $background-color;
 
   &:hover {
-    background-color: color.adjust($background-color, $alpha: -0.1);
+    background-color: color.adjust($background-color, $alpha: -0.05);
   }
 }
 
